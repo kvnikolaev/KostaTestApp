@@ -15,7 +15,8 @@ namespace DALService
         {
             CreateMap<Department, Department_dto>();
             CreateMap<Department_dto, Department>();
-            CreateMap<Employee, Employee_dto>();
+            CreateMap<Employee, Employee_dto>()
+                .ForMember(dest => dest.Department, option => option.Ignore());
             CreateMap<Employee_dto, Employee>();
         }
     }

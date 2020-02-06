@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using System.Data.Entity;
 using DALService.DTO;
 using DALService.EDM;
 
@@ -23,7 +24,7 @@ namespace DALService
         {
             using (var db = new TestDBEntities())
             {
-                var t = db.Department.Where(d => !(d.ParentDepartmentID.HasValue)).ToList();
+                var t = db.Department.Include(el => el.Employee).Where(d => !(d.ParentDepartmentID.HasValue)).ToList();
                 var result = mapper.Map<IEnumerable<Department_dto>>(t);
                 return result;
             }

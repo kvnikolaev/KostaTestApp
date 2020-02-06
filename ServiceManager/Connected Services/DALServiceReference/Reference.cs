@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace KostaTestApp.DALServiceReference {
+namespace ServiceManager.DALServiceReference {
     using System.Runtime.Serialization;
     using System;
     
@@ -23,13 +23,13 @@ namespace KostaTestApp.DALServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private KostaTestApp.DALServiceReference.Department_dto[] ChildDepartmentsField;
+        private ServiceManager.DALServiceReference.Department_dto[] ChildDepartmentsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CodeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private KostaTestApp.DALServiceReference.Employee_dto[] EmployeeField;
+        private ServiceManager.DALServiceReference.Employee_dto[] EmployeeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
@@ -48,7 +48,7 @@ namespace KostaTestApp.DALServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public KostaTestApp.DALServiceReference.Department_dto[] ChildDepartments {
+        public ServiceManager.DALServiceReference.Department_dto[] ChildDepartments {
             get {
                 return this.ChildDepartmentsField;
             }
@@ -74,7 +74,7 @@ namespace KostaTestApp.DALServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public KostaTestApp.DALServiceReference.Employee_dto[] Employee {
+        public ServiceManager.DALServiceReference.Employee_dto[] Employee {
             get {
                 return this.EmployeeField;
             }
@@ -135,7 +135,7 @@ namespace KostaTestApp.DALServiceReference {
         private System.DateTime DateOfBirthField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private KostaTestApp.DALServiceReference.Department_dto DepartmentField;
+        private ServiceManager.DALServiceReference.Department_dto DepartmentField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Guid DepartmentIDField;
@@ -185,7 +185,7 @@ namespace KostaTestApp.DALServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public KostaTestApp.DALServiceReference.Department_dto Department {
+        public ServiceManager.DALServiceReference.Department_dto Department {
             get {
                 return this.DepartmentField;
             }
@@ -316,25 +316,25 @@ namespace KostaTestApp.DALServiceReference {
     public interface IDALService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployees", ReplyAction="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployeesResponse")]
-        KostaTestApp.DALServiceReference.Department_dto[] GetDepartmentStructureWithEmployees();
+        ServiceManager.DALServiceReference.Department_dto[] GetDepartmentStructureWithEmployees();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployees", ReplyAction="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployeesResponse")]
-        System.Threading.Tasks.Task<KostaTestApp.DALServiceReference.Department_dto[]> GetDepartmentStructureWithEmployeesAsync();
+        System.Threading.Tasks.Task<ServiceManager.DALServiceReference.Department_dto[]> GetDepartmentStructureWithEmployeesAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/AddEmployee", ReplyAction="http://tempuri.org/IDALService/AddEmployeeResponse")]
-        int AddEmployee(KostaTestApp.DALServiceReference.Employee_dto employee);
+        int AddEmployee(ServiceManager.DALServiceReference.Employee_dto employee);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/AddEmployee", ReplyAction="http://tempuri.org/IDALService/AddEmployeeResponse")]
-        System.Threading.Tasks.Task<int> AddEmployeeAsync(KostaTestApp.DALServiceReference.Employee_dto employee);
+        System.Threading.Tasks.Task<int> AddEmployeeAsync(ServiceManager.DALServiceReference.Employee_dto employee);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IDALServiceChannel : KostaTestApp.DALServiceReference.IDALService, System.ServiceModel.IClientChannel {
+    public interface IDALServiceChannel : ServiceManager.DALServiceReference.IDALService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class DALServiceClient : System.ServiceModel.ClientBase<KostaTestApp.DALServiceReference.IDALService>, KostaTestApp.DALServiceReference.IDALService {
+    public partial class DALServiceClient : System.ServiceModel.ClientBase<ServiceManager.DALServiceReference.IDALService>, ServiceManager.DALServiceReference.IDALService {
         
         public DALServiceClient() {
         }
@@ -355,19 +355,19 @@ namespace KostaTestApp.DALServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public KostaTestApp.DALServiceReference.Department_dto[] GetDepartmentStructureWithEmployees() {
+        public ServiceManager.DALServiceReference.Department_dto[] GetDepartmentStructureWithEmployees() {
             return base.Channel.GetDepartmentStructureWithEmployees();
         }
         
-        public System.Threading.Tasks.Task<KostaTestApp.DALServiceReference.Department_dto[]> GetDepartmentStructureWithEmployeesAsync() {
+        public System.Threading.Tasks.Task<ServiceManager.DALServiceReference.Department_dto[]> GetDepartmentStructureWithEmployeesAsync() {
             return base.Channel.GetDepartmentStructureWithEmployeesAsync();
         }
         
-        public int AddEmployee(KostaTestApp.DALServiceReference.Employee_dto employee) {
+        public int AddEmployee(ServiceManager.DALServiceReference.Employee_dto employee) {
             return base.Channel.AddEmployee(employee);
         }
         
-        public System.Threading.Tasks.Task<int> AddEmployeeAsync(KostaTestApp.DALServiceReference.Employee_dto employee) {
+        public System.Threading.Tasks.Task<int> AddEmployeeAsync(ServiceManager.DALServiceReference.Employee_dto employee) {
             return base.Channel.AddEmployeeAsync(employee);
         }
     }
