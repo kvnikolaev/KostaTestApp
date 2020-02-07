@@ -1,4 +1,5 @@
 ﻿using ServiceManager;
+using ServiceManager.DALServiceReference;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,11 +18,22 @@ namespace UIClient
         public MainForm()
         {
             InitializeComponent();
-            var t = this.structureTreeView.Container;
-            var t2 = this.structureTreeView.Controls;
+            
             presenter = new ServiceManager.MainPresenter();
 
             structureTreeView.Nodes.AddRange(presenter.GetDepartmentStructure());
+            presenter.SetUpEmployeesView(dataGridView);
+        }
+
+        private void StructureTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            var selectedDep = (Department_dto)e.Node.Tag;
+
+            // dataGridView.Rows.Clear();
+            var t = new DataGridViewRow();
+            t.CreateCells(dataGridView, 1, 2, 3);
+            
+            dataGridView.Rows.Add(t);
         }
     }
 }

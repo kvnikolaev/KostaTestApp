@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ServiceManager
 {
@@ -12,11 +13,13 @@ namespace ServiceManager
         private ServiceConnector _manager = new ServiceConnector();
 
         private IEnumerable<Department_dto> _departmentStructure;
+
+        #region GetDepartmentStructure
         public System.Windows.Forms.TreeNode[] GetDepartmentStructure()
         {
             _departmentStructure = _manager.GetDepartmentStructureWithEmployees();
             List<System.Windows.Forms.TreeNode> result = new List<System.Windows.Forms.TreeNode>();
-           // DALServiceReference.
+           
             foreach(var dep in _departmentStructure)
             {
                 result.Add(GetSubNodes(dep));
@@ -40,5 +43,21 @@ namespace ServiceManager
             }
             return node;
         }
+        #endregion
+
+        public void SetUpEmployeesView(DataGridView dataGridView)
+        {
+            
+        }
+
+
+        //public System.Windows.Forms.DataGridViewRow[] GetEmployeesForDepartment(Department_dto department)
+        //{
+        //    List<System.Windows.Forms.DataGridViewRow> result = new List<System.Windows.Forms.DataGridViewRow>();
+        //    foreach(var employee in department.Employee)
+        //    {
+        //        result.Add(new System.Windows.Forms.DataGridViewRow() { })
+        //    }
+        //}
     }
 }

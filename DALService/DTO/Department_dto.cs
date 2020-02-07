@@ -11,6 +11,7 @@ namespace DALService.DTO
     
     public class Department_dto
     {
+        public System.Guid ID { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
         public System.Guid ParentDepartmentID { get; set; }

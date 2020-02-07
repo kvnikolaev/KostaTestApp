@@ -32,6 +32,9 @@ namespace ServiceManager.DALServiceReference {
         private ServiceManager.DALServiceReference.Employee_dto[] EmployeeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid IDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -82,6 +85,19 @@ namespace ServiceManager.DALServiceReference {
                 if ((object.ReferenceEquals(this.EmployeeField, value) != true)) {
                     this.EmployeeField = value;
                     this.RaisePropertyChanged("Employee");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid ID {
+            get {
+                return this.IDField;
+            }
+            set {
+                if ((this.IDField.Equals(value) != true)) {
+                    this.IDField = value;
+                    this.RaisePropertyChanged("ID");
                 }
             }
         }
