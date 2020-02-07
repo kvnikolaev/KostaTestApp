@@ -7,7 +7,7 @@ using ServiceManager.DALServiceReference;
 
 namespace ServiceManager
 {
-    class ServiceConnector
+    public class ServiceConnector
     {
         private DALServiceClient _client;
 

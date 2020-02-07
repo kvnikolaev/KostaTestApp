@@ -16,7 +16,7 @@ namespace UIClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            var t = new MainPresenter(new MainForm());
         }
     }
 }

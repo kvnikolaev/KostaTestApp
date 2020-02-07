@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.structureTreeView = new System.Windows.Forms.TreeView();
-            this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.DepartmentStructureTreeView = new System.Windows.Forms.TreeView();
+            this.EmployeeDataGridView = new System.Windows.Forms.DataGridView();
             this.SurNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FirstNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PatronymicColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,7 +43,7 @@
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.EmployeeDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer
@@ -55,30 +55,30 @@
             // 
             // splitContainer.Panel1
             // 
-            this.splitContainer.Panel1.Controls.Add(this.structureTreeView);
+            this.splitContainer.Panel1.Controls.Add(this.DepartmentStructureTreeView);
             this.splitContainer.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
             // splitContainer.Panel2
             // 
-            this.splitContainer.Panel2.Controls.Add(this.dataGridView);
+            this.splitContainer.Panel2.Controls.Add(this.EmployeeDataGridView);
             this.splitContainer.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer.Size = new System.Drawing.Size(800, 450);
             this.splitContainer.SplitterDistance = 231;
             this.splitContainer.TabIndex = 0;
             // 
-            // structureTreeView
+            // DepartmentStructureTreeView
             // 
-            this.structureTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.structureTreeView.Location = new System.Drawing.Point(0, 0);
-            this.structureTreeView.Name = "structureTreeView";
-            this.structureTreeView.Size = new System.Drawing.Size(231, 450);
-            this.structureTreeView.TabIndex = 0;
-            this.structureTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.StructureTreeView_AfterSelect);
+            this.DepartmentStructureTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DepartmentStructureTreeView.Location = new System.Drawing.Point(0, 0);
+            this.DepartmentStructureTreeView.Name = "DepartmentStructureTreeView";
+            this.DepartmentStructureTreeView.Size = new System.Drawing.Size(231, 450);
+            this.DepartmentStructureTreeView.TabIndex = 0;
+            this.DepartmentStructureTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.StructureTreeView_AfterSelect);
             // 
-            // dataGridView
+            // EmployeeDataGridView
             // 
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.EmployeeDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.EmployeeDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.SurNameColumn,
             this.FirstNameColumn,
             this.PatronymicColumn,
@@ -87,11 +87,11 @@
             this.AgeColumn,
             this.DocSeriesColumn,
             this.DocNumberColumn});
-            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.Size = new System.Drawing.Size(565, 450);
-            this.dataGridView.TabIndex = 0;
+            this.EmployeeDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.EmployeeDataGridView.Location = new System.Drawing.Point(0, 0);
+            this.EmployeeDataGridView.Name = "EmployeeDataGridView";
+            this.EmployeeDataGridView.Size = new System.Drawing.Size(565, 450);
+            this.EmployeeDataGridView.TabIndex = 0;
             // 
             // SurNameColumn
             // 
@@ -153,7 +153,7 @@
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.EmployeeDataGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -161,8 +161,6 @@
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer;
-        private System.Windows.Forms.TreeView structureTreeView;
-        private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn SurNameColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn FirstNameColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn PatronymicColumn;
@@ -171,6 +169,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn AgeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DocSeriesColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DocNumberColumn;
+        public System.Windows.Forms.TreeView DepartmentStructureTreeView;
+        public System.Windows.Forms.DataGridView EmployeeDataGridView;
     }
 }
 

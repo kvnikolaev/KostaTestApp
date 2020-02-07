@@ -19,10 +19,6 @@ namespace UIClient
         {
             InitializeComponent();
             
-            presenter = new ServiceManager.MainPresenter();
-
-            structureTreeView.Nodes.AddRange(presenter.GetDepartmentStructure());
-            presenter.SetUpEmployeesView(dataGridView);
         }
 
         private void StructureTreeView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -31,9 +27,9 @@ namespace UIClient
 
             // dataGridView.Rows.Clear();
             var t = new DataGridViewRow();
-            t.CreateCells(dataGridView, 1, 2, 3);
+            t.CreateCells(EmployeeDataGridView, 1, 2, 3);
             
-            dataGridView.Rows.Add(t);
+            EmployeeDataGridView.Rows.Add(t);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ServiceManager.DALServiceReference;
+using ServiceManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ServiceManager
+namespace UIClient
 {
     public class MainPresenter
     {
@@ -14,9 +15,10 @@ namespace ServiceManager
 
         private IEnumerable<Department_dto> _departmentStructure;
 
-        public MainPresenter(MainForm mainform)
+        public MainPresenter(MainForm mainForm)
         {
-
+            mainForm.DepartmentStructureTreeView.Nodes.AddRange(this.GetDepartmentStructure());
+            this.SetUpEmployeesView(mainForm.EmployeeDataGridView);
             Application.Run(mainForm);
         }
 
@@ -60,7 +62,7 @@ namespace ServiceManager
         //public System.Windows.Forms.DataGridViewRow[] GetEmployeesForDepartment(Department_dto department)
         //{
         //    List<System.Windows.Forms.DataGridViewRow> result = new List<System.Windows.Forms.DataGridViewRow>();
-        //    foreach(var employee in department.Employee)
+        //    foreach (var employee in department.Employee)
         //    {
         //        result.Add(new System.Windows.Forms.DataGridViewRow() { })
         //    }
