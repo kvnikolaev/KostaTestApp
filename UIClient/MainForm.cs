@@ -14,7 +14,7 @@ namespace UIClient
 {
     public partial class MainForm : Form
     {
-        MainPresenter presenter;
+        public MainPresenter Presenter { get; set; }
         public MainForm()
         {
             InitializeComponent();
@@ -25,10 +25,10 @@ namespace UIClient
         {
             var selectedDep = (Department_dto)e.Node.Tag;
 
-            // dataGridView.Rows.Clear();
+            //EmployeeDataGridView.Rows.Clear();
             var t = new DataGridViewRow();
             t.CreateCells(EmployeeDataGridView, 1, 2, 3);
-            
+
             EmployeeDataGridView.Rows.Add(t);
         }
     }

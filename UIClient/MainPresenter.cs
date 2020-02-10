@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UIClient.Utility;
 
 namespace UIClient
 {
@@ -15,10 +16,13 @@ namespace UIClient
 
         private IEnumerable<Department_dto> _departmentStructure;
 
+        private EmployeeToGridShaper employeeToGrid = new EmployeeToGridShaper();
+
         public MainPresenter(MainForm mainForm)
         {
             mainForm.DepartmentStructureTreeView.Nodes.AddRange(this.GetDepartmentStructure());
             this.SetUpEmployeesView(mainForm.EmployeeDataGridView);
+            mainForm.Presenter = this;
             Application.Run(mainForm);
         }
 
@@ -55,7 +59,7 @@ namespace UIClient
 
         public void SetUpEmployeesView(DataGridView dataGridView)
         {
-            
+            employeeToGrid.SetUpGrid(dataGridView);
         }
 
 
