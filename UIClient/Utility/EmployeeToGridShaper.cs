@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceManager.DALServiceReference;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -73,6 +74,24 @@ namespace UIClient.Utility
                 this.DocSeriesColumn,
                 this.DocNumberColumn
             });
+        }
+
+        public void SelectEmployeeToGrid(DataGridView grid, params Employee_dto[] employees)
+        {
+            foreach(var emp in employees)
+            {
+                grid.Rows.Add(new string[] 
+                {
+                    emp.SurName?.ToString(),
+                    emp.FirstName?.ToString(),
+                    emp.Patronymic?.ToString(),
+                    emp.Position?.ToString(),
+                    emp.DateOfBirth.ToString(),
+                    emp.Age.ToString(),
+                    emp.DocSeries?.ToString(),
+                    emp.DocNumber?.ToString()
+                });
+            }
         }
     }
 }

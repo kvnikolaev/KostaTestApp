@@ -62,14 +62,14 @@ namespace UIClient
             employeeToGrid.SetUpGrid(dataGridView);
         }
 
-
-        //public System.Windows.Forms.DataGridViewRow[] GetEmployeesForDepartment(Department_dto department)
-        //{
-        //    List<System.Windows.Forms.DataGridViewRow> result = new List<System.Windows.Forms.DataGridViewRow>();
-        //    foreach (var employee in department.Employee)
-        //    {
-        //        result.Add(new System.Windows.Forms.DataGridViewRow() { })
-        //    }
-        //}
+        /// <summary>
+        /// Вывести список сотрудников на контрол DataGridView, настроенный через SetUpGrid. Не очищает имеющиеся элементы. 
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="department"></param>
+        public void SelectEmployeeToGrid(DataGridView grid, Department_dto department)
+        {
+            employeeToGrid.SelectEmployeeToGrid(grid, department.Employee);
+        }
     }
 }

@@ -54,7 +54,7 @@
             // 
             this.splitContainer.Panel2.Controls.Add(this.EmployeeDataGridView);
             this.splitContainer.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer.Size = new System.Drawing.Size(800, 450);
+            this.splitContainer.Size = new System.Drawing.Size(900, 450);
             this.splitContainer.SplitterDistance = 231;
             this.splitContainer.TabIndex = 0;
             // 
@@ -69,18 +69,20 @@
             // 
             // EmployeeDataGridView
             // 
+            this.EmployeeDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.EmployeeDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.EmployeeDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.EmployeeDataGridView.Location = new System.Drawing.Point(0, 0);
             this.EmployeeDataGridView.Name = "EmployeeDataGridView";
-            this.EmployeeDataGridView.Size = new System.Drawing.Size(565, 450);
+            this.EmployeeDataGridView.Size = new System.Drawing.Size(493, 450);
             this.EmployeeDataGridView.TabIndex = 0;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(728, 450);
             this.Controls.Add(this.splitContainer);
             this.Name = "MainForm";
             this.Text = "Form1";

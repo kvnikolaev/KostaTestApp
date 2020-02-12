@@ -23,13 +23,9 @@ namespace UIClient
 
         private void StructureTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            EmployeeDataGridView.Rows.Clear();
             var selectedDep = (Department_dto)e.Node.Tag;
-
-            //EmployeeDataGridView.Rows.Clear();
-            var t = new DataGridViewRow();
-            t.CreateCells(EmployeeDataGridView, 1, 2, 3);
-
-            EmployeeDataGridView.Rows.Add(t);
+            Presenter.SelectEmployeeToGrid(EmployeeDataGridView, selectedDep);
         }
     }
 }

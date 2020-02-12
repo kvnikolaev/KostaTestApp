@@ -67,6 +67,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestDBModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EmployeeExtension.cs" />
     <Compile Include="IDALService.cs" />
     <Compile Include="MapperProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
