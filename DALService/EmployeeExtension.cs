@@ -10,7 +10,9 @@ namespace DALService
     {
         public static int GetAge(this EDM.Employee employee)
         {
-            return DateTime.Now.Year - employee.DateOfBirth.Year;
+            int lambda = DateTime.Now.Year - employee.DateOfBirth.Year;
+            if (employee.DateOfBirth.AddYears(lambda) > DateTime.Now) lambda--;
+            return lambda;
         }
     }
 }

@@ -86,7 +86,7 @@ namespace UIClient.Utility
                     emp.FirstName?.ToString(),
                     emp.Patronymic?.ToString(),
                     emp.Position?.ToString(),
-                    emp.DateOfBirth.ToString(),
+                    emp.DateOfBirth.ToShortDateString(),
                     emp.Age.ToString(),
                     emp.DocSeries?.ToString(),
                     emp.DocNumber?.ToString()
