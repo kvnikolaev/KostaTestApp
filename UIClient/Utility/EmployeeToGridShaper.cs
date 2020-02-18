@@ -1,4 +1,4 @@
-﻿using ServiceManager.DALServiceReference;
+﻿using ServiceManager.ClientSideClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +76,7 @@ namespace UIClient.Utility
             });
         }
 
-        public void SelectEmployeeToGrid(DataGridView grid, params Employee_dto[] employees)
+        public void SelectEmployeeToGrid(DataGridView grid, params EmployeeCS[] employees)
         {
             foreach(var emp in employees)
             {

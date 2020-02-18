@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using ServiceManager.ClientSideClasses;
 using ServiceManager.DALServiceReference;
 
 namespace ServiceManager
@@ -10,11 +13,13 @@ namespace ServiceManager
     public class ServiceConnector
     {
         private DALServiceClient _client;
+        MapperConfiguration config = new MapperConfiguration(cfg => cfg.AddProfile<MapperProfile>());
 
-        public IEnumerable<Department_dto> GetDepartmentStructureWithEmployees()
+        public IEnumerable<DepartmentCS> GetDepartmentStructureWithEmployees()
         {
             _client = new DALServiceClient();
-            return _client.GetDepartmentStructureWithEmployees().AsEnumerable();
+            var t = _client.GetDepartmentStructureWithEmployees().AsEnumerable();
+            return config.CreateMapper().Map<IEnumerable<DepartmentCS>>(t);
         }
     }
 }

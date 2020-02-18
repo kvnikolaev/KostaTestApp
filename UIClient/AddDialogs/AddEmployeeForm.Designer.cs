@@ -373,6 +373,7 @@
             this.okButton.TabIndex = 0;
             this.okButton.Text = "Ок";
             this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
             // AddEmployeeForm
             // 

@@ -26,7 +26,6 @@
   <xs:element name="ArrayOfEmployee_dto" nillable="true" type="tns:ArrayOfEmployee_dto" />
   <xs:complexType name="Employee_dto">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Age" type="xs:int" />
       <xs:element minOccurs="0" name="DateOfBirth" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Department" nillable="true" type="tns:Department_dto" />
       <xs:element minOccurs="0" name="DepartmentID" type="ser:guid" />

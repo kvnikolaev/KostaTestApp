@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ServiceManager.DALServiceReference;
+using ServiceManager;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ServiceManager.ClientSideClasses;
 
 namespace UIClient.AddDialogs
 {
@@ -22,6 +25,12 @@ namespace UIClient.AddDialogs
             this.Close();
         }
 
-
+        private void OkButton_Click(object sender, EventArgs e)
+        {
+            var t = new DepartmentCS(); t.Name = "olo";
+            
+            //t.get
+            this.comboBox1.Items.Add(t);
+        }
     }
 }

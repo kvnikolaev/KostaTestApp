@@ -1,5 +1,5 @@
 ﻿using ServiceManager;
-using ServiceManager.DALServiceReference;
+using ServiceManager.ClientSideClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,21 +26,18 @@ namespace UIClient
         private void StructureTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             EmployeeDataGridView.Rows.Clear();
-            var selectedDep = (Department_dto)e.Node.Tag;
+            var selectedDep = (DepartmentCS)e.Node.Tag;
             Presenter.SelectEmployeeToGrid(EmployeeDataGridView, selectedDep);
         }
 
         private void DepartmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var t = new AddDepartmentForm();
-            t.ShowDialog();
+            Presenter.AddDepartmentShowDialog();
         }
 
         private void EmployeeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (_addEmployeeForm == null) _addEmployeeForm = new AddEmployeeForm();
-            _addEmployeeForm.ShowDialog();
-            //Presenter.AddEmployeeShowDialog()
+            Presenter.AddEmployeeShowDialog();
         }
     }
 }

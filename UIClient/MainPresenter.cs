@@ -7,16 +7,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UIClient.Utility;
+using UIClient.AddDialogs;
+using ServiceManager.ClientSideClasses;
 
 namespace UIClient
 {
     public class MainPresenter
     {
-        private ServiceConnector _manager = new ServiceConnector();
+        #region Privates
+        private readonly ServiceConnector _manager = new ServiceConnector();
 
-        private IEnumerable<Department_dto> _departmentStructure;
+        private IEnumerable<DepartmentCS> _departmentStructure;
 
-        private EmployeeToGridShaper employeeToGrid = new EmployeeToGridShaper();
+        private readonly EmployeeToGridShaper employeeToGrid = new EmployeeToGridShaper();
+        #endregion
+
+        #region Dependencies Properties
+        public Form AddEmployeeForm { get; set; }
+        public Form AddDepartmentForm { get; set; }
+        #endregion
 
         public MainPresenter(MainForm mainForm)
         {
@@ -27,6 +36,10 @@ namespace UIClient
         }
 
         #region GetDepartmentStructure
+        /// <summary>
+        /// Выполняет запрос сервиса к дб
+        /// </summary>
+        /// <returns></returns>
         public System.Windows.Forms.TreeNode[] GetDepartmentStructure()
         {
             _departmentStructure = _manager.GetDepartmentStructureWithEmployees();
@@ -38,8 +51,7 @@ namespace UIClient
             }
             return result.ToArray();
         }
-
-        private System.Windows.Forms.TreeNode GetSubNodes(Department_dto department)
+        private System.Windows.Forms.TreeNode GetSubNodes(DepartmentCS department)
         {
             var node = new System.Windows.Forms.TreeNode()
             {
@@ -57,6 +69,10 @@ namespace UIClient
         }
         #endregion
 
+        /// <summary>
+        /// Настройка контрола, отображающего данные сотрудников
+        /// </summary>
+        /// <param name="dataGridView"></param>
         public void SetUpEmployeesView(DataGridView dataGridView)
         {
             employeeToGrid.SetUpGrid(dataGridView);
@@ -67,9 +83,25 @@ namespace UIClient
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="department"></param>
-        public void SelectEmployeeToGrid(DataGridView grid, Department_dto department)
+        public void SelectEmployeeToGrid(DataGridView grid, DepartmentCS department)
         {
-            employeeToGrid.SelectEmployeeToGrid(grid, department.Employee);
+            employeeToGrid.SelectEmployeeToGrid(grid, department.Employee.ToArray());
         }
+
+        public void AddDepartmentShowDialog()
+        {
+            if (AddDepartmentForm == null) AddDepartmentForm = new AddDepartmentForm();
+            AddDepartmentForm.ShowDialog();
+        }
+
+        public void AddEmployeeShowDialog()
+        {
+            if (AddEmployeeForm == null) AddEmployeeForm = new AddEmployeeForm();
+            //var t = 
+            AddEmployeeForm.ShowDialog();
+        }
+
+        //private 
+
     }
 }
