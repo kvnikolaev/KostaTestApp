@@ -16,7 +16,7 @@ namespace UIClient
     public partial class MainForm : Form
     {
         public MainPresenter Presenter { get; set; }
-        private AddEmployeeForm _addEmployeeForm;
+        
         public MainForm()
         {
             InitializeComponent();

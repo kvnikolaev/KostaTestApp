@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceManager.ClientSideClasses;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,11 +11,13 @@ using System.Windows.Forms;
 
 namespace UIClient.AddDialogs
 {
-    public partial class AddDepartmentForm : Form
+    public partial class AddDepartmentForm : BaseDialogForm
     {
         public AddDepartmentForm()
         {
             InitializeComponent();
         }
+
+        public override DepartmentCS[] DepartmentList { get; set; }
     }
 }

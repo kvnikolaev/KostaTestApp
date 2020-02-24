@@ -23,8 +23,8 @@ namespace UIClient
         #endregion
 
         #region Dependencies Properties
-        public Form AddEmployeeForm { get; set; }
-        public Form AddDepartmentForm { get; set; }
+        public BaseDialogForm AddEmployeeForm { get; set; }
+        public BaseDialogForm AddDepartmentForm { get; set; }
         #endregion
 
         public MainPresenter(MainForm mainForm)
@@ -35,7 +35,7 @@ namespace UIClient
             Application.Run(mainForm);
         }
 
-        #region GetDepartmentStructure
+        #region Organisation Structure Methods
         /// <summary>
         /// Выполняет запрос сервиса к дб
         /// </summary>
@@ -67,6 +67,31 @@ namespace UIClient
             }
             return node;
         }
+
+        /// <summary>
+        /// Получение массива имен отделов без иерархии из уже загруженной структуры (без обращения к бд)
+        /// </summary>
+        /// <returns></returns>
+        public DepartmentCS[] GetDepartmentArray()
+        {
+            List<DepartmentCS> result = new List<DepartmentCS>();
+            foreach(var department in this._departmentStructure)
+            {
+                GetSubDepartments(result, department);
+                //result.AddRange(GetSubDepartments(department));
+            }
+            return result.ToArray();
+
+        }
+        private void GetSubDepartments(List<DepartmentCS> allDeps, DepartmentCS rootDep)
+        {
+            allDeps.Add(rootDep);
+            foreach(var dep in rootDep.ChildDepartments)
+            {
+                GetSubDepartments(allDeps, dep);
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -97,11 +122,14 @@ namespace UIClient
         public void AddEmployeeShowDialog()
         {
             if (AddEmployeeForm == null) AddEmployeeForm = new AddEmployeeForm();
-            //var t = 
-            AddEmployeeForm.ShowDialog();
+            this.AddEmployeeForm.DepartmentList = this.GetDepartmentArray();
+            if (AddEmployeeForm.ShowDialog() == DialogResult.OK)
+            {
+                var t = AddEmployeeForm.RepresentedEmployee;
+            }
         }
 
-        //private 
+       
 
     }
 }
