@@ -49,14 +49,15 @@ namespace UIClient.AddDialogs
             RepresentedEmployee = new EmployeeCS()
             {
                 DateOfBirth = DateTime.Now,
-                DocSeries = "1001",
-                DocNumber = "123456",
+                DocSeries = "1001lkjdfsa",
+                DocNumber = "123456dfrg",
                 FirstName = "Николавев",
                 SurName = "Кирилл",
                 Patronymic = "Валерьевич",
                 Position = "Нащальника",
                 DepartmentID = dep.ID
             };
+            RepresentedEmployee.Validate();
 
             this.DialogResult = DialogResult.OK;
             this.Close();

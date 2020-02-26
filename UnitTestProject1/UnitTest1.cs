@@ -4,6 +4,7 @@ using DALService;
 using DALService.DTO;
 using DALService.EDM;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ServiceManager.ClientSideClasses;
 
 namespace UnitTestProject1
 {
@@ -34,5 +35,61 @@ namespace UnitTestProject1
         //    var t = new ServiceLogic();
         //    t.AddEmployee(testEmployee);
         //}
+    }
+
+    [TestClass]
+    public class EntityValidation
+    {
+        [TestMethod]
+        public void EmployeeBaseValidate_AllBad()
+        {
+            // Arrange
+            var employee = new EmployeeCS()
+            {
+                
+                DocSeries = "1001lkjdfsa",
+                DocNumber = "123456dfrg",
+                
+                SurName = "Кирилл1234Кирилл1234Кирилл1234Кирилл1234Кирилл1234!",
+                Patronymic = "ВалерьевичВалерьевичВалерьевичВалерьевичВалерьевич!",
+                Position = "НащальникаНащальникаНащальникаНащальникаНащальника!",
+                
+            };
+            // Act
+            bool result = false;
+            try
+            {
+                result = employee.Validate();
+            }
+            catch(AggregateException e)
+            {
+                // Assert
+                Assert.AreEqual(e.InnerExceptions.Count, 8);
+                return;
+            }
+            // Assert
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void EmployeeBaseValidate_AllGood()
+        {
+            // Arrange
+            var employee = new EmployeeCS()
+            {
+                DateOfBirth = DateTime.Now,
+                DocSeries = "1001",
+                DocNumber = "123456",
+                FirstName = "Николавев",
+                SurName = "Кирилл",
+                Patronymic = "Валерьевич",
+                Position = "Нащальника",
+                DepartmentID = Guid.NewGuid()
+            };
+            // Act
+            bool result = employee.Validate();
+            // Assert
+            Assert.IsTrue(result);
+        }
     }
 }
