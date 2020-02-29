@@ -15,9 +15,11 @@ namespace UIClient
     public class MainPresenter
     {
         #region Privates
-        private readonly ServiceConnector _manager = new ServiceConnector();
+        private readonly ServiceConnector _serviceManager = new ServiceConnector();
 
         private IEnumerable<DepartmentCS> _departmentStructure;
+
+        private MainForm _mainForm;
 
         private readonly EmployeeToGridShaper employeeToGrid = new EmployeeToGridShaper();
         #endregion
@@ -29,20 +31,32 @@ namespace UIClient
 
         public MainPresenter(MainForm mainForm)
         {
+            _mainForm = mainForm;
+            // Добавление древо подразделений на форму, список сотрудников отображается через событие AfterSelect
             mainForm.DepartmentStructureTreeView.Nodes.AddRange(this.GetDepartmentStructure());
+            // Подготовка DataGrid для списка сотрудников
             this.SetUpEmployeesView(mainForm.EmployeeDataGridView);
             mainForm.Presenter = this;
             Application.Run(mainForm);
         }
 
-        #region Organisation Structure Methods
+        /// <summary>
+        /// Настройка столбцов таблицы контрола, отображающего данные сотрудников
+        /// </summary>
+        /// <param name="dataGridView"></param>
+        public void SetUpEmployeesView(DataGridView dataGridView)
+        {
+            employeeToGrid.SetUpGrid(dataGridView);
+        }
+
+        #region Business-logic organisation structure Methods
         /// <summary>
         /// Выполняет запрос сервиса к дб
         /// </summary>
         /// <returns></returns>
         public System.Windows.Forms.TreeNode[] GetDepartmentStructure()
         {
-            _departmentStructure = _manager.GetDepartmentStructureWithEmployees();
+            _departmentStructure = _serviceManager.GetDepartmentStructureWithEmployees();
             List<System.Windows.Forms.TreeNode> result = new List<System.Windows.Forms.TreeNode>();
            
             foreach(var dep in _departmentStructure)
@@ -94,15 +108,7 @@ namespace UIClient
 
         #endregion
 
-        /// <summary>
-        /// Настройка контрола, отображающего данные сотрудников
-        /// </summary>
-        /// <param name="dataGridView"></param>
-        public void SetUpEmployeesView(DataGridView dataGridView)
-        {
-            employeeToGrid.SetUpGrid(dataGridView);
-        }
-
+        #region Methods for UI Events
         /// <summary>
         /// Вывести список сотрудников на контрол DataGridView, настроенный через SetUpGrid. Не очищает имеющиеся элементы. 
         /// </summary>
@@ -116,7 +122,14 @@ namespace UIClient
         public void AddDepartmentShowDialog()
         {
             if (AddDepartmentForm == null) AddDepartmentForm = new AddDepartmentForm();
-            AddDepartmentForm.ShowDialog();
+            this.AddDepartmentForm.DepartmentList = this.GetDepartmentArray();
+            if (AddDepartmentForm.ShowDialog() == DialogResult.OK)
+            {
+                var t = AddDepartmentForm.RepresentedValue;
+                _serviceManager.AddDepartment((DepartmentCS)t);
+
+                Refresh();
+            }
         }
 
         public void AddEmployeeShowDialog()
@@ -125,11 +138,18 @@ namespace UIClient
             this.AddEmployeeForm.DepartmentList = this.GetDepartmentArray();
             if (AddEmployeeForm.ShowDialog() == DialogResult.OK)
             {
-                var t = AddEmployeeForm.RepresentedEmployee;
+                var t = AddEmployeeForm.RepresentedValue;
+                _serviceManager.AddEmployee((EmployeeCS)t);
+
+                Refresh();
             }
         }
 
-       
-
+       public void Refresh()
+        {
+            _mainForm.DepartmentStructureTreeView.Nodes.Clear();
+            _mainForm.DepartmentStructureTreeView.Nodes.AddRange(this.GetDepartmentStructure());
+        }
+        #endregion
     }
 }

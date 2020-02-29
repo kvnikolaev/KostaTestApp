@@ -20,5 +20,10 @@ namespace DALService
         {
             return _logic.AddEmployee(employee);
         }
+
+        public int AddDepartment(Department_dto department)
+        {
+            return _logic.AddDepartment(department);
+        }
     }
 }

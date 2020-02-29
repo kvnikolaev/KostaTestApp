@@ -14,7 +14,7 @@
       <xs:element minOccurs="0" name="Employee" nillable="true" type="tns:ArrayOfEmployee_dto" />
       <xs:element minOccurs="0" name="ID" type="ser:guid" />
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ParentDepartmentID" type="ser:guid" />
+      <xs:element minOccurs="0" name="ParentDepartmentID" nillable="true" type="ser:guid" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Department_dto" nillable="true" type="tns:Department_dto" />

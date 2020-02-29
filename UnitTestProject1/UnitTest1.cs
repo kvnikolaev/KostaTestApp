@@ -17,7 +17,8 @@ namespace UnitTestProject1
             SurName = "testSurName",
             FirstName = "testFirstName",
             DateOfBirth = DateTime.Now,
-            Position = "coolGuy"
+            Position = "coolGuy",
+            DocSeries = "12345"
         };
 
         [TestMethod]
@@ -53,7 +54,7 @@ namespace UnitTestProject1
                 SurName = "Кирилл1234Кирилл1234Кирилл1234Кирилл1234Кирилл1234!",
                 Patronymic = "ВалерьевичВалерьевичВалерьевичВалерьевичВалерьевич!",
                 Position = "НащальникаНащальникаНащальникаНащальникаНащальника!",
-                
+                DepartmentID = Guid.Empty
             };
             // Act
             bool result = false;

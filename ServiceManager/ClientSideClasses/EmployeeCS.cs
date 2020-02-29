@@ -11,12 +11,12 @@ namespace ServiceManager.ClientSideClasses
     {
         public int ID { get; set; }
 
-        [Required(ErrorMessage = "Фамилия должна быть указана")]
-        [StringLength(50, ErrorMessage = "Длина фамилии максимум 50 сиволов")]
+        [Required(ErrorMessage = "Имя должно быть указано")]
+        [StringLength(50, ErrorMessage = "Длина имени максимум 50 сиволов")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Имя должно быть указано")]
-        [StringLength(50, ErrorMessage = "Длина имени максимум 50 символов")]
+        [Required(ErrorMessage = "Фамилия должна быть указана")]
+        [StringLength(50, ErrorMessage = "Длина фамилии максимум 50 символов")]
         public string SurName { get; set; }
 
         [StringLength(50, ErrorMessage = "Длина отчества максимум 50 символов")]
@@ -37,9 +37,20 @@ namespace ServiceManager.ClientSideClasses
         public string Position { get; set; }
 
         [Required(ErrorMessage = "Подразделение должно быть указано")]
+        [CustomValidation(typeof(EmployeeCS), "GuidEmptyCheck")]
         public System.Guid? DepartmentID { get; set; }
 
         public DepartmentCS Department { get; set; }
 
+
+        public static ValidationResult GuidEmptyCheck(System.Guid? guid, ValidationContext context)
+        {
+            if (guid == Guid.Empty)
+            {
+                return new ValidationResult("Подразделение должно быть указано");
+            }
+
+            return ValidationResult.Success;
+        }
     }
 }

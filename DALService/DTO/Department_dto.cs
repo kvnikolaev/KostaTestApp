@@ -14,7 +14,7 @@ namespace DALService.DTO
         public System.Guid ID { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
-        public System.Guid ParentDepartmentID { get; set; }
+        public System.Guid? ParentDepartmentID { get; set; }
         public IEnumerable<Department_dto> ChildDepartments { get; set; }
         public IEnumerable<Employee_dto> Employee { get; set; }
     }

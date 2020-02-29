@@ -19,6 +19,12 @@
   <wsdl:message name="IDALService_AddEmployee_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddEmployeeResponse" />
   </wsdl:message>
+  <wsdl:message name="IDALService_AddDepartment_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddDepartment" />
+  </wsdl:message>
+  <wsdl:message name="IDALService_AddDepartment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddDepartmentResponse" />
+  </wsdl:message>
   <wsdl:portType name="IDALService">
     <wsdl:operation name="GetDepartmentStructureWithEmployees">
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployees" message="tns:IDALService_GetDepartmentStructureWithEmployees_InputMessage" />
@@ -27,6 +33,10 @@
     <wsdl:operation name="AddEmployee">
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/AddEmployee" message="tns:IDALService_AddEmployee_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDALService/AddEmployeeResponse" message="tns:IDALService_AddEmployee_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddDepartment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDALService/AddDepartment" message="tns:IDALService_AddDepartment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDALService/AddDepartmentResponse" message="tns:IDALService_AddDepartment_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IDALService" type="tns:IDALService">
@@ -42,6 +52,15 @@
     </wsdl:operation>
     <wsdl:operation name="AddEmployee">
       <soap:operation soapAction="http://tempuri.org/IDALService/AddEmployee" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddDepartment">
+      <soap:operation soapAction="http://tempuri.org/IDALService/AddDepartment" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

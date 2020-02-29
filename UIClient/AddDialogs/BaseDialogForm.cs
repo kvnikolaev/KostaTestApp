@@ -13,6 +13,6 @@ namespace UIClient.AddDialogs
     public /*abstract*/ class BaseDialogForm: Form
     {
         public virtual DepartmentCS[] DepartmentList { get; set; }
-        public virtual EmployeeCS RepresentedEmployee { get; set; }
+        public virtual EntityBase RepresentedValue { get; set; }
     }
 }

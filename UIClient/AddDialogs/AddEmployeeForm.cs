@@ -35,33 +35,68 @@ namespace UIClient.AddDialogs
             }
         }
 
-        public override EmployeeCS RepresentedEmployee{ get; set; }
+        public override EntityBase RepresentedValue{ get; set; }
 
         #region Events
         private void CancelButton_Click(object sender, EventArgs e)
         {
+            this.CleanDialog();
             this.Close();
         }
 
         private void OkButton_Click(object sender, EventArgs e)
         {
             DepartmentCS dep = (DepartmentCS)this.departmentComboBox.SelectedItem;
-            RepresentedEmployee = new EmployeeCS()
+            RepresentedValue = new EmployeeCS()
             {
-                DateOfBirth = DateTime.Now,
-                DocSeries = "1001lkjdfsa",
-                DocNumber = "123456dfrg",
-                FirstName = "Николавев",
-                SurName = "Кирилл",
-                Patronymic = "Валерьевич",
-                Position = "Нащальника",
+                DateOfBirth = dateTimePicker1.Value,
+                DocSeries = series_textBox.Text,
+                DocNumber = number_textBox.Text,
+                FirstName = firstName_textBox.Text,
+                SurName = surName_textBox.Text,
+                Patronymic = patronymic_textBox.Text,
+                Position = position_textBox.Text,
                 DepartmentID = dep.ID
             };
-            RepresentedEmployee.Validate();
+            try
+            {
+                if (RepresentedValue.Validate())
+                {
+                    this.DialogResult = DialogResult.OK;
+                    CleanDialog();
+                    this.Close();
+                }
+            }
+            catch (AggregateException validatiobExc)
+            {
+                var stringBuilder = new StringBuilder();
+                foreach (Exception exc in validatiobExc.InnerExceptions)
+                {
+                    stringBuilder.AppendLine(exc.Message);
+                }
 
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+                MessageBox.Show(
+                    stringBuilder.ToString(),
+                    "Ошибка заполнения формы",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+            }
+            
         }
         #endregion
+
+
+        private void CleanDialog()
+        {
+            this.firstName_textBox.Text = null;
+            this.surName_textBox.Text = null;
+            this.number_textBox.Text = null;
+            this.patronymic_textBox.Text = null;
+            this.departmentComboBox.SelectedIndex = 0;
+            this.position_textBox.Text = null;
+            this.series_textBox.Text = null;
+            this.dateTimePicker1.Value = DateTime.Now;
+        }
     }
 }

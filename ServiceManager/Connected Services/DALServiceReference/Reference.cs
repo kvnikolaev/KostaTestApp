@@ -38,7 +38,7 @@ namespace ServiceManager.DALServiceReference {
         private string NameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Guid ParentDepartmentIDField;
+        private System.Nullable<System.Guid> ParentDepartmentIDField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -116,7 +116,7 @@ namespace ServiceManager.DALServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Guid ParentDepartmentID {
+        public System.Nullable<System.Guid> ParentDepartmentID {
             get {
                 return this.ParentDepartmentIDField;
             }
@@ -342,6 +342,12 @@ namespace ServiceManager.DALServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/AddEmployee", ReplyAction="http://tempuri.org/IDALService/AddEmployeeResponse")]
         System.Threading.Tasks.Task<int> AddEmployeeAsync(ServiceManager.DALServiceReference.Employee_dto employee);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/AddDepartment", ReplyAction="http://tempuri.org/IDALService/AddDepartmentResponse")]
+        int AddDepartment(ServiceManager.DALServiceReference.Department_dto department);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/AddDepartment", ReplyAction="http://tempuri.org/IDALService/AddDepartmentResponse")]
+        System.Threading.Tasks.Task<int> AddDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -385,6 +391,14 @@ namespace ServiceManager.DALServiceReference {
         
         public System.Threading.Tasks.Task<int> AddEmployeeAsync(ServiceManager.DALServiceReference.Employee_dto employee) {
             return base.Channel.AddEmployeeAsync(employee);
+        }
+        
+        public int AddDepartment(ServiceManager.DALServiceReference.Department_dto department) {
+            return base.Channel.AddDepartment(department);
+        }
+        
+        public System.Threading.Tasks.Task<int> AddDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department) {
+            return base.Channel.AddDepartmentAsync(department);
         }
     }
 }
