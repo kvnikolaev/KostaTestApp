@@ -24,12 +24,12 @@ namespace ServiceManager.ClientSideClasses
 
         public System.Guid? ParentDepartmentID { get; set; }
 
-        public IEnumerable<DepartmentCS> ChildDepartments { get; set; }
-        public IEnumerable<EmployeeCS> Employee { get; set; }
+        public List<DepartmentCS> ChildDepartments { get; set; }
+        public List<EmployeeCS> Employee { get; set; }
 
         public override string ToString()
         {
-            return Name;
+            return String.Format("{0} ({1})", Name, Code);
         }
     }
 }

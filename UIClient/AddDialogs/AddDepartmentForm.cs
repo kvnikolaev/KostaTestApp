@@ -18,23 +18,33 @@ namespace UIClient.AddDialogs
             InitializeComponent();
         }
 
-        private DepartmentCS[] _departmentList;
         public override DepartmentCS[] DepartmentList
         {
-            get
-            {
-                return _departmentList;
-            }
+            get => base.DepartmentList;
             set
             {
-                _departmentList = value;
+                base.DepartmentList = value;
                 department_comboBox.Items.AddRange(new object[]
                 {
-         //           new DepartmentCS() { Name = "-Не выбран-", ParentDepartmentID = Guid.Empty },
-                    new DepartmentCS() { Name = "-Самостоятельный отдел-", ParentDepartmentID = null }
+                    "-Самостоятельный отдел-"
                 });
                 department_comboBox.SelectedIndex = 0;
-                department_comboBox.Items.AddRange(_departmentList);
+                department_comboBox.Items.AddRange(base.DepartmentList);
+            }
+        }
+
+        public override DepartmentCS SelectedDepartment
+        {
+            get => base.SelectedDepartment;
+            set
+            {
+                base.SelectedDepartment = value;
+                if (base.SelectedDepartment != null)
+                {
+                    var t = this.department_comboBox.Items.IndexOf(base.SelectedDepartment);
+                    this.department_comboBox.SelectedIndex = t;
+                    this.department_comboBox.Enabled = false;
+                }
             }
         }
 
@@ -49,12 +59,14 @@ namespace UIClient.AddDialogs
 
         private void OkButton_Click(object sender, EventArgs e)
         {
-            DepartmentCS dep = (DepartmentCS)this.department_comboBox.SelectedItem;
             RepresentedValue = new DepartmentCS()
             {
                 Name = name_textBox.Text,
-                ParentDepartmentID = department_comboBox.SelectedIndex == 0 ? null : (Nullable<Guid>)dep.ID,
-                Code = code_textBox.Text
+                ParentDepartmentID = department_comboBox.SelectedIndex == 0 ? null : //(Nullable<Guid>)dep.ID,
+                    (Nullable<Guid>)((DepartmentCS)this.department_comboBox.SelectedItem).ID,
+                Code = code_textBox.Text,
+                ChildDepartments = new List<DepartmentCS>(),
+                Employee = new List<EmployeeCS>()
             };
 
             try
@@ -88,7 +100,7 @@ namespace UIClient.AddDialogs
         private void CleanDialog()
         {
             this.name_textBox.Text = null;
-            this.department_comboBox.SelectedIndex = 0;
+            this.department_comboBox.Items.Clear();
             this.code_textBox.Text = null;
         }
 

@@ -344,10 +344,10 @@ namespace ServiceManager.DALServiceReference {
         System.Threading.Tasks.Task<int> AddEmployeeAsync(ServiceManager.DALServiceReference.Employee_dto employee);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/AddDepartment", ReplyAction="http://tempuri.org/IDALService/AddDepartmentResponse")]
-        int AddDepartment(ServiceManager.DALServiceReference.Department_dto department);
+        System.Guid AddDepartment(ServiceManager.DALServiceReference.Department_dto department);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/AddDepartment", ReplyAction="http://tempuri.org/IDALService/AddDepartmentResponse")]
-        System.Threading.Tasks.Task<int> AddDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department);
+        System.Threading.Tasks.Task<System.Guid> AddDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -393,11 +393,11 @@ namespace ServiceManager.DALServiceReference {
             return base.Channel.AddEmployeeAsync(employee);
         }
         
-        public int AddDepartment(ServiceManager.DALServiceReference.Department_dto department) {
+        public System.Guid AddDepartment(ServiceManager.DALServiceReference.Department_dto department) {
             return base.Channel.AddDepartment(department);
         }
         
-        public System.Threading.Tasks.Task<int> AddDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department) {
+        public System.Threading.Tasks.Task<System.Guid> AddDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department) {
             return base.Channel.AddDepartmentAsync(department);
         }
     }

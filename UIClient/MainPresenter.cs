@@ -17,7 +17,7 @@ namespace UIClient
         #region Privates
         private readonly ServiceConnector _serviceManager = new ServiceConnector();
 
-        private IEnumerable<DepartmentCS> _departmentStructure;
+        private List<DepartmentCS> _departmentStructure;
 
         private MainForm _mainForm;
 
@@ -56,7 +56,7 @@ namespace UIClient
         /// <returns></returns>
         public System.Windows.Forms.TreeNode[] GetDepartmentStructure()
         {
-            _departmentStructure = _serviceManager.GetDepartmentStructureWithEmployees();
+            _departmentStructure = _serviceManager.GetDepartmentStructureWithEmployees().ToList();
             List<System.Windows.Forms.TreeNode> result = new List<System.Windows.Forms.TreeNode>();
            
             foreach(var dep in _departmentStructure)
@@ -70,8 +70,8 @@ namespace UIClient
             var node = new System.Windows.Forms.TreeNode()
             {
                 Name = department.Name,
-                Tag = department,      //!! может IDшники?
-                Text = department.Name
+                Tag = department,      
+                Text = department.ToString()
             };
             
             foreach (var subDep in department.ChildDepartments)
@@ -116,39 +116,86 @@ namespace UIClient
         /// <param name="department"></param>
         public void SelectEmployeeToGrid(DataGridView grid, DepartmentCS department)
         {
+            grid.Rows.Clear();
             employeeToGrid.SelectEmployeeToGrid(grid, department.Employee.ToArray());
         }
 
-        public void AddDepartmentShowDialog()
+        public void AddDepartmentShowDialog(DepartmentCS toDepartment)
         {
             if (AddDepartmentForm == null) AddDepartmentForm = new AddDepartmentForm();
             this.AddDepartmentForm.DepartmentList = this.GetDepartmentArray();
+            this.AddDepartmentForm.SelectedDepartment = toDepartment;
             if (AddDepartmentForm.ShowDialog() == DialogResult.OK)
             {
-                var t = AddDepartmentForm.RepresentedValue;
-                _serviceManager.AddDepartment((DepartmentCS)t);
+                var t = (DepartmentCS)AddDepartmentForm.RepresentedValue;
+                t.ID = _serviceManager.AddDepartment(t);
 
-                Refresh();
+                LocallyAddDepartment(t);
             }
         }
 
-        public void AddEmployeeShowDialog()
+        public void AddEmployeeShowDialog(DepartmentCS toDepartment)
         {
             if (AddEmployeeForm == null) AddEmployeeForm = new AddEmployeeForm();
             this.AddEmployeeForm.DepartmentList = this.GetDepartmentArray();
+            this.AddEmployeeForm.SelectedDepartment = toDepartment;
             if (AddEmployeeForm.ShowDialog() == DialogResult.OK)
             {
-                var t = AddEmployeeForm.RepresentedValue;
-                _serviceManager.AddEmployee((EmployeeCS)t);
+                var t = (EmployeeCS)AddEmployeeForm.RepresentedValue;
+                t.ID = _serviceManager.AddEmployee(t);
 
-                Refresh();
+                LocallyAddEmployee(t);
             }
         }
 
-       public void Refresh()
+        private void LocallyAddEmployee(EmployeeCS employee)
         {
-            _mainForm.DepartmentStructureTreeView.Nodes.Clear();
-            _mainForm.DepartmentStructureTreeView.Nodes.AddRange(this.GetDepartmentStructure());
+            // обновление внутренней структуры данных
+            GetDepartmentArray().Single(dep => dep.ID == employee.DepartmentID)
+                .Employee.Add(employee);
+            // обновление отображения двнных
+            SelectEmployeeToGrid(_mainForm.EmployeeDataGridView, 
+                (DepartmentCS)_mainForm.DepartmentStructureTreeView.SelectedNode.Tag);
+        }
+
+        private void LocallyAddDepartment(DepartmentCS department)
+        {
+            // обновление внутренней структуры данных
+            if (department.ParentDepartmentID == null)
+            {
+                _departmentStructure.Add(department);
+            }
+            else
+            {
+                GetDepartmentArray().Single(dep => dep.ID == department.ParentDepartmentID).
+                    ChildDepartments.Add(department);
+            }
+            // обновление отображения двнных
+            var newNode = new System.Windows.Forms.TreeNode()
+            {
+                Name = department.Name,
+                Tag = department,
+                Text = department.ToString()
+            };
+
+            if (department.ParentDepartmentID == null)
+            {
+                _mainForm.DepartmentStructureTreeView.Nodes.Add(newNode);
+            }
+            else
+            {
+                TreeNode node = _mainForm.DepartmentStructureTreeView.Nodes.FindByTag(department);
+                node.Nodes.Add(newNode);
+                //foreach(TreeNode node in _mainForm.DepartmentStructureTreeView.Nodes)
+                //{
+                //    var t = (DepartmentCS)node.Tag;
+                //    if (t.ID == department.ParentDepartmentID)
+                //    {
+                //        node.Nodes.Add(newNode);
+                //        break;
+                //    }
+                //}
+            }
         }
         #endregion
     }

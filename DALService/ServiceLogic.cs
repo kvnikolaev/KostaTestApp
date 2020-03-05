@@ -36,20 +36,20 @@ namespace DALService
             {
                 var entity = mapper.Map<Employee>(employee);
                 db.Set<Employee>().Add(entity);
-                var result = db.SaveChanges();
-                return result;
+                db.SaveChanges();
+                return entity.ID;
             }
         }
 
-        public int AddDepartment(Department_dto department)
+        public Guid AddDepartment(Department_dto department)
         {
             using (var db = new TestDBEntities())
             {
                 var entity = mapper.Map<Department>(department);
                 entity.ID = Guid.NewGuid();
                 db.Set<Department>().Add(entity);
-                var result = db.SaveChanges();
-                return result;
+                db.SaveChanges();
+                return entity.ID;
             }
         }
 

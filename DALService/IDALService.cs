@@ -18,7 +18,7 @@ namespace DALService
         int AddEmployee(Employee_dto employee);
 
         [OperationContract]
-        int AddDepartment(Department_dto department);
+        Guid AddDepartment(Department_dto department);
 
     }
 

@@ -19,19 +19,30 @@ namespace UIClient.AddDialogs
             InitializeComponent();
         }
 
-        private DepartmentCS[] _departmentList;
         public override DepartmentCS[] DepartmentList
         {
-            get
-            {
-                return _departmentList;
-            }
+            get => base.DepartmentList;
             set
             {
-                _departmentList = value;
-                departmentComboBox.Items.Add(new DepartmentCS() { Name = "-Не выбран-" });
+                base.DepartmentList = value;
+                departmentComboBox.Items.Add("-Не выбран-");
                 departmentComboBox.SelectedIndex = 0;
-                departmentComboBox.Items.AddRange(_departmentList);
+                departmentComboBox.Items.AddRange(base.DepartmentList);
+            }
+        }
+
+        public override DepartmentCS SelectedDepartment
+        {
+            get => base.SelectedDepartment;
+            set
+            {
+                base.SelectedDepartment = value;
+                if (base.SelectedDepartment != null)
+                {
+                    var t = this.departmentComboBox.Items.IndexOf(base.SelectedDepartment);
+                    this.departmentComboBox.SelectedIndex = t;
+                    this.departmentComboBox.Enabled = false;
+                }
             }
         }
 
@@ -56,7 +67,8 @@ namespace UIClient.AddDialogs
                 SurName = surName_textBox.Text,
                 Patronymic = patronymic_textBox.Text,
                 Position = position_textBox.Text,
-                DepartmentID = dep.ID
+                DepartmentID = departmentComboBox.SelectedIndex == 0 ? null :
+                    (Nullable<Guid>)((DepartmentCS)departmentComboBox.SelectedItem).ID
             };
             try
             {
@@ -97,6 +109,8 @@ namespace UIClient.AddDialogs
             this.position_textBox.Text = null;
             this.series_textBox.Text = null;
             this.dateTimePicker1.Value = DateTime.Now;
+            this.departmentComboBox.Items.Clear();
+            this.departmentComboBox.Enabled = true;
         }
     }
 }

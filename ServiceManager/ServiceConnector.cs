@@ -39,7 +39,7 @@ namespace ServiceManager
             return result;
         }
 
-        public int AddDepartment(DepartmentCS department)
+        public Guid AddDepartment(DepartmentCS department)
         {
             _client = new DALServiceClient();
             var t = _mapper.Map<Department_dto>(department);
