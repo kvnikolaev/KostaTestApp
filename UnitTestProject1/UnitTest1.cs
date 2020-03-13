@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Data.Entity;
 using DALService;
 using DALService.DTO;
 using DALService.EDM;
@@ -35,6 +36,33 @@ namespace UnitTestProject1
         //{
         //    var t = new ServiceLogic();
         //    t.AddEmployee(testEmployee);
+        //}
+
+        //[TestMethod]
+        //public void UpdateEmployee()
+        //{
+        //    Employee emp = new Employee()
+        //    {
+        //        FirstName="Test",
+        //        SurName="Unit",
+        //        DateOfBirth=DateTime.Now,
+        //        Position="onAction",
+        //        DepartmentID = new Guid("fb9d1a43-5796-4190-abd4-39ffd8c87476"),
+        //        ID=22
+        //    };
+        //    //using (var db = new TestDBEntities())
+        //    //{
+        //    //    emp = db.Employee.Where(e => e.ID == 22).AsNoTracking().SingleOrDefault();
+        //    //}
+
+        //    emp.DocSeries = "2791";
+
+        //    using (var db2 = new TestDBEntities())
+        //    {
+        //        db2.Entry(emp).State = System.Data.Entity.EntityState.Modified;
+        //        db2.SaveChanges();
+        //    }
+
         //}
     }
 

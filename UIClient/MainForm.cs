@@ -44,24 +44,162 @@ namespace UIClient
         {
             if (e.Button == MouseButtons.Right)
             {
-                var hti = EmployeeDataGridView.HitTest(e.X, e.Y);
+                var hit = EmployeeDataGridView.HitTest(e.X, e.Y);
                 EmployeeDataGridView.ClearSelection();
-                if (hti.RowIndex >= 0 && hti.RowIndex < EmployeeDataGridView.Rows.Count - 1)
+                if (hit.RowIndex >= 0 && hit.RowIndex < EmployeeDataGridView.Rows.Count - 1)
                 {
-                    EmployeeDataGridView.Rows[hti.RowIndex].Selected = true;
-                    contextMenuStrip1.Show(EmployeeDataGridView, e.X, e.Y);
+                    EmployeeDataGridView.Rows[hit.RowIndex].Selected = true;
+                    employeeView_contextMenuStrip.Show(EmployeeDataGridView, e.X, e.Y);
                 }
                 
+            }
+        }
+
+        private void DepartmentStructureTreeView_MouseDown(object sender, MouseEventArgs e)
+        {
+            var hite = DepartmentStructureTreeView.HitTest(e.X, e.Y);
+            if (hite.Location == TreeViewHitTestLocations.Label && e.Button == MouseButtons.Right)
+            {
+                DepartmentStructureTreeView.SelectedNode = hite.Node;
+                departmentView_contextMenuStrip.Show(DepartmentStructureTreeView, e.X, e.Y);
             }
         }
 
         private void EmployeeDataGridView_DoubleClick(object sender, EventArgs e)
         {
             var grid = (DataGridView)sender;
-            if (grid.SelectedRows[0].Index == grid.Rows.Count - 1)
+            if (grid.SelectedRows.Count > 0)
             {
-                Presenter.AddEmployeeShowDialog((DepartmentCS)DepartmentStructureTreeView.SelectedNode.Tag);
+                if (grid.SelectedRows[0].Index == grid.Rows.Count - 1)
+                {
+                    Presenter.AddEmployeeShowDialog((DepartmentCS)DepartmentStructureTreeView.SelectedNode.Tag);
+                }
+                else
+                {
+                    Presenter.EditEmployeeShowDialog((EmployeeCS)grid.SelectedRows[0].Tag);
+                }
             }
         }
+
+        private void MenuTray_EditMenuItem_DropDownOpened(object sender, EventArgs e)
+        {
+            DepartmentCS selectedDepartment = null;
+            if (DepartmentStructureTreeView.SelectedNode != null)
+            {
+                selectedDepartment = (DepartmentCS)DepartmentStructureTreeView.SelectedNode.Tag;
+                editDepartment_toolStripMenuItem1.Text = $"Редактировать подразделение \"{selectedDepartment.ToString()}\"";
+                editDepartment_toolStripMenuItem1.Enabled = true;
+            }
+            else
+            {
+                editDepartment_toolStripMenuItem1.Text = "Подразделение не выбрано";
+                editDepartment_toolStripMenuItem1.Enabled = false;
+            }
+
+            EmployeeCS selectedEmpl = null;
+            if (EmployeeDataGridView.SelectedRows.Count > 0 && EmployeeDataGridView.SelectedRows[0].Index != EmployeeDataGridView.Rows.Count - 1)
+            {
+                selectedEmpl = (EmployeeCS)EmployeeDataGridView.SelectedRows[0].Tag;
+                editEmployee_toolStripMenuItem2.Text = $"Редактирование сотрудника \"{selectedEmpl.SurName} {selectedEmpl.FirstName} - {selectedEmpl.Position}\"";
+                editEmployee_toolStripMenuItem2.Enabled = true;
+            }
+            else
+            {
+                editEmployee_toolStripMenuItem2.Text = "Сотрудник не выбран";
+                editEmployee_toolStripMenuItem2.Enabled = false;
+            }
+
+        }
+
+        private void MenuTray_DeleteMenuItem_DropDownOpened(object sender, EventArgs e)
+        {
+            DepartmentCS selectedDepartment = null;
+            if (DepartmentStructureTreeView.SelectedNode != null)
+            {
+                selectedDepartment = (DepartmentCS)DepartmentStructureTreeView.SelectedNode.Tag;
+                deleteDepartmentToolStripMenuItem.Text = $"Удаление подразделение \"{selectedDepartment.ToString()}\"";
+                deleteDepartmentToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                deleteDepartmentToolStripMenuItem.Text = "Подразделение не выбрано";
+                deleteDepartmentToolStripMenuItem.Enabled = false;
+            }
+
+            EmployeeCS selectedEmpl = null;
+            if (EmployeeDataGridView.SelectedRows.Count > 0 && EmployeeDataGridView.SelectedRows[0].Index != EmployeeDataGridView.Rows.Count - 1)
+            {
+                selectedEmpl = (EmployeeCS)EmployeeDataGridView.SelectedRows[0].Tag;
+                deleteEmployeeToolStripMenuItem.Text = $"Удаление сотрудника \"{selectedEmpl.SurName} {selectedEmpl.FirstName} - {selectedEmpl.Position}\"";
+                deleteEmployeeToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                deleteEmployeeToolStripMenuItem.Text = "Сотрудник не выбран";
+                deleteEmployeeToolStripMenuItem.Enabled = false;
+            }
+        }
+
+        private void MenuTray_EditDepartment_Click(object sender, EventArgs e)
+        {
+            Presenter.EditDepartmentShowDialog((DepartmentCS)DepartmentStructureTreeView.SelectedNode.Tag);
+        }
+
+        private void MenuTray_EditEmployee_Click(object sender, EventArgs e)
+        {
+            Presenter.EditEmployeeShowDialog((EmployeeCS)EmployeeDataGridView.SelectedRows[0].Tag);
+        }
+
+        private void MenuTray_DeleteDepartment_Click(object sender, EventArgs e)
+        {
+            string message = string.Format("Вы уверены, что хотите удалить подразделение \"{0}\"?", DepartmentStructureTreeView.SelectedNode.Tag.ToString());
+            var result = MessageBox.Show(message, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
+            if (result == DialogResult.Yes)
+            {
+                Presenter.DeleteDepartment((DepartmentCS)DepartmentStructureTreeView.SelectedNode.Tag);
+            }
+        }
+
+        private void MenuTray_DeleteEmployee_Click(object sender, EventArgs e)
+        {
+            string message = string.Format("Вы уверены, что хотите удалить сотрудника \"{0}\"?", EmployeeDataGridView.SelectedRows[0].Tag.ToString());
+            var result = MessageBox.Show(message, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
+            if (result == DialogResult.Yes)
+            {
+                Presenter.DeleteEmployee((EmployeeCS)EmployeeDataGridView.SelectedRows[0].Tag);
+            }
+        }
+
+
+        private void ContextMenu_DepartmentEditItem_Click(object sender, EventArgs e)
+        {
+            Presenter.EditDepartmentShowDialog((DepartmentCS)DepartmentStructureTreeView.SelectedNode.Tag);
+        }
+
+        private void ContextMenu_DepartmentDeleteItem_Click(object sender, EventArgs e)
+        {
+            string message = string.Format("Вы уверены, что хотите удалить подразделение \"{0}\"?", DepartmentStructureTreeView.SelectedNode.Tag.ToString());
+            var result = MessageBox.Show(message, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
+            if (result == DialogResult.Yes)
+            {
+                Presenter.DeleteDepartment((DepartmentCS)DepartmentStructureTreeView.SelectedNode.Tag);
+            }
+        }
+
+        private void ContextMenu_EmployeeEditItem_Click(object sender, EventArgs e)
+        {
+            Presenter.EditEmployeeShowDialog((EmployeeCS)EmployeeDataGridView.SelectedRows[0].Tag);
+        }
+
+        private void ContextMenu_EmployeeDeleteItem_Click(object sender, EventArgs e)
+        {
+            string message = string.Format("Вы уверены, что хотите удалить сотрудника \"{0}\"?", EmployeeDataGridView.SelectedRows[0].Tag.ToString());
+            var result = MessageBox.Show(message, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
+            if (result == DialogResult.Yes)
+            {
+                Presenter.DeleteEmployee((EmployeeCS)EmployeeDataGridView.SelectedRows[0].Tag);
+            }
+        }
+
     }
 }

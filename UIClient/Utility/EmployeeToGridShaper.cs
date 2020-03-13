@@ -78,19 +78,20 @@ namespace UIClient.Utility
 
         public void SelectEmployeeToGrid(DataGridView grid, params EmployeeCS[] employees)
         {
-            foreach(var emp in employees)
+            for(int i = 0; i < employees.Length; i++)
             {
                 grid.Rows.Add(new string[] 
                 {
-                    emp.SurName?.ToString(),
-                    emp.FirstName?.ToString(),
-                    emp.Patronymic?.ToString(),
-                    emp.Position?.ToString(),
-                    emp.DateOfBirth?.ToShortDateString(),
-                    emp.Age.ToString(),
-                    emp.DocSeries?.ToString(),
-                    emp.DocNumber?.ToString()
+                    employees[i].SurName?.ToString(),
+                    employees[i].FirstName?.ToString(),
+                    employees[i].Patronymic?.ToString(),
+                    employees[i].Position?.ToString(),
+                    employees[i].DateOfBirth?.ToShortDateString(),
+                    employees[i].Age.ToString(),
+                    employees[i].DocSeries?.ToString(),
+                    employees[i].DocNumber?.ToString()
                 });
+                grid.Rows[i].Tag = employees[i];
             }
         }
     }

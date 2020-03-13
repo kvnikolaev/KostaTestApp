@@ -46,7 +46,32 @@ namespace UIClient.AddDialogs
             }
         }
 
-        public override EntityBase RepresentedValue{ get; set; }
+        public override EntityBase RepresentedValue
+        {
+            get => base.RepresentedValue;
+            set
+            {
+                base.RepresentedValue = value;
+                var employee = (EmployeeCS)RepresentedValue;
+
+                this.dateTimePicker1.Value = employee.DateOfBirth.GetValueOrDefault(DateTime.Now);
+                this.number_textBox.Text = employee.DocNumber;
+                this.series_textBox.Text = employee.DocSeries;
+                this.firstName_textBox.Text = employee.FirstName;
+                this.surName_textBox.Text = employee.SurName;
+                this.patronymic_textBox.Text = employee.Patronymic;
+                this.position_textBox.Text = employee.Position;
+
+                for (int i = 1; i < departmentComboBox.Items.Count; i++)
+                {
+                    if (((DepartmentCS)departmentComboBox.Items[i]).ID == employee.DepartmentID)
+                    {
+                        this.departmentComboBox.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
 
         #region Events
         private void CancelButton_Click(object sender, EventArgs e)
@@ -57,7 +82,6 @@ namespace UIClient.AddDialogs
 
         private void OkButton_Click(object sender, EventArgs e)
         {
-            DepartmentCS dep = (DepartmentCS)this.departmentComboBox.SelectedItem;
             RepresentedValue = new EmployeeCS()
             {
                 DateOfBirth = dateTimePicker1.Value,

@@ -33,7 +33,7 @@ namespace UIClient
         {
             _mainForm = mainForm;
             // Добавление древо подразделений на форму, список сотрудников отображается через событие AfterSelect
-            mainForm.DepartmentStructureTreeView.Nodes.AddRange(this.GetDepartmentStructure());
+            mainForm.DepartmentStructureTreeView.Nodes.AddRange(this.LoadDepartmentStructure());
             // Подготовка DataGrid для списка сотрудников
             this.SetUpEmployeesView(mainForm.EmployeeDataGridView);
             mainForm.Presenter = this;
@@ -54,7 +54,7 @@ namespace UIClient
         /// Выполняет запрос сервиса к дб
         /// </summary>
         /// <returns></returns>
-        public System.Windows.Forms.TreeNode[] GetDepartmentStructure()
+        public System.Windows.Forms.TreeNode[] LoadDepartmentStructure()
         {
             _departmentStructure = _serviceManager.GetDepartmentStructureWithEmployees().ToList();
             List<System.Windows.Forms.TreeNode> result = new List<System.Windows.Forms.TreeNode>();
@@ -109,6 +109,7 @@ namespace UIClient
         #endregion
 
         #region Methods for UI Events
+        
         /// <summary>
         /// Вывести список сотрудников на контрол DataGridView, настроенный через SetUpGrid. Не очищает имеющиеся элементы. 
         /// </summary>
@@ -119,7 +120,7 @@ namespace UIClient
             grid.Rows.Clear();
             employeeToGrid.SelectEmployeeToGrid(grid, department.Employee.ToArray());
         }
-
+        #region Add methods
         public void AddDepartmentShowDialog(DepartmentCS toDepartment)
         {
             if (AddDepartmentForm == null) AddDepartmentForm = new AddDepartmentForm();
@@ -186,17 +187,56 @@ namespace UIClient
             {
                 TreeNode node = _mainForm.DepartmentStructureTreeView.Nodes.FindByTag(department);
                 node.Nodes.Add(newNode);
-                //foreach(TreeNode node in _mainForm.DepartmentStructureTreeView.Nodes)
-                //{
-                //    var t = (DepartmentCS)node.Tag;
-                //    if (t.ID == department.ParentDepartmentID)
-                //    {
-                //        node.Nodes.Add(newNode);
-                //        break;
-                //    }
-                //}
             }
         }
+        #endregion
+        #region Edit methods
+
+        public void EditDepartmentShowDialog(DepartmentCS department)
+        {
+            if (AddDepartmentForm == null) AddDepartmentForm = new AddDepartmentForm();
+            this.AddDepartmentForm.DepartmentList = this.GetDepartmentArray();
+            this.AddDepartmentForm.RepresentedValue = department;
+            if (AddDepartmentForm.ShowDialog() == DialogResult.OK)
+            {
+                var t = (DepartmentCS)this.AddDepartmentForm.RepresentedValue;
+                t.ID = department.ID;
+                _serviceManager.EditDepartment(t);
+            }
+        }
+
+        public void EditEmployeeShowDialog(EmployeeCS employee)
+        {
+            if (AddEmployeeForm == null) AddEmployeeForm = new AddEmployeeForm();
+            this.AddEmployeeForm.DepartmentList = this.GetDepartmentArray();
+            this.AddEmployeeForm.RepresentedValue = employee;
+            if (AddEmployeeForm.ShowDialog() == DialogResult.OK)
+            {
+                var t = (EmployeeCS)this.AddEmployeeForm.RepresentedValue;
+                t.ID = employee.ID;
+                _serviceManager.EditEmployee(t);
+            }
+        }
+
+
+        #endregion
+        #region Delete methods
+        public void DeleteDepartment(DepartmentCS department)
+        {
+            _serviceManager.DeleteDepartment(department);
+        }
+
+        public void DeleteEmployee(EmployeeCS employee)
+        {
+            _serviceManager.DeleteEmployee(employee);
+        }
+
+
+
+
+        #endregion
+
+
         #endregion
     }
 }

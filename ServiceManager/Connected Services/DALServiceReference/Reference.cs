@@ -348,6 +348,30 @@ namespace ServiceManager.DALServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/AddDepartment", ReplyAction="http://tempuri.org/IDALService/AddDepartmentResponse")]
         System.Threading.Tasks.Task<System.Guid> AddDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/EditEmployee", ReplyAction="http://tempuri.org/IDALService/EditEmployeeResponse")]
+        void EditEmployee(ServiceManager.DALServiceReference.Employee_dto employee);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/EditEmployee", ReplyAction="http://tempuri.org/IDALService/EditEmployeeResponse")]
+        System.Threading.Tasks.Task EditEmployeeAsync(ServiceManager.DALServiceReference.Employee_dto employee);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/EditDepartment", ReplyAction="http://tempuri.org/IDALService/EditDepartmentResponse")]
+        void EditDepartment(ServiceManager.DALServiceReference.Department_dto department);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/EditDepartment", ReplyAction="http://tempuri.org/IDALService/EditDepartmentResponse")]
+        System.Threading.Tasks.Task EditDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/DeleteEmployee", ReplyAction="http://tempuri.org/IDALService/DeleteEmployeeResponse")]
+        void DeleteEmployee(ServiceManager.DALServiceReference.Employee_dto employee);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/DeleteEmployee", ReplyAction="http://tempuri.org/IDALService/DeleteEmployeeResponse")]
+        System.Threading.Tasks.Task DeleteEmployeeAsync(ServiceManager.DALServiceReference.Employee_dto employee);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/DeleteDepartment", ReplyAction="http://tempuri.org/IDALService/DeleteDepartmentResponse")]
+        void DeleteDepartment(ServiceManager.DALServiceReference.Department_dto department);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/DeleteDepartment", ReplyAction="http://tempuri.org/IDALService/DeleteDepartmentResponse")]
+        System.Threading.Tasks.Task DeleteDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -399,6 +423,38 @@ namespace ServiceManager.DALServiceReference {
         
         public System.Threading.Tasks.Task<System.Guid> AddDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department) {
             return base.Channel.AddDepartmentAsync(department);
+        }
+        
+        public void EditEmployee(ServiceManager.DALServiceReference.Employee_dto employee) {
+            base.Channel.EditEmployee(employee);
+        }
+        
+        public System.Threading.Tasks.Task EditEmployeeAsync(ServiceManager.DALServiceReference.Employee_dto employee) {
+            return base.Channel.EditEmployeeAsync(employee);
+        }
+        
+        public void EditDepartment(ServiceManager.DALServiceReference.Department_dto department) {
+            base.Channel.EditDepartment(department);
+        }
+        
+        public System.Threading.Tasks.Task EditDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department) {
+            return base.Channel.EditDepartmentAsync(department);
+        }
+        
+        public void DeleteEmployee(ServiceManager.DALServiceReference.Employee_dto employee) {
+            base.Channel.DeleteEmployee(employee);
+        }
+        
+        public System.Threading.Tasks.Task DeleteEmployeeAsync(ServiceManager.DALServiceReference.Employee_dto employee) {
+            return base.Channel.DeleteEmployeeAsync(employee);
+        }
+        
+        public void DeleteDepartment(ServiceManager.DALServiceReference.Department_dto department) {
+            base.Channel.DeleteDepartment(department);
+        }
+        
+        public System.Threading.Tasks.Task DeleteDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department) {
+            return base.Channel.DeleteDepartmentAsync(department);
         }
     }
 }

@@ -47,5 +47,37 @@ namespace ServiceManager
             _client.Close();
             return result;
         }
+
+        public void EditEmployee(EmployeeCS employee)
+        {
+            _client = new DALServiceClient();
+            var t = _mapper.Map<Employee_dto>(employee);
+            _client.EditEmployee(t);
+            _client.Close();
+        }
+
+        public void EditDepartment(DepartmentCS department)
+        {
+            _client = new DALServiceClient();
+            var t = _mapper.Map<Department_dto>(department);
+            _client.EditDepartment(t);
+            _client.Close();
+        }
+
+        public void DeleteEmployee(EmployeeCS employee)
+        {
+            _client = new DALServiceClient();
+            var t = _mapper.Map<Employee_dto>(employee);
+            _client.DeleteEmployee(t);
+            _client.Close();
+        }
+
+        public void DeleteDepartment(DepartmentCS department)
+        {
+            _client = new DALServiceClient();
+            var t = _mapper.Map<Department_dto>(department);
+            _client.DeleteDepartment(t);
+            _client.Close();
+        }
     }
 }

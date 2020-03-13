@@ -20,6 +20,17 @@ namespace DALService
         [OperationContract]
         Guid AddDepartment(Department_dto department);
 
+        [OperationContract]
+        void EditEmployee(Employee_dto employee);
+
+        [OperationContract]
+        void EditDepartment(Department_dto department);
+
+        [OperationContract]
+        void DeleteEmployee(Employee_dto employee);
+
+        [OperationContract]
+        void DeleteDepartment(Department_dto department);
     }
 
     

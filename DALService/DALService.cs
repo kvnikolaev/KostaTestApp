@@ -25,5 +25,25 @@ namespace DALService
         {
             return _logic.AddDepartment(department);
         }
+
+        public void EditEmployee(Employee_dto employee)
+        {
+            _logic.EditEmployee(employee);
+        }
+
+        public void EditDepartment(Department_dto department)
+        {
+            _logic.EditDepartment(department);
+        }
+
+        public void DeleteEmployee(Employee_dto employee)
+        {
+            _logic.DeleteEmployee(employee);
+        }
+
+        public void DeleteDepartment(Department_dto department)
+        {
+            _logic.DeleteDepartment(department);
+        }
     }
 }

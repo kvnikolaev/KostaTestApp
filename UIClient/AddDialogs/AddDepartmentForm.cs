@@ -49,7 +49,27 @@ namespace UIClient.AddDialogs
         }
 
         #region Events
-        public override EntityBase RepresentedValue { get; set; }
+        public override EntityBase RepresentedValue
+        {
+            get => base.RepresentedValue;
+            set
+            {
+                base.RepresentedValue = value;
+                var department = (DepartmentCS)RepresentedValue;
+
+                this.name_textBox.Text = department.Name;
+                this.code_textBox.Text = department.Code;
+
+                for (int i = 1; i < department_comboBox.Items.Count; i++)
+                {
+                    if (((DepartmentCS)department_comboBox.Items[i]).ID == department.ParentDepartmentID)
+                    {
+                        this.department_comboBox.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
