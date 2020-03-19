@@ -94,5 +94,10 @@ namespace UIClient.Utility
                 grid.Rows[i].Tag = employees[i];
             }
         }
+
+        public void TrySelectRows(DataGridView grid, DataGridViewSelectedRowCollection rows)
+        {
+
+        }
     }
 }

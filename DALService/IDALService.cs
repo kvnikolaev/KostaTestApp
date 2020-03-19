@@ -15,6 +15,9 @@ namespace DALService
         IEnumerable<Department_dto> GetDepartmentStructureWithEmployees();
 
         [OperationContract]
+        IEnumerable<Employee_dto> GetEmployeeByDepartment(Guid departmentID);
+
+        [OperationContract]
         int AddEmployee(Employee_dto employee);
 
         [OperationContract]

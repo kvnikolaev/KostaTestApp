@@ -45,6 +45,7 @@
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripDropDownButton();
             this.deleteDepartmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteEmployeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reloadStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.departmentView_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.редактироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
@@ -96,6 +97,7 @@
             this.EmployeeDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.EmployeeDataGridView.Location = new System.Drawing.Point(0, 0);
             this.EmployeeDataGridView.Name = "EmployeeDataGridView";
+            this.EmployeeDataGridView.RowHeadersVisible = false;
             this.EmployeeDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.EmployeeDataGridView.Size = new System.Drawing.Size(493, 423);
             this.EmployeeDataGridView.TabIndex = 0;
@@ -131,7 +133,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
             this.editToolStripMenuItem,
-            this.deleteToolStripMenuItem});
+            this.deleteToolStripMenuItem,
+            this.reloadStripMenuItem5});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -216,25 +219,34 @@
             this.deleteEmployeeToolStripMenuItem.Text = "Удалить сотрудника";
             this.deleteEmployeeToolStripMenuItem.Click += new System.EventHandler(this.MenuTray_DeleteEmployee_Click);
             // 
+            // reloadStripMenuItem5
+            // 
+            this.reloadStripMenuItem5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.reloadStripMenuItem5.Image = global::UIClient.Properties.Resources.refresh;
+            this.reloadStripMenuItem5.Name = "reloadStripMenuItem5";
+            this.reloadStripMenuItem5.Size = new System.Drawing.Size(28, 23);
+            this.reloadStripMenuItem5.Text = "Обновить";
+            this.reloadStripMenuItem5.Click += new System.EventHandler(this.MenuTray_Reload_Click);
+            // 
             // departmentView_contextMenuStrip
             // 
             this.departmentView_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.редактироватьToolStripMenuItem,
             this.toolStripMenuItem4});
             this.departmentView_contextMenuStrip.Name = "departmentView_contextMenuStrip";
-            this.departmentView_contextMenuStrip.Size = new System.Drawing.Size(181, 70);
+            this.departmentView_contextMenuStrip.Size = new System.Drawing.Size(155, 48);
             // 
             // редактироватьToolStripMenuItem
             // 
             this.редактироватьToolStripMenuItem.Name = "редактироватьToolStripMenuItem";
-            this.редактироватьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.редактироватьToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.редактироватьToolStripMenuItem.Text = "Редактировать";
             this.редактироватьToolStripMenuItem.Click += new System.EventHandler(this.ContextMenu_DepartmentEditItem_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(154, 22);
             this.toolStripMenuItem4.Text = "Удалить";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.ContextMenu_DepartmentDeleteItem_Click);
             // 
@@ -285,6 +297,7 @@
         private System.Windows.Forms.ToolStripMenuItem deleteEmployeeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem reloadStripMenuItem5;
     }
 }
 

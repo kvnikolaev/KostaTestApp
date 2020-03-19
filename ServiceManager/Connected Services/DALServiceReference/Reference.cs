@@ -337,6 +337,12 @@ namespace ServiceManager.DALServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployees", ReplyAction="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployeesResponse")]
         System.Threading.Tasks.Task<ServiceManager.DALServiceReference.Department_dto[]> GetDepartmentStructureWithEmployeesAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/GetEmployeeByDepartment", ReplyAction="http://tempuri.org/IDALService/GetEmployeeByDepartmentResponse")]
+        ServiceManager.DALServiceReference.Employee_dto[] GetEmployeeByDepartment(System.Guid departmentID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/GetEmployeeByDepartment", ReplyAction="http://tempuri.org/IDALService/GetEmployeeByDepartmentResponse")]
+        System.Threading.Tasks.Task<ServiceManager.DALServiceReference.Employee_dto[]> GetEmployeeByDepartmentAsync(System.Guid departmentID);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/AddEmployee", ReplyAction="http://tempuri.org/IDALService/AddEmployeeResponse")]
         int AddEmployee(ServiceManager.DALServiceReference.Employee_dto employee);
         
@@ -407,6 +413,14 @@ namespace ServiceManager.DALServiceReference {
         
         public System.Threading.Tasks.Task<ServiceManager.DALServiceReference.Department_dto[]> GetDepartmentStructureWithEmployeesAsync() {
             return base.Channel.GetDepartmentStructureWithEmployeesAsync();
+        }
+        
+        public ServiceManager.DALServiceReference.Employee_dto[] GetEmployeeByDepartment(System.Guid departmentID) {
+            return base.Channel.GetEmployeeByDepartment(departmentID);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceManager.DALServiceReference.Employee_dto[]> GetEmployeeByDepartmentAsync(System.Guid departmentID) {
+            return base.Channel.GetEmployeeByDepartmentAsync(departmentID);
         }
         
         public int AddEmployee(ServiceManager.DALServiceReference.Employee_dto employee) {

@@ -19,7 +19,7 @@ namespace UIClient.AddDialogs
             InitializeComponent();
         }
 
-        public override DepartmentCS[] DepartmentList
+        public override List<DepartmentCS> DepartmentList
         {
             get => base.DepartmentList;
             set
@@ -27,7 +27,7 @@ namespace UIClient.AddDialogs
                 base.DepartmentList = value;
                 departmentComboBox.Items.Add("-Не выбран-");
                 departmentComboBox.SelectedIndex = 0;
-                departmentComboBox.Items.AddRange(base.DepartmentList);
+                departmentComboBox.Items.AddRange(base.DepartmentList.ToArray());
             }
         }
 

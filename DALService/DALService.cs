@@ -16,6 +16,11 @@ namespace DALService
             return _logic.GetDepartmentStructureWithEmployees();
         }
 
+        public IEnumerable<Employee_dto> GetEmployeeByDepartment(Guid departmentID)
+        {
+            return _logic.GetEmployeesByDepartment(departmentID);
+        }
+
         public int AddEmployee(Employee_dto employee)
         {
             return _logic.AddEmployee(employee);

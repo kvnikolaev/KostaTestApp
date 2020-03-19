@@ -76,6 +76,9 @@
     <None Include="Connected Services\DALServiceReference\ServiceManager.DALServiceReference.Department_dto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\DALServiceReference\ServiceManager.DALServiceReference.Employee_dto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\DALServiceReference\" />

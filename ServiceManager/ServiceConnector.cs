@@ -30,6 +30,14 @@ namespace ServiceManager
             return _mapper.Map<IEnumerable<DepartmentCS>>(t);
         }
 
+        public IEnumerable<EmployeeCS> GetEmployeesByDepartment(Guid departmentID)
+        {
+            _client = new DALServiceClient();
+            var t = _client.GetEmployeeByDepartment(departmentID);
+            _client.Close();
+            return _mapper.Map<IEnumerable<EmployeeCS>>(t);
+        }
+
         public int AddEmployee(EmployeeCS employee)
         {
             _client = new DALServiceClient();

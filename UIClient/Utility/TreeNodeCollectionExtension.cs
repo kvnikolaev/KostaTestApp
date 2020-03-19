@@ -16,6 +16,7 @@ namespace UIClient.Utility
             foreach(TreeNode node in nc)
             {
                 result = SearchIn(node, department);
+                if (result != null) break;
             }
             return result;
         }
@@ -23,7 +24,7 @@ namespace UIClient.Utility
         private static TreeNode SearchIn(TreeNode node, DepartmentCS department)
         {
             var t = (DepartmentCS)node.Tag;
-            if (t.ID == department.ParentDepartmentID)
+            if (t.ID == department.ID) //ParentDepartmentID
             {
                 return node;
             }

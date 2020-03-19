@@ -170,6 +170,10 @@ namespace UIClient
             }
         }
 
+        private void MenuTray_Reload_Click(object sender, EventArgs e)
+        {
+            Presenter.Update();
+        }
 
         private void ContextMenu_DepartmentEditItem_Click(object sender, EventArgs e)
         {

@@ -13,6 +13,12 @@
   <wsdl:message name="IDALService_GetDepartmentStructureWithEmployees_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetDepartmentStructureWithEmployeesResponse" />
   </wsdl:message>
+  <wsdl:message name="IDALService_GetEmployeeByDepartment_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetEmployeeByDepartment" />
+  </wsdl:message>
+  <wsdl:message name="IDALService_GetEmployeeByDepartment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetEmployeeByDepartmentResponse" />
+  </wsdl:message>
   <wsdl:message name="IDALService_AddEmployee_InputMessage">
     <wsdl:part name="parameters" element="tns:AddEmployee" />
   </wsdl:message>
@@ -54,6 +60,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployees" message="tns:IDALService_GetDepartmentStructureWithEmployees_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployeesResponse" message="tns:IDALService_GetDepartmentStructureWithEmployees_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetEmployeeByDepartment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDALService/GetEmployeeByDepartment" message="tns:IDALService_GetEmployeeByDepartment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDALService/GetEmployeeByDepartmentResponse" message="tns:IDALService_GetEmployeeByDepartment_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="AddEmployee">
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/AddEmployee" message="tns:IDALService_AddEmployee_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDALService/AddEmployeeResponse" message="tns:IDALService_AddEmployee_OutputMessage" />
@@ -83,6 +93,15 @@
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="GetDepartmentStructureWithEmployees">
       <soap:operation soapAction="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployees" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEmployeeByDepartment">
+      <soap:operation soapAction="http://tempuri.org/IDALService/GetEmployeeByDepartment" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

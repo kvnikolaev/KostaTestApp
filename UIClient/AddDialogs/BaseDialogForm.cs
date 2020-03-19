@@ -13,7 +13,7 @@ namespace UIClient.AddDialogs
     // В релизе можно сделать абстрактным
     public /*abstract*/ class BaseDialogForm: Form
     {
-        public virtual DepartmentCS[] DepartmentList { get; set; }
+        public virtual List<DepartmentCS> DepartmentList { get; set; }
         public virtual EntityBase RepresentedValue { get; set; }
         public virtual DepartmentCS SelectedDepartment { get; set; }
     }

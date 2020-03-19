@@ -30,6 +30,17 @@ namespace DALService
             }
         }
 
+        public IEnumerable<Employee_dto> GetEmployeesByDepartment(Guid departmentID)
+        {
+            using (var db = new TestDBEntities())
+            {
+                var t = db.Set<Employee>().Where(e => e.DepartmentID == departmentID).AsNoTracking()
+                    .ProjectTo<Employee_dto>(new MapperConfiguration(cfg => cfg.AddProfile<MapperProfile>()))
+                    .ToArray();
+                return t;
+            }
+        }
+
         public int AddEmployee(Employee_dto employee)
         {
             using (var db = new TestDBEntities())
@@ -97,9 +108,8 @@ namespace DALService
         {
             using (var db = new TestDBEntities())
             {
-                var entity = mapper.Map<Department>(department);
+                var entity = db.Set<Department>().Where(el => el.ID == department.ID).SingleOrDefault();
 
-                db.Set<Department>().Attach(entity);
                 var t = db.Set<Department>().Remove(entity);
                 db.SaveChanges();
             }

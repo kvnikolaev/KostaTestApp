@@ -18,7 +18,7 @@ namespace UIClient.AddDialogs
             InitializeComponent();
         }
 
-        public override DepartmentCS[] DepartmentList
+        public override List<DepartmentCS> DepartmentList
         {
             get => base.DepartmentList;
             set
@@ -29,7 +29,7 @@ namespace UIClient.AddDialogs
                     "-Самостоятельный отдел-"
                 });
                 department_comboBox.SelectedIndex = 0;
-                department_comboBox.Items.AddRange(base.DepartmentList);
+                department_comboBox.Items.AddRange(base.DepartmentList.ToArray());
             }
         }
 
