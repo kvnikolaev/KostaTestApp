@@ -8,16 +8,20 @@ using AutoMapper.QueryableExtensions;
 using System.Data.Entity;
 using DALService.DTO;
 using DALService.EDM;
+using NLog;
 
 namespace DALService
 {
     public class ServiceLogic
     {
         IMapper mapper;
+        Logger _loger;
         public ServiceLogic()
         {
             var config = new MapperConfiguration(cfg => cfg.AddProfile<MapperProfile>());
             mapper = config.CreateMapper();
+
+            _loger = LogManager.GetCurrentClassLogger();
         }
 
         public IEnumerable<Department_dto> GetDepartmentStructureWithEmployees()
@@ -26,6 +30,8 @@ namespace DALService
             {
                 var t = db.Department.Include(el => el.Employee).Where(d => !(d.ParentDepartmentID.HasValue)).AsNoTracking().ToList();
                 var result = mapper.Map<IEnumerable<Department_dto>>(t);
+
+                _loger.Info("Запрошена структура предприятий. Строка подключения: " + db.Database.Connection.ConnectionString);
                 return result;
             }
         }
@@ -37,6 +43,8 @@ namespace DALService
                 var t = db.Set<Employee>().Where(e => e.DepartmentID == departmentID).AsNoTracking()
                     .ProjectTo<Employee_dto>(new MapperConfiguration(cfg => cfg.AddProfile<MapperProfile>()))
                     .ToArray();
+
+                _loger.Info("Запрошен список сотрудников подразделения " + departmentID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
                 return t;
             }
         }
@@ -48,6 +56,8 @@ namespace DALService
                 var entity = mapper.Map<Employee>(employee);
                 db.Set<Employee>().Add(entity);
                 db.SaveChanges();
+
+                _loger.Info("Добавлен сотрудник " + entity.ID + " в подразделение " + employee.DepartmentID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
                 return entity.ID;
             }
         }
@@ -60,6 +70,8 @@ namespace DALService
                 entity.ID = Guid.NewGuid();
                 db.Set<Department>().Add(entity);
                 db.SaveChanges();
+
+                _loger.Info("Добавлено подразделение " + entity.ID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
                 return entity.ID;
             }
         }
@@ -75,6 +87,8 @@ namespace DALService
 
                 db.Entry(originalEntity).CurrentValues.SetValues(entity);
                 db.SaveChanges();
+
+                _loger.Info("Отредактирован сотрудник " + employee.ID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
             }
         }
 
@@ -89,6 +103,8 @@ namespace DALService
 
                 db.Entry(originalEntity).CurrentValues.SetValues(entity);
                 db.SaveChanges();
+
+                _loger.Info("Отредактировано подразделение " + department.ID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
             }
         }
 
@@ -101,6 +117,8 @@ namespace DALService
                 db.Set<Employee>().Attach(entity);
                 var t = db.Set<Employee>().Remove(entity);
                 db.SaveChanges();
+
+                _loger.Info("Удален сотрудник " + employee.ToJson() + ". Строка подключения: " + db.Database.Connection.ConnectionString); ;
             }
         }
 
@@ -112,6 +130,8 @@ namespace DALService
 
                 var t = db.Set<Department>().Remove(entity);
                 db.SaveChanges();
+
+                _loger.Info("Удалено подразделение " + department.ToJson() + ". Строка подключения: " + db.Database.Connection.ConnectionString);
             }
         }
 

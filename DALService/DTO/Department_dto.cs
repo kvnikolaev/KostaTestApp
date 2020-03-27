@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace DALService.DTO
 {
@@ -17,5 +18,10 @@ namespace DALService.DTO
         public System.Guid? ParentDepartmentID { get; set; }
         public IEnumerable<Department_dto> ChildDepartments { get; set; }
         public IEnumerable<Employee_dto> Employee { get; set; }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }
