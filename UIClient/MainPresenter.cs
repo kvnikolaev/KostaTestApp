@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIClient.Utility;
+using UIClient.Controlls;
 using UIClient.AddDialogs;
 using ServiceManager.ClientSideClasses;
 
@@ -21,7 +21,6 @@ namespace UIClient
 
         private MainForm _mainForm;
 
-        private readonly EmployeeToGridShaper employeeToGrid = new EmployeeToGridShaper();
         #endregion
 
         #region Dependencies Properties
@@ -34,19 +33,10 @@ namespace UIClient
             _mainForm = mainForm;
             // Добавление древо подразделений на форму, список сотрудников отображается через событие AfterSelect
             mainForm.DepartmentStructureTreeView.Nodes.AddRange(this.LoadDepartmentStructure());
-            // Подготовка DataGrid для списка сотрудников
-            this.SetUpEmployeesView(mainForm.EmployeeDataGridView);
+            // Подготовка столбцов DataGrid для списка сотрудников
+            mainForm.EmployeeDataGridView.SetUpGrid();
             mainForm.Presenter = this;
             Application.Run(mainForm);
-        }
-
-        /// <summary>
-        /// Настройка столбцов таблицы контрола, отображающего данные сотрудников
-        /// </summary>
-        /// <param name="dataGridView"></param>
-        public void SetUpEmployeesView(DataGridView dataGridView)
-        {
-            employeeToGrid.SetUpGrid(dataGridView);
         }
 
         #region To Service Methods
@@ -54,7 +44,7 @@ namespace UIClient
         /// Выполняет запрос сервиса к дб
         /// </summary>
         /// <returns></returns>
-        public System.Windows.Forms.TreeNode[] LoadDepartmentStructure()
+        private System.Windows.Forms.TreeNode[] LoadDepartmentStructure()
         {
             _departmentStructure = _serviceManager.GetDepartmentStructureWithEmployees().ToList();
             List<System.Windows.Forms.TreeNode> result = new List<System.Windows.Forms.TreeNode>();
@@ -77,7 +67,6 @@ namespace UIClient
             foreach (var subDep in department.ChildDepartments)
             {
                 node.Nodes.Add(GetSubNodes(subDep));
-
             }
             return node;
         }
@@ -113,11 +102,11 @@ namespace UIClient
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="department"></param>
-        public void SelectEmployeeToGrid(DataGridView grid, DepartmentCS department)
+        public void SelectEmployeeToGrid(DepartmentCS department)
         {
-            grid.Rows.Clear();
+            _mainForm.EmployeeDataGridView.Rows.Clear();
             var employees = _serviceManager.GetEmployeesByDepartment(department.ID);
-            employeeToGrid.SelectEmployeeToGrid(grid, employees.ToArray());
+            _mainForm.EmployeeDataGridView.SelectEmployeeToGrid(employees.ToArray());
         }
 
 
@@ -128,13 +117,13 @@ namespace UIClient
             if (AddDepartmentForm == null) AddDepartmentForm = new AddDepartmentForm();
             this.AddDepartmentForm.DepartmentList = this.GetDepartmentList();
             this.AddDepartmentForm.SelectedDepartment = toDepartment;
+            this.AddDepartmentForm.Text = "Новое подразделение";
             if (AddDepartmentForm.ShowDialog() == DialogResult.OK)
             {
                 var t = (DepartmentCS)AddDepartmentForm.RepresentedValue;
                 t.ID = _serviceManager.AddDepartment(t);
 
                 // обновление интерфейса если нужно
-                //UpdateVisibleDepartments(null, t);
                 LocallyAddDepartment(t);
             }
         }
@@ -144,6 +133,7 @@ namespace UIClient
             if (AddEmployeeForm == null) AddEmployeeForm = new AddEmployeeForm();
             this.AddEmployeeForm.DepartmentList = this.GetDepartmentList();
             this.AddEmployeeForm.SelectedDepartment = toDepartment;
+            this.AddEmployeeForm.Text = "Добавление сотрудника";
             if (AddEmployeeForm.ShowDialog() == DialogResult.OK)
             {
                 var t = (EmployeeCS)AddEmployeeForm.RepresentedValue;
@@ -169,23 +159,8 @@ namespace UIClient
                 GetDepartmentList().Single(dep => dep.ID == department.ParentDepartmentID).
                     ChildDepartments.Add(department);
             }
-            // обновление отображения двнных
-            var newNode = new System.Windows.Forms.TreeNode()
-            {
-                Name = department.Name,
-                Tag = department,
-                Text = department.ToString()
-            };
-
-            if (department.ParentDepartmentID == null)
-            {
-                _mainForm.DepartmentStructureTreeView.Nodes.Add(newNode);
-            }
-            else
-            {
-                TreeNode node = _mainForm.DepartmentStructureTreeView.Nodes.FindByTag(new DepartmentCS() { ID = department.ParentDepartmentID.Value });
-                node.Nodes.Add(newNode);
-            }
+            // обновление отображения данных
+            _mainForm.DepartmentStructureTreeView.AddDepartment(department);
         }
         #endregion
        
@@ -195,16 +170,17 @@ namespace UIClient
         {
             if (AddDepartmentForm == null) AddDepartmentForm = new AddDepartmentForm();
             var allDeps = this.GetDepartmentList();
-            allDeps.Remove(department);
+            allDeps.Remove(department); // чтобы нельзя было указать родительским самого себя 
             this.AddDepartmentForm.DepartmentList = allDeps;
             this.AddDepartmentForm.RepresentedValue = department;
+            this.AddDepartmentForm.Text = "Редактирование подразделения";
             if (AddDepartmentForm.ShowDialog() == DialogResult.OK)
             {
                 var editedDepartment = (DepartmentCS)this.AddDepartmentForm.RepresentedValue;
                 editedDepartment.ID = department.ID;
                 _serviceManager.EditDepartment(editedDepartment);
 
-                UpdateVisibleDepartments(department, editedDepartment);
+                LoccalyUpdateDepartments(department, editedDepartment);
             }
         }
 
@@ -213,6 +189,7 @@ namespace UIClient
             if (AddEmployeeForm == null) AddEmployeeForm = new AddEmployeeForm();
             this.AddEmployeeForm.DepartmentList = this.GetDepartmentList();
             this.AddEmployeeForm.RepresentedValue = employee;
+            this.AddEmployeeForm.Text = "Редактирование сотрудника";
             if (AddEmployeeForm.ShowDialog() == DialogResult.OK)
             {
                 var t = (EmployeeCS)this.AddEmployeeForm.RepresentedValue;
@@ -228,6 +205,16 @@ namespace UIClient
             }
         }
 
+        private void LoccalyUpdateDepartments(DepartmentCS oldVersion, DepartmentCS newVersion)
+        {
+            // обновление внутренней структуры данных
+            var oldDep = GetDepartmentList().Single(dep => dep.ID == oldVersion.ID);
+            oldDep.Name = newVersion.Name;
+            oldDep.Code = newVersion.Code;
+
+            // обновление отображения данных 
+            _mainForm.DepartmentStructureTreeView.EditDepartment(oldVersion, newVersion);
+        }
 
         #endregion
 
@@ -236,8 +223,7 @@ namespace UIClient
         {
             _serviceManager.DeleteDepartment(department);
 
-            _mainForm.DepartmentStructureTreeView.Nodes.Remove(_mainForm.DepartmentStructureTreeView.SelectedNode);
-            _departmentStructure.Remove(department);
+            LocallyDeleteDepartment(department);
         }
 
         public void DeleteEmployee(EmployeeCS employee)
@@ -252,6 +238,15 @@ namespace UIClient
             }
         }
 
+        private void LocallyDeleteDepartment(DepartmentCS department)
+        {
+            // обновление внутренней структуры данных
+            GetDepartmentList().Single(dep => dep.ID == department.ParentDepartmentID)
+                .ChildDepartments.Remove(department);
+
+            // обновление отображения данных
+            _mainForm.DepartmentStructureTreeView.Nodes.Remove(_mainForm.DepartmentStructureTreeView.SelectedNode);
+        }
 
 
 
@@ -260,49 +255,21 @@ namespace UIClient
         #region Update UI methods
         public void Update()
         {
-            _mainForm.DepartmentStructureTreeView.Nodes.Clear();
-            _mainForm.DepartmentStructureTreeView.Nodes.AddRange(this.LoadDepartmentStructure());
+            _mainForm.DepartmentStructureTreeView.UpdateDepartments(this.LoadDepartmentStructure());
         }
+
         public void UpdateVisibleEmployees(DepartmentCS department)
         {
             var employees = _serviceManager.GetEmployeesByDepartment(department.ID);
             var selectedRows = _mainForm.EmployeeDataGridView.SelectedRows[0].Index;
             _mainForm.EmployeeDataGridView.Rows.Clear();
-            employeeToGrid.SelectEmployeeToGrid(_mainForm.EmployeeDataGridView, employees.ToArray());
+            _mainForm.EmployeeDataGridView.SelectEmployeeToGrid(employees.ToArray());
 
             _mainForm.EmployeeDataGridView.ClearSelection();
             _mainForm.EmployeeDataGridView.Rows[selectedRows].Selected = true;
         }
 
-        public void UpdateVisibleDepartments(DepartmentCS oldVersion, DepartmentCS newVersion)
-        {
-            TreeNode nodeToChange = null, parentNode = null;
-
-            nodeToChange = _mainForm.DepartmentStructureTreeView.Nodes.FindByTag(oldVersion);
-            if (newVersion.ParentDepartmentID.HasValue)
-            {
-                parentNode = _mainForm.DepartmentStructureTreeView.Nodes.FindByTag(new DepartmentCS() { ID = newVersion.ParentDepartmentID.Value });
-            }
-
-            if (nodeToChange == null) return;
-
-            if (oldVersion.ParentDepartmentID != newVersion.ParentDepartmentID)
-            {
-                _mainForm.DepartmentStructureTreeView.Nodes.Remove(nodeToChange);
-                if (newVersion.ParentDepartmentID == null)
-                {
-                    _mainForm.DepartmentStructureTreeView.Nodes.Add(nodeToChange);
-                }
-                else
-                {
-                    parentNode.Nodes.Add(nodeToChange);
-                }
-            }
-
-            nodeToChange.Text = newVersion.ToString();
-            nodeToChange.Tag = newVersion;
-            
-        }
+        
         #endregion
 
         #endregion

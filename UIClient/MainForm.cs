@@ -26,7 +26,7 @@ namespace UIClient
         private void StructureTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             var selectedDep = (DepartmentCS)e.Node.Tag;
-            Presenter.SelectEmployeeToGrid(EmployeeDataGridView, selectedDep);
+            Presenter.SelectEmployeeToGrid(selectedDep);
         }
 
         private void DepartmentToolStripMenuItem_Click(object sender, EventArgs e)

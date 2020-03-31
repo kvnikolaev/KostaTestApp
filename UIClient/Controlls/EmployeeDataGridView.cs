@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace UIClient.Utility
+namespace UIClient.Controlls
 {
-    class EmployeeToGridShaper
+    public class EmployeeDataGridView : DataGridView
     {
         #region Список столбцов таблицы
         DataGridViewTextBoxColumn SurNameColumn = new DataGridViewTextBoxColumn()
@@ -61,9 +61,9 @@ namespace UIClient.Utility
         };
         #endregion
 
-        public void SetUpGrid(DataGridView grid)
+        public void SetUpGrid()
         {
-            grid.Columns.AddRange(new DataGridViewColumn[]
+            this.Columns.AddRange(new DataGridViewColumn[]
             {
                 this.SurNameColumn,
                 this.FirstNameColumn,
@@ -76,11 +76,11 @@ namespace UIClient.Utility
             });
         }
 
-        public void SelectEmployeeToGrid(DataGridView grid, params EmployeeCS[] employees)
+        public void SelectEmployeeToGrid(params EmployeeCS[] employees)
         {
-            for(int i = 0; i < employees.Length; i++)
+            for (int i = 0; i < employees.Length; i++)
             {
-                grid.Rows.Add(new string[] 
+                this.Rows.Add(new string[]
                 {
                     employees[i].SurName?.ToString(),
                     employees[i].FirstName?.ToString(),
@@ -91,11 +91,11 @@ namespace UIClient.Utility
                     employees[i].DocSeries?.ToString(),
                     employees[i].DocNumber?.ToString()
                 });
-                grid.Rows[i].Tag = employees[i];
+                this.Rows[i].Tag = employees[i];
             }
         }
 
-        public void TrySelectRows(DataGridView grid, DataGridViewSelectedRowCollection rows)
+        public void TrySelectRows(DataGridViewSelectedRowCollection rows)
         {
 
         }

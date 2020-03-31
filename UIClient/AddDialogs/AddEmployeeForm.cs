@@ -91,7 +91,7 @@ namespace UIClient.AddDialogs
                 SurName = surName_textBox.Text,
                 Patronymic = patronymic_textBox.Text,
                 Position = position_textBox.Text,
-                DepartmentID = departmentComboBox.SelectedIndex == 0 ? null :
+                DepartmentID = departmentComboBox.SelectedIndex <= 0 ? null :
                     (Nullable<Guid>)((DepartmentCS)departmentComboBox.SelectedItem).ID
             };
             try

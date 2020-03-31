@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.DepartmentStructureTreeView = new System.Windows.Forms.TreeView();
-            this.EmployeeDataGridView = new System.Windows.Forms.DataGridView();
+            this.DepartmentStructureTreeView = new Controlls.DepartmentTreeView();
+            this.EmployeeDataGridView = new Controlls.EmployeeDataGridView();
             this.employeeView_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -279,8 +279,8 @@
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer;
-        public System.Windows.Forms.TreeView DepartmentStructureTreeView;
-        public System.Windows.Forms.DataGridView EmployeeDataGridView;
+        public Controlls.DepartmentTreeView DepartmentStructureTreeView;
+        public Controlls.EmployeeDataGridView EmployeeDataGridView;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripDropDownButton toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem departmentToolStripMenuItem;

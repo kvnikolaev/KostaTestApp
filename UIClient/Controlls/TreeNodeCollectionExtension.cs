@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace UIClient.Utility
+namespace UIClient.Controlls
 {
     public static class TreeNodeCollectionExtension
     {

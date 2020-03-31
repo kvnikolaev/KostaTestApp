@@ -82,7 +82,7 @@ namespace UIClient.AddDialogs
             RepresentedValue = new DepartmentCS()
             {
                 Name = name_textBox.Text,
-                ParentDepartmentID = department_comboBox.SelectedIndex == 0 ? null : //(Nullable<Guid>)dep.ID,
+                ParentDepartmentID = department_comboBox.SelectedIndex <= 0 ? null : //(Nullable<Guid>)dep.ID,
                     (Nullable<Guid>)((DepartmentCS)this.department_comboBox.SelectedItem).ID,
                 Code = code_textBox.Text,
                 ChildDepartments = new List<DepartmentCS>(),
