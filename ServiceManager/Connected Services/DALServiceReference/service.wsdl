@@ -5,6 +5,7 @@
       <xsd:import namespace="http://tempuri.org/" />
       <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/DALService.DTO" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IDALService_GetDepartmentStructureWithEmployees_InputMessage">
@@ -24,6 +25,9 @@
   </wsdl:message>
   <wsdl:message name="IDALService_AddEmployee_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddEmployeeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDALService_AddEmployee_DefaultFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults" name="detail" element="q1:DefaultFault" />
   </wsdl:message>
   <wsdl:message name="IDALService_AddDepartment_InputMessage">
     <wsdl:part name="parameters" element="tns:AddDepartment" />
@@ -67,6 +71,7 @@
     <wsdl:operation name="AddEmployee">
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/AddEmployee" message="tns:IDALService_AddEmployee_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDALService/AddEmployeeResponse" message="tns:IDALService_AddEmployee_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDALService/AddEmployeeDefaultFaultFault" name="DefaultFaultFault" message="tns:IDALService_AddEmployee_DefaultFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="AddDepartment">
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/AddDepartment" message="tns:IDALService_AddDepartment_InputMessage" />
@@ -117,6 +122,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="DefaultFaultFault">
+        <soap:fault use="literal" name="DefaultFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="AddDepartment">
       <soap:operation soapAction="http://tempuri.org/IDALService/AddDepartment" style="document" />

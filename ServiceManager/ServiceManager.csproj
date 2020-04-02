@@ -66,6 +66,9 @@
     <None Include="Connected Services\DALServiceReference\DALService.DTO.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\DALServiceReference\DALService.ServiceFaults.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\DALServiceReference\service.wsdl" />
     <None Include="Connected Services\DALServiceReference\service.xsd">
       <SubType>Designer</SubType>

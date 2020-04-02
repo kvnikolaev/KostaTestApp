@@ -71,6 +71,7 @@
     <Compile Include="MapperProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DALService.cs" />
+    <Compile Include="ServiceFaults\DefaultFault.cs" />
     <Compile Include="ServiceLogic.cs" />
   </ItemGroup>
   <ItemGroup>

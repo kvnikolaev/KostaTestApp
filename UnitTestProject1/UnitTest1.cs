@@ -4,8 +4,11 @@ using System.Data.Entity;
 using DALService;
 using DALService.DTO;
 using DALService.EDM;
+using DALService.ServiceFaults;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ServiceManager.ClientSideClasses;
+using System.ServiceModel;
+using System.Data;
 
 namespace UnitTestProject1
 {
@@ -21,6 +24,18 @@ namespace UnitTestProject1
             Position = "coolGuy",
             DocSeries = "12345"
         };
+
+        Employee_dto allBadEmployee = new Employee_dto()
+        {
+
+                DocSeries = "1001lkjdfsa",
+                DocNumber = "123456dfrg",
+                
+                SurName = "Кирилл1234Кирилл1234Кирилл1234Кирилл1234Кирилл1234!",
+                Patronymic = "ВалерьевичВалерьевичВалерьевичВалерьевичВалерьевич!",
+                Position = "НащальникаНащальникаНащальникаНащальникаНащальника!",
+                DepartmentID = Guid.Empty
+            };
 
         [TestMethod]
         public void DBNotEmptyTest()
@@ -56,14 +71,20 @@ namespace UnitTestProject1
         //    //}
 
         //    emp.DocSeries = "2791";
-
         //    using (var db2 = new TestDBEntities())
         //    {
         //        db2.Entry(emp).State = System.Data.Entity.EntityState.Modified;
         //        db2.SaveChanges();
         //    }
-
         //}
+
+        [TestMethod]
+        [ExpectedException(typeof(FaultException<DefaultFault>))]
+        public void FaultCheck()
+        {
+            var service = new ServiceLogic();
+            service.AddEmployee(allBadEmployee);
+        }
     }
 
     [TestClass]

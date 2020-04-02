@@ -1,4 +1,5 @@
 ﻿using DALService.DTO;
+using DALService.ServiceFaults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace DALService
         IEnumerable<Employee_dto> GetEmployeeByDepartment(Guid departmentID);
 
         [OperationContract]
+        [FaultContract(typeof(DefaultFault))]
         int AddEmployee(Employee_dto employee);
 
         [OperationContract]

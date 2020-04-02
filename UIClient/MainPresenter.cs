@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using UIClient.Controlls;
 using UIClient.AddDialogs;
 using ServiceManager.ClientSideClasses;
+using System.ServiceModel;
 
 namespace UIClient
 {
@@ -130,21 +131,39 @@ namespace UIClient
 
         public void AddEmployeeShowDialog(DepartmentCS toDepartment)
         {
-            if (AddEmployeeForm == null) AddEmployeeForm = new AddEmployeeForm();
-            this.AddEmployeeForm.DepartmentList = this.GetDepartmentList();
-            this.AddEmployeeForm.SelectedDepartment = toDepartment;
-            this.AddEmployeeForm.Text = "Добавление сотрудника";
-            if (AddEmployeeForm.ShowDialog() == DialogResult.OK)
+            try
             {
-                var t = (EmployeeCS)AddEmployeeForm.RepresentedValue;
-                t.ID = _serviceManager.AddEmployee(t);
-
-                // обновление интерфейса если нужно
-                var selectedDep = (DepartmentCS)_mainForm.DepartmentStructureTreeView.SelectedNode.Tag;
-                if (t.DepartmentID == selectedDep.ID)
+                if (AddEmployeeForm == null) AddEmployeeForm = new AddEmployeeForm();
+                this.AddEmployeeForm.DepartmentList = this.GetDepartmentList();
+                this.AddEmployeeForm.SelectedDepartment = toDepartment;
+                this.AddEmployeeForm.Text = "Добавление сотрудника";
+                if (AddEmployeeForm.ShowDialog() == DialogResult.OK)
                 {
-                    UpdateVisibleEmployees(selectedDep);
+                    var t = (EmployeeCS)AddEmployeeForm.RepresentedValue;
+                    t.ID = _serviceManager.AddEmployee(t);
+
+                    // обновление интерфейса если нужно
+                    var selectedDep = (DepartmentCS)_mainForm.DepartmentStructureTreeView.SelectedNode.Tag;
+                    if (t.DepartmentID == selectedDep.ID)
+                    {
+                        UpdateVisibleEmployees(selectedDep);
+                    }
                 }
+            }
+            catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
+            {
+                // сообщение об ошибке для пользователя
+                MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (FaultException ex) // непредвидимая проблема на сервисе, см лог на сервисе
+            {
+                // неизвестная ошибка на сервисе
+                MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
+            {
+                MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //!! TODO лог ошибки
             }
         }
         private void LocallyAddDepartment(DepartmentCS department)

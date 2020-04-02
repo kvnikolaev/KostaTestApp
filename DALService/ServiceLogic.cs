@@ -9,6 +9,10 @@ using System.Data.Entity;
 using DALService.DTO;
 using DALService.EDM;
 using NLog;
+using System.Data;
+using System.Data.SqlClient;
+using System.ServiceModel;
+using DALService.ServiceFaults;
 
 namespace DALService
 {
@@ -26,13 +30,24 @@ namespace DALService
 
         public IEnumerable<Department_dto> GetDepartmentStructureWithEmployees()
         {
-            using (var db = new TestDBEntities())
+            try
             {
-                var t = db.Department.Include(el => el.Employee).Where(d => !(d.ParentDepartmentID.HasValue)).AsNoTracking().ToList();
-                var result = mapper.Map<IEnumerable<Department_dto>>(t);
+                using (var db = new TestDBEntities())
+                {
+                    var t = db.Department.Include(el => el.Employee).Where(d => !(d.ParentDepartmentID.HasValue)).AsNoTracking().ToList();
+                    var result = mapper.Map<IEnumerable<Department_dto>>(t);
 
-                _loger.Info("Запрошена структура предприятий. Строка подключения: " + db.Database.Connection.ConnectionString);
-                return result;
+                    _loger.Info("Запрошена структура предприятий. Строка подключения: " + db.Database.Connection.ConnectionString);
+                    return result;
+                }
+            }
+            catch (SqlException e) //!! ненужно
+            {
+                throw new FaultException();
+            }
+            catch (DataException e)
+            {
+                throw new FaultException<DataException>(e);
             }
         }
 
@@ -51,14 +66,28 @@ namespace DALService
 
         public int AddEmployee(Employee_dto employee)
         {
-            using (var db = new TestDBEntities())
+            try
             {
-                var entity = mapper.Map<Employee>(employee);
-                db.Set<Employee>().Add(entity);
-                db.SaveChanges();
+                using (var db = new TestDBEntities())
+                {
+                    var entity = mapper.Map<Employee>(employee);
+                    db.Set<Employee>().Add(entity);
+                    db.SaveChanges();
 
-                _loger.Info("Добавлен сотрудник " + entity.ID + " в подразделение " + employee.DepartmentID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
-                return entity.ID;
+                    _loger.Info("Добавлен сотрудник " + entity.ID + " в подразделение " + employee.DepartmentID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
+                    return entity.ID;
+                }
+            }
+            catch (DataException ex)
+            {
+                _loger.Warn(ex, "Ошибка добавления сотрудника " + employee.ToJson());
+                var fault = new DefaultFault(ex.Message);
+                throw new FaultException<DefaultFault>(fault);
+            }
+            catch (Exception ex)
+            {
+                _loger.Error(ex, "Во время добавления сотрудника что-то пошло совсем не так.");
+                throw;
             }
         }
 
@@ -124,14 +153,21 @@ namespace DALService
 
         public void DeleteDepartment(Department_dto department)
         {
-            using (var db = new TestDBEntities())
+            try
             {
-                var entity = db.Set<Department>().Where(el => el.ID == department.ID).SingleOrDefault();
+                using (var db = new TestDBEntities())
+                {
+                    var entity = db.Set<Department>().Where(el => el.ID == department.ID).SingleOrDefault();
 
-                var t = db.Set<Department>().Remove(entity);
-                db.SaveChanges();
+                    var t = db.Set<Department>().Remove(entity);
+                    db.SaveChanges();
 
-                _loger.Info("Удалено подразделение " + department.ToJson() + ". Строка подключения: " + db.Database.Connection.ConnectionString);
+                    _loger.Info("Удалено подразделение " + department.ToJson() + ". Строка подключения: " + db.Database.Connection.ConnectionString);
+                }
+            }
+            catch(DataException e)
+            {
+
             }
         }
 

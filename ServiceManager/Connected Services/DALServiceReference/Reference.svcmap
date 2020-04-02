@@ -26,6 +26,7 @@
     <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="04dbe765-93d4-4a05-8a28-15340157491b" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/DALService/Service1/mex" />
     <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="b3703cfc-bee2-4642-aa4f-9335f04a98ed" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/DALService/Service1/mex" />
     <MetadataFile FileName="DALService.DTO.xsd" MetadataType="Schema" ID="fec295e6-18e2-42dd-a39b-0b9c03f777af" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/DALService/Service1/mex" />
+    <MetadataFile FileName="DALService.ServiceFaults.xsd" MetadataType="Schema" ID="3a571307-4a48-4fe6-bcab-588e7dc36039" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/DALService/Service1/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
