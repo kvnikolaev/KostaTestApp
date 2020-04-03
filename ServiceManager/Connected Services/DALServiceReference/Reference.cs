@@ -377,12 +377,15 @@ namespace ServiceManager.DALServiceReference {
     public interface IDALService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployees", ReplyAction="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployeesResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceManager.DALServiceReference.DefaultFault), Action="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployeesDefaultFaultFau" +
+            "lt", Name="DefaultFault", Namespace="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults")]
         ServiceManager.DALServiceReference.Department_dto[] GetDepartmentStructureWithEmployees();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployees", ReplyAction="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployeesResponse")]
         System.Threading.Tasks.Task<ServiceManager.DALServiceReference.Department_dto[]> GetDepartmentStructureWithEmployeesAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/GetEmployeeByDepartment", ReplyAction="http://tempuri.org/IDALService/GetEmployeeByDepartmentResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceManager.DALServiceReference.DefaultFault), Action="http://tempuri.org/IDALService/GetEmployeeByDepartmentDefaultFaultFault", Name="DefaultFault", Namespace="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults")]
         ServiceManager.DALServiceReference.Employee_dto[] GetEmployeeByDepartment(System.Guid departmentID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/GetEmployeeByDepartment", ReplyAction="http://tempuri.org/IDALService/GetEmployeeByDepartmentResponse")]
@@ -396,30 +399,35 @@ namespace ServiceManager.DALServiceReference {
         System.Threading.Tasks.Task<int> AddEmployeeAsync(ServiceManager.DALServiceReference.Employee_dto employee);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/AddDepartment", ReplyAction="http://tempuri.org/IDALService/AddDepartmentResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceManager.DALServiceReference.DefaultFault), Action="http://tempuri.org/IDALService/AddDepartmentDefaultFaultFault", Name="DefaultFault", Namespace="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults")]
         System.Guid AddDepartment(ServiceManager.DALServiceReference.Department_dto department);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/AddDepartment", ReplyAction="http://tempuri.org/IDALService/AddDepartmentResponse")]
         System.Threading.Tasks.Task<System.Guid> AddDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/EditEmployee", ReplyAction="http://tempuri.org/IDALService/EditEmployeeResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceManager.DALServiceReference.DefaultFault), Action="http://tempuri.org/IDALService/EditEmployeeDefaultFaultFault", Name="DefaultFault", Namespace="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults")]
         void EditEmployee(ServiceManager.DALServiceReference.Employee_dto employee);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/EditEmployee", ReplyAction="http://tempuri.org/IDALService/EditEmployeeResponse")]
         System.Threading.Tasks.Task EditEmployeeAsync(ServiceManager.DALServiceReference.Employee_dto employee);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/EditDepartment", ReplyAction="http://tempuri.org/IDALService/EditDepartmentResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceManager.DALServiceReference.DefaultFault), Action="http://tempuri.org/IDALService/EditDepartmentDefaultFaultFault", Name="DefaultFault", Namespace="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults")]
         void EditDepartment(ServiceManager.DALServiceReference.Department_dto department);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/EditDepartment", ReplyAction="http://tempuri.org/IDALService/EditDepartmentResponse")]
         System.Threading.Tasks.Task EditDepartmentAsync(ServiceManager.DALServiceReference.Department_dto department);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/DeleteEmployee", ReplyAction="http://tempuri.org/IDALService/DeleteEmployeeResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceManager.DALServiceReference.DefaultFault), Action="http://tempuri.org/IDALService/DeleteEmployeeDefaultFaultFault", Name="DefaultFault", Namespace="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults")]
         void DeleteEmployee(ServiceManager.DALServiceReference.Employee_dto employee);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/DeleteEmployee", ReplyAction="http://tempuri.org/IDALService/DeleteEmployeeResponse")]
         System.Threading.Tasks.Task DeleteEmployeeAsync(ServiceManager.DALServiceReference.Employee_dto employee);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/DeleteDepartment", ReplyAction="http://tempuri.org/IDALService/DeleteDepartmentResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceManager.DALServiceReference.DefaultFault), Action="http://tempuri.org/IDALService/DeleteDepartmentDefaultFaultFault", Name="DefaultFault", Namespace="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults")]
         void DeleteDepartment(ServiceManager.DALServiceReference.Department_dto department);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDALService/DeleteDepartment", ReplyAction="http://tempuri.org/IDALService/DeleteDepartmentResponse")]

@@ -3,9 +3,9 @@
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import namespace="http://tempuri.org/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults" />
       <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/DALService.DTO" />
-      <xsd:import namespace="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IDALService_GetDepartmentStructureWithEmployees_InputMessage">
@@ -14,11 +14,17 @@
   <wsdl:message name="IDALService_GetDepartmentStructureWithEmployees_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetDepartmentStructureWithEmployeesResponse" />
   </wsdl:message>
+  <wsdl:message name="IDALService_GetDepartmentStructureWithEmployees_DefaultFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults" name="detail" element="q1:DefaultFault" />
+  </wsdl:message>
   <wsdl:message name="IDALService_GetEmployeeByDepartment_InputMessage">
     <wsdl:part name="parameters" element="tns:GetEmployeeByDepartment" />
   </wsdl:message>
   <wsdl:message name="IDALService_GetEmployeeByDepartment_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetEmployeeByDepartmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDALService_GetEmployeeByDepartment_DefaultFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults" name="detail" element="q2:DefaultFault" />
   </wsdl:message>
   <wsdl:message name="IDALService_AddEmployee_InputMessage">
     <wsdl:part name="parameters" element="tns:AddEmployee" />
@@ -27,7 +33,7 @@
     <wsdl:part name="parameters" element="tns:AddEmployeeResponse" />
   </wsdl:message>
   <wsdl:message name="IDALService_AddEmployee_DefaultFaultFault_FaultMessage">
-    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults" name="detail" element="q1:DefaultFault" />
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults" name="detail" element="q3:DefaultFault" />
   </wsdl:message>
   <wsdl:message name="IDALService_AddDepartment_InputMessage">
     <wsdl:part name="parameters" element="tns:AddDepartment" />
@@ -35,11 +41,17 @@
   <wsdl:message name="IDALService_AddDepartment_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddDepartmentResponse" />
   </wsdl:message>
+  <wsdl:message name="IDALService_AddDepartment_DefaultFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults" name="detail" element="q4:DefaultFault" />
+  </wsdl:message>
   <wsdl:message name="IDALService_EditEmployee_InputMessage">
     <wsdl:part name="parameters" element="tns:EditEmployee" />
   </wsdl:message>
   <wsdl:message name="IDALService_EditEmployee_OutputMessage">
     <wsdl:part name="parameters" element="tns:EditEmployeeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDALService_EditEmployee_DefaultFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults" name="detail" element="q5:DefaultFault" />
   </wsdl:message>
   <wsdl:message name="IDALService_EditDepartment_InputMessage">
     <wsdl:part name="parameters" element="tns:EditDepartment" />
@@ -47,11 +59,17 @@
   <wsdl:message name="IDALService_EditDepartment_OutputMessage">
     <wsdl:part name="parameters" element="tns:EditDepartmentResponse" />
   </wsdl:message>
+  <wsdl:message name="IDALService_EditDepartment_DefaultFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults" name="detail" element="q6:DefaultFault" />
+  </wsdl:message>
   <wsdl:message name="IDALService_DeleteEmployee_InputMessage">
     <wsdl:part name="parameters" element="tns:DeleteEmployee" />
   </wsdl:message>
   <wsdl:message name="IDALService_DeleteEmployee_OutputMessage">
     <wsdl:part name="parameters" element="tns:DeleteEmployeeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDALService_DeleteEmployee_DefaultFaultFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults" name="detail" element="q7:DefaultFault" />
   </wsdl:message>
   <wsdl:message name="IDALService_DeleteDepartment_InputMessage">
     <wsdl:part name="parameters" element="tns:DeleteDepartment" />
@@ -59,14 +77,19 @@
   <wsdl:message name="IDALService_DeleteDepartment_OutputMessage">
     <wsdl:part name="parameters" element="tns:DeleteDepartmentResponse" />
   </wsdl:message>
+  <wsdl:message name="IDALService_DeleteDepartment_DefaultFaultFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://schemas.datacontract.org/2004/07/DALService.ServiceFaults" name="detail" element="q8:DefaultFault" />
+  </wsdl:message>
   <wsdl:portType name="IDALService">
     <wsdl:operation name="GetDepartmentStructureWithEmployees">
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployees" message="tns:IDALService_GetDepartmentStructureWithEmployees_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployeesResponse" message="tns:IDALService_GetDepartmentStructureWithEmployees_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDALService/GetDepartmentStructureWithEmployeesDefaultFaultFault" name="DefaultFaultFault" message="tns:IDALService_GetDepartmentStructureWithEmployees_DefaultFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetEmployeeByDepartment">
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/GetEmployeeByDepartment" message="tns:IDALService_GetEmployeeByDepartment_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDALService/GetEmployeeByDepartmentResponse" message="tns:IDALService_GetEmployeeByDepartment_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDALService/GetEmployeeByDepartmentDefaultFaultFault" name="DefaultFaultFault" message="tns:IDALService_GetEmployeeByDepartment_DefaultFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="AddEmployee">
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/AddEmployee" message="tns:IDALService_AddEmployee_InputMessage" />
@@ -76,22 +99,27 @@
     <wsdl:operation name="AddDepartment">
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/AddDepartment" message="tns:IDALService_AddDepartment_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDALService/AddDepartmentResponse" message="tns:IDALService_AddDepartment_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDALService/AddDepartmentDefaultFaultFault" name="DefaultFaultFault" message="tns:IDALService_AddDepartment_DefaultFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="EditEmployee">
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/EditEmployee" message="tns:IDALService_EditEmployee_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDALService/EditEmployeeResponse" message="tns:IDALService_EditEmployee_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDALService/EditEmployeeDefaultFaultFault" name="DefaultFaultFault" message="tns:IDALService_EditEmployee_DefaultFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="EditDepartment">
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/EditDepartment" message="tns:IDALService_EditDepartment_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDALService/EditDepartmentResponse" message="tns:IDALService_EditDepartment_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDALService/EditDepartmentDefaultFaultFault" name="DefaultFaultFault" message="tns:IDALService_EditDepartment_DefaultFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="DeleteEmployee">
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/DeleteEmployee" message="tns:IDALService_DeleteEmployee_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDALService/DeleteEmployeeResponse" message="tns:IDALService_DeleteEmployee_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDALService/DeleteEmployeeDefaultFaultFault" name="DefaultFaultFault" message="tns:IDALService_DeleteEmployee_DefaultFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="DeleteDepartment">
       <wsdl:input wsaw:Action="http://tempuri.org/IDALService/DeleteDepartment" message="tns:IDALService_DeleteDepartment_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDALService/DeleteDepartmentResponse" message="tns:IDALService_DeleteDepartment_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDALService/DeleteDepartmentDefaultFaultFault" name="DefaultFaultFault" message="tns:IDALService_DeleteDepartment_DefaultFaultFault_FaultMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IDALService" type="tns:IDALService">
@@ -104,6 +132,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="DefaultFaultFault">
+        <soap:fault use="literal" name="DefaultFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="GetEmployeeByDepartment">
       <soap:operation soapAction="http://tempuri.org/IDALService/GetEmployeeByDepartment" style="document" />
@@ -113,6 +144,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="DefaultFaultFault">
+        <soap:fault use="literal" name="DefaultFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="AddEmployee">
       <soap:operation soapAction="http://tempuri.org/IDALService/AddEmployee" style="document" />
@@ -134,6 +168,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="DefaultFaultFault">
+        <soap:fault use="literal" name="DefaultFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="EditEmployee">
       <soap:operation soapAction="http://tempuri.org/IDALService/EditEmployee" style="document" />
@@ -143,6 +180,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="DefaultFaultFault">
+        <soap:fault use="literal" name="DefaultFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="EditDepartment">
       <soap:operation soapAction="http://tempuri.org/IDALService/EditDepartment" style="document" />
@@ -152,6 +192,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="DefaultFaultFault">
+        <soap:fault use="literal" name="DefaultFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="DeleteEmployee">
       <soap:operation soapAction="http://tempuri.org/IDALService/DeleteEmployee" style="document" />
@@ -161,6 +204,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="DefaultFaultFault">
+        <soap:fault use="literal" name="DefaultFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="DeleteDepartment">
       <soap:operation soapAction="http://tempuri.org/IDALService/DeleteDepartment" style="document" />
@@ -170,6 +216,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="DefaultFaultFault">
+        <soap:fault use="literal" name="DefaultFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="DALService">
