@@ -22,69 +22,69 @@ namespace ServiceManager
         }
         
 
-        public IEnumerable<DepartmentCS> GetDepartmentStructureWithEmployees()
+        public async Task<IEnumerable<DepartmentCS>> GetDepartmentStructureWithEmployees()
         {
             _client = new DALServiceClient();
-            var t = _client.GetDepartmentStructureWithEmployees().AsEnumerable();
+            var t = await _client.GetDepartmentStructureWithEmployeesAsync();//.AsEnumerable();
             _client.Close();
             return _mapper.Map<IEnumerable<DepartmentCS>>(t);
         }
 
-        public IEnumerable<EmployeeCS> GetEmployeesByDepartment(Guid departmentID)
+        public async Task<IEnumerable<EmployeeCS>> GetEmployeesByDepartment(Guid departmentID)
         {
             _client = new DALServiceClient();
-            var t = _client.GetEmployeeByDepartment(departmentID);
+            var t = await _client.GetEmployeeByDepartmentAsync(departmentID);
             _client.Close();
             return _mapper.Map<IEnumerable<EmployeeCS>>(t);
         }
 
-        public int AddEmployee(EmployeeCS employee)
+        public async Task<int> AddEmployee(EmployeeCS employee)
         {
             _client = new DALServiceClient();
             var t = _mapper.Map<Employee_dto>(employee);
-            var result = _client.AddEmployee(t);
+            var result = await _client.AddEmployeeAsync(t);
             _client.Close();
             return result;
         }
 
-        public Guid AddDepartment(DepartmentCS department)
+        public async Task<Guid> AddDepartment(DepartmentCS department)
         {
             _client = new DALServiceClient();
             var t = _mapper.Map<Department_dto>(department);
-            var result = _client.AddDepartment(t);
+            var result = await _client.AddDepartmentAsync(t);
             _client.Close();
             return result;
         }
 
-        public void EditEmployee(EmployeeCS employee)
+        public async Task EditEmployee(EmployeeCS employee)
         {
             _client = new DALServiceClient();
             var t = _mapper.Map<Employee_dto>(employee);
-            _client.EditEmployee(t);
+            await _client.EditEmployeeAsync(t);
             _client.Close();
         }
 
-        public void EditDepartment(DepartmentCS department)
+        public async Task EditDepartment(DepartmentCS department)
         {
             _client = new DALServiceClient();
             var t = _mapper.Map<Department_dto>(department);
-            _client.EditDepartment(t);
+            await _client.EditDepartmentAsync(t);
             _client.Close();
         }
 
-        public void DeleteEmployee(EmployeeCS employee)
+        public async Task DeleteEmployee(EmployeeCS employee)
         {
             _client = new DALServiceClient();
             var t = _mapper.Map<Employee_dto>(employee);
-            _client.DeleteEmployee(t);
+            await _client.DeleteEmployeeAsync(t);
             _client.Close();
         }
 
-        public void DeleteDepartment(DepartmentCS department)
+        public async Task DeleteDepartment(DepartmentCS department)
         {
             _client = new DALServiceClient();
             var t = _mapper.Map<Department_dto>(department);
-            _client.DeleteDepartment(t);
+            await _client.DeleteDepartmentAsync(t);
             _client.Close();
         }
     }

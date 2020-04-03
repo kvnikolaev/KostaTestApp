@@ -28,17 +28,6 @@ namespace UIClient
             var selectedDep = (DepartmentCS)e.Node.Tag;
             Presenter.SelectEmployeeToGrid(selectedDep);
         }
-
-        private void DepartmentToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Presenter.AddDepartmentShowDialog(null);
-        }
-
-        private void EmployeeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Presenter.AddEmployeeShowDialog(null);
-        }
-
         
         private void EmployeeDataGridView_MouseDown(object sender, MouseEventArgs e)
         {
@@ -79,6 +68,16 @@ namespace UIClient
                     Presenter.EditEmployeeShowDialog((EmployeeCS)grid.SelectedRows[0].Tag);
                 }
             }
+        }
+
+        private void MenuTray_AddDepartment_Click(object sender, EventArgs e)
+        {
+            Presenter.AddDepartmentShowDialog(null);
+        }
+
+        private void MenuTray_AddEmployee_Click(object sender, EventArgs e)
+        {
+            Presenter.AddEmployeeShowDialog(null);
         }
 
         private void MenuTray_EditMenuItem_DropDownOpened(object sender, EventArgs e)

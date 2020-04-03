@@ -30,13 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.DepartmentStructureTreeView = new Controlls.DepartmentTreeView();
-            this.EmployeeDataGridView = new Controlls.EmployeeDataGridView();
+            this.DepartmentStructureTreeView = new UIClient.Controlls.DepartmentTreeView();
+            this.EmployeeDataGridView = new UIClient.Controlls.EmployeeDataGridView();
             this.employeeView_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.add_toolStripMenuItem1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.departmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.employeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripDropDownButton();
@@ -131,7 +131,7 @@
             this.menuStrip1.ContextMenuStrip = this.employeeView_contextMenuStrip;
             this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
+            this.add_toolStripMenuItem1,
             this.editToolStripMenuItem,
             this.deleteToolStripMenuItem,
             this.reloadStripMenuItem5});
@@ -142,30 +142,30 @@
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // toolStripMenuItem1
+            // add_toolStripMenuItem1
             // 
-            this.toolStripMenuItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.add_toolStripMenuItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.add_toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.departmentToolStripMenuItem,
             this.employeeToolStripMenuItem});
-            this.toolStripMenuItem1.Image = global::UIClient.Properties.Resources.add;
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(29, 20);
-            this.toolStripMenuItem1.Text = "toolStripMenuItem1";
+            this.add_toolStripMenuItem1.Image = global::UIClient.Properties.Resources.add;
+            this.add_toolStripMenuItem1.Name = "add_toolStripMenuItem1";
+            this.add_toolStripMenuItem1.Size = new System.Drawing.Size(29, 20);
+            this.add_toolStripMenuItem1.Text = "toolStripMenuItem1";
             // 
             // departmentToolStripMenuItem
             // 
             this.departmentToolStripMenuItem.Name = "departmentToolStripMenuItem";
             this.departmentToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.departmentToolStripMenuItem.Text = "Добавить подразделение";
-            this.departmentToolStripMenuItem.Click += new System.EventHandler(this.DepartmentToolStripMenuItem_Click);
+            this.departmentToolStripMenuItem.Click += new System.EventHandler(this.MenuTray_AddDepartment_Click);
             // 
             // employeeToolStripMenuItem
             // 
             this.employeeToolStripMenuItem.Name = "employeeToolStripMenuItem";
             this.employeeToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.employeeToolStripMenuItem.Text = "Добавить сотрудника";
-            this.employeeToolStripMenuItem.Click += new System.EventHandler(this.EmployeeToolStripMenuItem_Click);
+            this.employeeToolStripMenuItem.Click += new System.EventHandler(this.MenuTray_AddEmployee_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -282,7 +282,7 @@
         public Controlls.DepartmentTreeView DepartmentStructureTreeView;
         public Controlls.EmployeeDataGridView EmployeeDataGridView;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripDropDownButton add_toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem departmentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem employeeToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip employeeView_contextMenuStrip;

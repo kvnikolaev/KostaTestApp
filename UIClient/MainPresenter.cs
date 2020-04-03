@@ -18,7 +18,7 @@ namespace UIClient
         #region Privates
         private readonly ServiceConnector _serviceManager = new ServiceConnector();
 
-        private List<DepartmentCS> _departmentStructure;
+        private List<DepartmentCS> _departmentStructure = new List<DepartmentCS>();
 
         private MainForm _mainForm;
 
@@ -32,30 +32,52 @@ namespace UIClient
         public MainPresenter(MainForm mainForm)
         {
             _mainForm = mainForm;
-            // Добавление древо подразделений на форму, список сотрудников отображается через событие AfterSelect
-            mainForm.DepartmentStructureTreeView.Nodes.AddRange(this.LoadDepartmentStructure());
             // Подготовка столбцов DataGrid для списка сотрудников
             mainForm.EmployeeDataGridView.SetUpGrid();
+
             mainForm.Presenter = this;
+            mainForm.Load += new EventHandler(MainForm_Load);
             Application.Run(mainForm);
         }
 
-        #region To Service Methods
+        private async void MainForm_Load(object sender, EventArgs e)
+        {
+            // Добавление древо подразделений на форму, список сотрудников отображается через событие AfterSelect
+            _mainForm.DepartmentStructureTreeView.Nodes.AddRange(await this.LoadDepartmentStructure());
+        }
+
+        #region Department Structure Methods
         /// <summary>
         /// Выполняет запрос сервиса к дб
         /// </summary>
         /// <returns></returns>
-        private System.Windows.Forms.TreeNode[] LoadDepartmentStructure()
+        private async Task<System.Windows.Forms.TreeNode[]> LoadDepartmentStructure()
         {
             List<System.Windows.Forms.TreeNode> result = new List<System.Windows.Forms.TreeNode>();
-            //try как тут трай кетчить??
-            //{
-                _departmentStructure = _serviceManager.GetDepartmentStructureWithEmployees().ToList();
-            //}
+            try 
+            {
+                _departmentStructure = (await _serviceManager.GetDepartmentStructureWithEmployees()).ToList();
+            }
+
+            // форматировать для метода 
+            catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
+            {
+                // сообщение об ошибке для пользователя
+                MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            {
+                // неизвестная ошибка на сервисе
+                MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
+            {
+                MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //!! TODO лог ошибки
+            }
 
 
-
-            foreach(var dep in _departmentStructure)
+            foreach (var dep in _departmentStructure)
             {
                 result.Add(GetSubNodes(dep));
             }
@@ -108,12 +130,12 @@ namespace UIClient
         /// </summary>
         /// <param name="grid"></param>
         /// <param name="department"></param>
-        public void SelectEmployeeToGrid(DepartmentCS department)
+        public async void SelectEmployeeToGrid(DepartmentCS department)
         {
             try
             {
                 _mainForm.EmployeeDataGridView.Rows.Clear();
-                var employees = _serviceManager.GetEmployeesByDepartment(department.ID);
+                var employees = await _serviceManager.GetEmployeesByDepartment(department.ID);
                 _mainForm.EmployeeDataGridView.SelectEmployeeToGrid(employees.ToArray());
             }
             catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
@@ -136,7 +158,7 @@ namespace UIClient
 
 
         #region Add methods
-        public void AddDepartmentShowDialog(DepartmentCS toDepartment)
+        public async void AddDepartmentShowDialog(DepartmentCS toDepartment)
         {
             try
             {
@@ -147,7 +169,7 @@ namespace UIClient
                 if (AddDepartmentForm.ShowDialog() == DialogResult.OK)
                 {
                     var t = (DepartmentCS)AddDepartmentForm.RepresentedValue;
-                    t.ID = _serviceManager.AddDepartment(t);
+                    t.ID = await _serviceManager.AddDepartment(t);
 
                     // обновление интерфейса если нужно
                     LocallyAddDepartment(t);
@@ -170,7 +192,7 @@ namespace UIClient
             }
         }
 
-        public void AddEmployeeShowDialog(DepartmentCS toDepartment)
+        public async void AddEmployeeShowDialog(DepartmentCS toDepartment)
         {
             try
             {
@@ -181,7 +203,7 @@ namespace UIClient
                 if (AddEmployeeForm.ShowDialog() == DialogResult.OK)
                 {
                     var t = (EmployeeCS)AddEmployeeForm.RepresentedValue;
-                    t.ID = _serviceManager.AddEmployee(t);
+                    t.ID = await _serviceManager.AddEmployee(t);
 
                     // обновление интерфейса если нужно
                     var selectedDep = (DepartmentCS)_mainForm.DepartmentStructureTreeView.SelectedNode.Tag;
@@ -226,7 +248,7 @@ namespace UIClient
        
         #region Edit methods
 
-        public void EditDepartmentShowDialog(DepartmentCS department)
+        public async void EditDepartmentShowDialog(DepartmentCS department)
         {
             try
             {
@@ -240,7 +262,7 @@ namespace UIClient
                 {
                     var editedDepartment = (DepartmentCS)this.AddDepartmentForm.RepresentedValue;
                     editedDepartment.ID = department.ID;
-                    _serviceManager.EditDepartment(editedDepartment);
+                    await _serviceManager.EditDepartment(editedDepartment);
 
                     LoccalyUpdateDepartments(department, editedDepartment);
                 }
@@ -262,7 +284,7 @@ namespace UIClient
             }
         }
 
-        public void EditEmployeeShowDialog(EmployeeCS employee)
+        public async void EditEmployeeShowDialog(EmployeeCS employee)
         {
             try
             {
@@ -274,7 +296,7 @@ namespace UIClient
                 {
                     var t = (EmployeeCS)this.AddEmployeeForm.RepresentedValue;
                     t.ID = employee.ID;
-                    _serviceManager.EditEmployee(t);
+                    await _serviceManager.EditEmployee(t);
 
                     // обновление интерфейса если нужно
                     var selectedDep = (DepartmentCS)_mainForm.DepartmentStructureTreeView.SelectedNode.Tag;
@@ -315,11 +337,11 @@ namespace UIClient
         #endregion
 
         #region Delete methods
-        public void DeleteDepartment(DepartmentCS department)
+        public async void DeleteDepartment(DepartmentCS department)
         {
             try
             {
-                _serviceManager.DeleteDepartment(department);
+                await _serviceManager.DeleteDepartment(department);
 
                 LocallyDeleteDepartment(department);
             }
@@ -340,11 +362,11 @@ namespace UIClient
             }
         }
 
-        public void DeleteEmployee(EmployeeCS employee)
+        public async void DeleteEmployee(EmployeeCS employee)
         {
             try
             {
-                _serviceManager.DeleteEmployee(employee);
+                await _serviceManager.DeleteEmployee(employee);
 
                 // обновление интерфейса если нужно
                 var selectedDep = (DepartmentCS)_mainForm.DepartmentStructureTreeView.SelectedNode.Tag;
@@ -387,14 +409,14 @@ namespace UIClient
         #region Update UI methods
         public void Update()
         {
-            _mainForm.DepartmentStructureTreeView.UpdateDepartments(this.LoadDepartmentStructure());
+            //_mainForm.DepartmentStructureTreeView.UpdateDepartments(this.LoadDepartmentStructure());
         }
 
-        public void UpdateVisibleEmployees(DepartmentCS department)
+        public async void UpdateVisibleEmployees(DepartmentCS department)
         {
             try
             {
-                var employees = _serviceManager.GetEmployeesByDepartment(department.ID);
+                var employees = await _serviceManager.GetEmployeesByDepartment(department.ID);
                 var selectedRows = _mainForm.EmployeeDataGridView.SelectedRows[0].Index;
                 _mainForm.EmployeeDataGridView.Rows.Clear();
                 _mainForm.EmployeeDataGridView.SelectEmployeeToGrid(employees.ToArray());
