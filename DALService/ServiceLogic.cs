@@ -41,26 +41,43 @@ namespace DALService
                     return result;
                 }
             }
-            catch (SqlException e) //!! ненужно
+            catch (DataException ex)
             {
-                throw new FaultException();
+                _loger.Warn(ex, "Проблема запроса структуры подразделений.");
+                var fault = new DefaultFault(ex.Message);
+                throw new FaultException<DefaultFault>(fault);
             }
-            catch (DataException e)
+            catch (Exception ex)
             {
-                throw new FaultException<DataException>(e);
+                _loger.Error(ex, "Во время запроса структуры подразделений произошла ошибка.");
+                throw;
             }
         }
 
         public IEnumerable<Employee_dto> GetEmployeesByDepartment(Guid departmentID)
         {
-            using (var db = new TestDBEntities())
+            try
             {
-                var t = db.Set<Employee>().Where(e => e.DepartmentID == departmentID).AsNoTracking()
-                    .ProjectTo<Employee_dto>(new MapperConfiguration(cfg => cfg.AddProfile<MapperProfile>()))
-                    .ToArray();
+                using (var db = new TestDBEntities())
+                {
+                    var t = db.Set<Employee>().Where(e => e.DepartmentID == departmentID).AsNoTracking()
+                        .ProjectTo<Employee_dto>(new MapperConfiguration(cfg => cfg.AddProfile<MapperProfile>()))
+                        .ToArray();
 
-                _loger.Info("Запрошен список сотрудников подразделения " + departmentID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
-                return t;
+                    _loger.Info("Запрошен список сотрудников подразделения " + departmentID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
+                    return t;
+                }
+            }
+            catch (DataException ex)
+            {
+                _loger.Warn(ex, "Проблема при получении списка сотрудников по GUID подразделения: " + departmentID);
+                var fault = new DefaultFault(ex.Message);
+                throw new FaultException<DefaultFault>(fault);
+            }
+            catch (Exception ex)
+            {
+                _loger.Error(ex, "Во время получения сотрудников подразделения произошла ошибка.");
+                throw;
             }
         }
 
@@ -80,7 +97,7 @@ namespace DALService
             }
             catch (DataException ex)
             {
-                _loger.Warn(ex, "Ошибка добавления сотрудника " + employee.ToJson());
+                _loger.Warn(ex, "Проблема добавления сотрудника " + employee.ToJson());
                 var fault = new DefaultFault(ex.Message);
                 throw new FaultException<DefaultFault>(fault);
             }
@@ -93,61 +110,117 @@ namespace DALService
 
         public Guid AddDepartment(Department_dto department)
         {
-            using (var db = new TestDBEntities())
+            try
             {
-                var entity = mapper.Map<Department>(department);
-                entity.ID = Guid.NewGuid();
-                db.Set<Department>().Add(entity);
-                db.SaveChanges();
+                using (var db = new TestDBEntities())
+                {
+                    var entity = mapper.Map<Department>(department);
+                    entity.ID = Guid.NewGuid();
+                    db.Set<Department>().Add(entity);
+                    db.SaveChanges();
 
-                _loger.Info("Добавлено подразделение " + entity.ID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
-                return entity.ID;
+                    _loger.Info("Добавлено подразделение " + entity.ID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
+                    return entity.ID;
+                }
+            }
+            catch (DataException ex)
+            {
+                _loger.Warn(ex, "Проблема добавления подразделения " + department.ToJson());
+                var fault = new DefaultFault(ex.Message);
+                throw new FaultException<DefaultFault>(fault);
+            }
+            catch (Exception ex)
+            {
+                _loger.Error(ex, "Во время добавления подразделения что-то пошло совсем не так.");
+                throw;
             }
         }
 
         public void EditEmployee(Employee_dto employee)
         {
-            using (var db = new TestDBEntities())
+            try
             {
-                var entity = mapper.Map<Employee>(employee);
+                using (var db = new TestDBEntities())
+                {
+                    var entity = mapper.Map<Employee>(employee);
 
-                var originalEntity = db.Set<Employee>().Where(el => el.ID == entity.ID).SingleOrDefault();
-                if (originalEntity == null) throw new InvalidOperationException("Record is not found in storage");
+                    var originalEntity = db.Set<Employee>().Where(el => el.ID == entity.ID).SingleOrDefault();
+                    if (originalEntity == null) throw new InvalidOperationException("Record is not found in storage");
 
-                db.Entry(originalEntity).CurrentValues.SetValues(entity);
-                db.SaveChanges();
+                    db.Entry(originalEntity).CurrentValues.SetValues(entity);
+                    db.SaveChanges();
 
-                _loger.Info("Отредактирован сотрудник " + employee.ID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
+                    _loger.Info("Отредактирован сотрудник " + employee.ID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
+                }
+            }
+            catch (DataException ex)
+            {
+                _loger.Warn(ex, "Проблема редактирования сотрудника " + employee.ToJson());
+                var fault = new DefaultFault(ex.Message);
+                throw new FaultException<DefaultFault>(fault);
+            }
+            catch (Exception ex)
+            {
+                _loger.Error(ex, "Во время редактирования сотрудника что-то пошло совсем не так.");
+                throw;
             }
         }
 
         public void EditDepartment(Department_dto department)
         {
-            using (var db = new TestDBEntities())
+            try
             {
-                var entity = mapper.Map<Department>(department);
+                using (var db = new TestDBEntities())
+                {
+                    var entity = mapper.Map<Department>(department);
 
-                var originalEntity = db.Set<Department>().Where(el => el.ID == entity.ID).SingleOrDefault();
-                if (originalEntity == null) throw new InvalidOperationException("Record is not found in storage");
+                    var originalEntity = db.Set<Department>().Where(el => el.ID == entity.ID).SingleOrDefault();
+                    if (originalEntity == null) throw new InvalidOperationException("Record is not found in storage");
 
-                db.Entry(originalEntity).CurrentValues.SetValues(entity);
-                db.SaveChanges();
+                    db.Entry(originalEntity).CurrentValues.SetValues(entity);
+                    db.SaveChanges();
 
-                _loger.Info("Отредактировано подразделение " + department.ID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
+                    _loger.Info("Отредактировано подразделение " + department.ID + ". Строка подключения: " + db.Database.Connection.ConnectionString);
+                }
+            }
+            catch (DataException ex)
+            {
+                _loger.Warn(ex, "Проблема редактирования подразделения " + department.ToJson());
+                var fault = new DefaultFault(ex.Message);
+                throw new FaultException<DefaultFault>(fault);
+            }
+            catch (Exception ex)
+            {
+                _loger.Error(ex, "Во время редактирования подразделения что-то пошло совсем не так.");
+                throw;
             }
         }
 
         public void DeleteEmployee(Employee_dto employee)
         {
-            using (var db = new TestDBEntities())
+            try
             {
-                var entity = mapper.Map<Employee>(employee);
+                using (var db = new TestDBEntities())
+                {
+                    var entity = mapper.Map<Employee>(employee);
 
-                db.Set<Employee>().Attach(entity);
-                var t = db.Set<Employee>().Remove(entity);
-                db.SaveChanges();
+                    db.Set<Employee>().Attach(entity);
+                    var t = db.Set<Employee>().Remove(entity);
+                    db.SaveChanges();
 
-                _loger.Info("Удален сотрудник " + employee.ToJson() + ". Строка подключения: " + db.Database.Connection.ConnectionString); ;
+                    _loger.Info("Удален сотрудник " + employee.ToJson() + ". Строка подключения: " + db.Database.Connection.ConnectionString); ;
+                }
+            }
+            catch (DataException ex)
+            {
+                _loger.Warn(ex, "Проблема удаления сотрудника " + employee.ToJson());
+                var fault = new DefaultFault(ex.Message);
+                throw new FaultException<DefaultFault>(fault);
+            }
+            catch (Exception ex)
+            {
+                _loger.Error(ex, "Во время удаления сотрудника что-то пошло совсем не так.");
+                throw;
             }
         }
 
@@ -165,12 +238,20 @@ namespace DALService
                     _loger.Info("Удалено подразделение " + department.ToJson() + ". Строка подключения: " + db.Database.Connection.ConnectionString);
                 }
             }
-            catch(DataException e)
+            catch (DataException ex)
             {
-
+                _loger.Warn(ex, "Проблема удаления подразделения " + department.ToJson());
+                var fault = new DefaultFault(ex.Message);
+                throw new FaultException<DefaultFault>(fault);
+            }
+            catch (Exception ex)
+            {
+                _loger.Error(ex, "Во время удаления подразделения что-то пошло совсем не так.");
+                throw;
             }
         }
 
+        [Obsolete]
         public int RemoveEmployee(Employee_dto employee)
         {
             throw new NotImplementedException("Нельзя ничего удалять из бд");

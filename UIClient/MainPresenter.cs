@@ -47,9 +47,14 @@ namespace UIClient
         /// <returns></returns>
         private System.Windows.Forms.TreeNode[] LoadDepartmentStructure()
         {
-            _departmentStructure = _serviceManager.GetDepartmentStructureWithEmployees().ToList();
             List<System.Windows.Forms.TreeNode> result = new List<System.Windows.Forms.TreeNode>();
-           
+            //try как тут трай кетчить??
+            //{
+                _departmentStructure = _serviceManager.GetDepartmentStructureWithEmployees().ToList();
+            //}
+
+
+
             foreach(var dep in _departmentStructure)
             {
                 result.Add(GetSubNodes(dep));
@@ -105,9 +110,27 @@ namespace UIClient
         /// <param name="department"></param>
         public void SelectEmployeeToGrid(DepartmentCS department)
         {
-            _mainForm.EmployeeDataGridView.Rows.Clear();
-            var employees = _serviceManager.GetEmployeesByDepartment(department.ID);
-            _mainForm.EmployeeDataGridView.SelectEmployeeToGrid(employees.ToArray());
+            try
+            {
+                _mainForm.EmployeeDataGridView.Rows.Clear();
+                var employees = _serviceManager.GetEmployeesByDepartment(department.ID);
+                _mainForm.EmployeeDataGridView.SelectEmployeeToGrid(employees.ToArray());
+            }
+            catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
+            {
+                // сообщение об ошибке для пользователя
+                MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            {
+                // неизвестная ошибка на сервисе
+                MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
+            {
+                MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //!! TODO лог ошибки
+            }
         }
 
 
@@ -115,17 +138,35 @@ namespace UIClient
         #region Add methods
         public void AddDepartmentShowDialog(DepartmentCS toDepartment)
         {
-            if (AddDepartmentForm == null) AddDepartmentForm = new AddDepartmentForm();
-            this.AddDepartmentForm.DepartmentList = this.GetDepartmentList();
-            this.AddDepartmentForm.SelectedDepartment = toDepartment;
-            this.AddDepartmentForm.Text = "Новое подразделение";
-            if (AddDepartmentForm.ShowDialog() == DialogResult.OK)
+            try
             {
-                var t = (DepartmentCS)AddDepartmentForm.RepresentedValue;
-                t.ID = _serviceManager.AddDepartment(t);
+                if (AddDepartmentForm == null) AddDepartmentForm = new AddDepartmentForm();
+                this.AddDepartmentForm.DepartmentList = this.GetDepartmentList();
+                this.AddDepartmentForm.SelectedDepartment = toDepartment;
+                this.AddDepartmentForm.Text = "Новое подразделение";
+                if (AddDepartmentForm.ShowDialog() == DialogResult.OK)
+                {
+                    var t = (DepartmentCS)AddDepartmentForm.RepresentedValue;
+                    t.ID = _serviceManager.AddDepartment(t);
 
-                // обновление интерфейса если нужно
-                LocallyAddDepartment(t);
+                    // обновление интерфейса если нужно
+                    LocallyAddDepartment(t);
+                }
+            }
+            catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
+            {
+                // сообщение об ошибке для пользователя
+                MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            {
+                // неизвестная ошибка на сервисе
+                MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
+            {
+                MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //!! TODO лог ошибки
             }
         }
 
@@ -155,7 +196,7 @@ namespace UIClient
                 // сообщение об ошибке для пользователя
                 MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (FaultException ex) // непредвидимая проблема на сервисе, см лог на сервисе
+            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
             {
                 // неизвестная ошибка на сервисе
                 MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -187,40 +228,76 @@ namespace UIClient
 
         public void EditDepartmentShowDialog(DepartmentCS department)
         {
-            if (AddDepartmentForm == null) AddDepartmentForm = new AddDepartmentForm();
-            var allDeps = this.GetDepartmentList();
-            allDeps.Remove(department); // чтобы нельзя было указать родительским самого себя 
-            this.AddDepartmentForm.DepartmentList = allDeps;
-            this.AddDepartmentForm.RepresentedValue = department;
-            this.AddDepartmentForm.Text = "Редактирование подразделения";
-            if (AddDepartmentForm.ShowDialog() == DialogResult.OK)
+            try
             {
-                var editedDepartment = (DepartmentCS)this.AddDepartmentForm.RepresentedValue;
-                editedDepartment.ID = department.ID;
-                _serviceManager.EditDepartment(editedDepartment);
+                if (AddDepartmentForm == null) AddDepartmentForm = new AddDepartmentForm();
+                var allDeps = this.GetDepartmentList();
+                allDeps.Remove(department); // чтобы нельзя было указать родительским самого себя 
+                this.AddDepartmentForm.DepartmentList = allDeps;
+                this.AddDepartmentForm.RepresentedValue = department;
+                this.AddDepartmentForm.Text = "Редактирование подразделения";
+                if (AddDepartmentForm.ShowDialog() == DialogResult.OK)
+                {
+                    var editedDepartment = (DepartmentCS)this.AddDepartmentForm.RepresentedValue;
+                    editedDepartment.ID = department.ID;
+                    _serviceManager.EditDepartment(editedDepartment);
 
-                LoccalyUpdateDepartments(department, editedDepartment);
+                    LoccalyUpdateDepartments(department, editedDepartment);
+                }
+            }
+            catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
+            {
+                // сообщение об ошибке для пользователя
+                MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            {
+                // неизвестная ошибка на сервисе
+                MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
+            {
+                MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //!! TODO лог ошибки
             }
         }
 
         public void EditEmployeeShowDialog(EmployeeCS employee)
         {
-            if (AddEmployeeForm == null) AddEmployeeForm = new AddEmployeeForm();
-            this.AddEmployeeForm.DepartmentList = this.GetDepartmentList();
-            this.AddEmployeeForm.RepresentedValue = employee;
-            this.AddEmployeeForm.Text = "Редактирование сотрудника";
-            if (AddEmployeeForm.ShowDialog() == DialogResult.OK)
+            try
             {
-                var t = (EmployeeCS)this.AddEmployeeForm.RepresentedValue;
-                t.ID = employee.ID;
-                _serviceManager.EditEmployee(t);
-
-                // обновление интерфейса если нужно
-                var selectedDep = (DepartmentCS)_mainForm.DepartmentStructureTreeView.SelectedNode.Tag;
-                if (t.DepartmentID == selectedDep.ID)
+                if (AddEmployeeForm == null) AddEmployeeForm = new AddEmployeeForm();
+                this.AddEmployeeForm.DepartmentList = this.GetDepartmentList();
+                this.AddEmployeeForm.RepresentedValue = employee;
+                this.AddEmployeeForm.Text = "Редактирование сотрудника";
+                if (AddEmployeeForm.ShowDialog() == DialogResult.OK)
                 {
-                    UpdateVisibleEmployees(selectedDep);
+                    var t = (EmployeeCS)this.AddEmployeeForm.RepresentedValue;
+                    t.ID = employee.ID;
+                    _serviceManager.EditEmployee(t);
+
+                    // обновление интерфейса если нужно
+                    var selectedDep = (DepartmentCS)_mainForm.DepartmentStructureTreeView.SelectedNode.Tag;
+                    if (t.DepartmentID == selectedDep.ID)
+                    {
+                        UpdateVisibleEmployees(selectedDep);
+                    }
                 }
+            }
+            catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
+            {
+                // сообщение об ошибке для пользователя
+                MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            {
+                // неизвестная ошибка на сервисе
+                MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
+            {
+                MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //!! TODO лог ошибки
             }
         }
 
@@ -240,20 +317,56 @@ namespace UIClient
         #region Delete methods
         public void DeleteDepartment(DepartmentCS department)
         {
-            _serviceManager.DeleteDepartment(department);
+            try
+            {
+                _serviceManager.DeleteDepartment(department);
 
-            LocallyDeleteDepartment(department);
+                LocallyDeleteDepartment(department);
+            }
+            catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
+            {
+                // сообщение об ошибке для пользователя
+                MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            {
+                // неизвестная ошибка на сервисе
+                MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
+            {
+                MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //!! TODO лог ошибки
+            }
         }
 
         public void DeleteEmployee(EmployeeCS employee)
         {
-            _serviceManager.DeleteEmployee(employee);
-
-            // обновление интерфейса если нужно
-            var selectedDep = (DepartmentCS)_mainForm.DepartmentStructureTreeView.SelectedNode.Tag;
-            if (employee.DepartmentID == selectedDep.ID)
+            try
             {
-                UpdateVisibleEmployees(selectedDep);
+                _serviceManager.DeleteEmployee(employee);
+
+                // обновление интерфейса если нужно
+                var selectedDep = (DepartmentCS)_mainForm.DepartmentStructureTreeView.SelectedNode.Tag;
+                if (employee.DepartmentID == selectedDep.ID)
+                {
+                    UpdateVisibleEmployees(selectedDep);
+                }
+            }
+            catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
+            {
+                // сообщение об ошибке для пользователя
+                MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            {
+                // неизвестная ошибка на сервисе
+                MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
+            {
+                MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //!! TODO лог ошибки
             }
         }
 
@@ -279,13 +392,31 @@ namespace UIClient
 
         public void UpdateVisibleEmployees(DepartmentCS department)
         {
-            var employees = _serviceManager.GetEmployeesByDepartment(department.ID);
-            var selectedRows = _mainForm.EmployeeDataGridView.SelectedRows[0].Index;
-            _mainForm.EmployeeDataGridView.Rows.Clear();
-            _mainForm.EmployeeDataGridView.SelectEmployeeToGrid(employees.ToArray());
+            try
+            {
+                var employees = _serviceManager.GetEmployeesByDepartment(department.ID);
+                var selectedRows = _mainForm.EmployeeDataGridView.SelectedRows[0].Index;
+                _mainForm.EmployeeDataGridView.Rows.Clear();
+                _mainForm.EmployeeDataGridView.SelectEmployeeToGrid(employees.ToArray());
 
-            _mainForm.EmployeeDataGridView.ClearSelection();
-            _mainForm.EmployeeDataGridView.Rows[selectedRows].Selected = true;
+                _mainForm.EmployeeDataGridView.ClearSelection();
+                _mainForm.EmployeeDataGridView.Rows[selectedRows].Selected = true;
+            }
+            catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
+            {
+                // сообщение об ошибке для пользователя
+                MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            {
+                // неизвестная ошибка на сервисе
+                MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
+            {
+                MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //!! TODO лог ошибки
+            }
         }
 
         
