@@ -10,40 +10,42 @@ using UIClient.Controlls;
 using UIClient.AddDialogs;
 using ServiceManager.ClientSideClasses;
 using System.ServiceModel;
+using NLog;
 
 namespace UIClient
 {
     public class MainPresenter
     {
         #region Privates
-        private readonly ServiceConnector _serviceManager = new ServiceConnector();
-
-        private List<DepartmentCS> _departmentStructure = new List<DepartmentCS>();
-
-        private MainForm _mainForm;
+        private ILogger _logger;
 
         #endregion
 
         #region Dependencies Properties
+        private readonly ServiceConnector _serviceManager = new ServiceConnector();
+
+        private List<DepartmentCS> _departmentStructure = new List<DepartmentCS>();
+
+        public MainForm MainForm { get; private set; }
         public BaseDialogForm AddEmployeeForm { get; set; }
         public BaseDialogForm AddDepartmentForm { get; set; }
         #endregion
 
-        public MainPresenter(MainForm mainForm)
+        public MainPresenter(MainForm mainForm, ILogger logger)
         {
-            _mainForm = mainForm;
+            _logger = logger;
+            MainForm = mainForm;
             // Подготовка столбцов DataGrid для списка сотрудников
             mainForm.EmployeeDataGridView.SetUpGrid();
 
             mainForm.Presenter = this;
             mainForm.Load += new EventHandler(MainForm_Load);
-            Application.Run(mainForm);
         }
 
         private async void MainForm_Load(object sender, EventArgs e)
         {
             // Добавление древо подразделений на форму, список сотрудников отображается через событие AfterSelect
-            _mainForm.DepartmentStructureTreeView.Nodes.AddRange(await this.LoadDepartmentStructure());
+            MainForm.DepartmentStructureTreeView.Nodes.AddRange(await this.LoadDepartmentStructure());
         }
 
         #region Department Structure Methods
@@ -134,9 +136,9 @@ namespace UIClient
         {
             try
             {
-                _mainForm.EmployeeDataGridView.Rows.Clear();
+                MainForm.EmployeeDataGridView.Rows.Clear();
                 var employees = await _serviceManager.GetEmployeesByDepartment(department.ID);
-                _mainForm.EmployeeDataGridView.SelectEmployeeToGrid(employees.ToArray());
+                MainForm.EmployeeDataGridView.SelectEmployeeToGrid(employees.ToArray());
             }
             catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
             {
@@ -206,7 +208,7 @@ namespace UIClient
                     t.ID = await _serviceManager.AddEmployee(t);
 
                     // обновление интерфейса если нужно
-                    var selectedDep = (DepartmentCS)_mainForm.DepartmentStructureTreeView.SelectedNode.Tag;
+                    var selectedDep = (DepartmentCS)MainForm.DepartmentStructureTreeView.SelectedNode.Tag;
                     if (t.DepartmentID == selectedDep.ID)
                     {
                         UpdateVisibleEmployees(selectedDep);
@@ -242,7 +244,7 @@ namespace UIClient
                     ChildDepartments.Add(department);
             }
             // обновление отображения данных
-            _mainForm.DepartmentStructureTreeView.AddDepartment(department);
+            MainForm.DepartmentStructureTreeView.AddDepartment(department);
         }
         #endregion
        
@@ -299,7 +301,7 @@ namespace UIClient
                     await _serviceManager.EditEmployee(t);
 
                     // обновление интерфейса если нужно
-                    var selectedDep = (DepartmentCS)_mainForm.DepartmentStructureTreeView.SelectedNode.Tag;
+                    var selectedDep = (DepartmentCS)MainForm.DepartmentStructureTreeView.SelectedNode.Tag;
                     if (t.DepartmentID == selectedDep.ID)
                     {
                         UpdateVisibleEmployees(selectedDep);
@@ -331,7 +333,7 @@ namespace UIClient
             oldDep.Code = newVersion.Code;
 
             // обновление отображения данных 
-            _mainForm.DepartmentStructureTreeView.EditDepartment(oldVersion, newVersion);
+            MainForm.DepartmentStructureTreeView.EditDepartment(oldVersion, newVersion);
         }
 
         #endregion
@@ -369,7 +371,7 @@ namespace UIClient
                 await _serviceManager.DeleteEmployee(employee);
 
                 // обновление интерфейса если нужно
-                var selectedDep = (DepartmentCS)_mainForm.DepartmentStructureTreeView.SelectedNode.Tag;
+                var selectedDep = (DepartmentCS)MainForm.DepartmentStructureTreeView.SelectedNode.Tag;
                 if (employee.DepartmentID == selectedDep.ID)
                 {
                     UpdateVisibleEmployees(selectedDep);
@@ -399,7 +401,7 @@ namespace UIClient
                 .ChildDepartments.Remove(department);
 
             // обновление отображения данных
-            _mainForm.DepartmentStructureTreeView.Nodes.Remove(_mainForm.DepartmentStructureTreeView.SelectedNode);
+            MainForm.DepartmentStructureTreeView.Nodes.Remove(MainForm.DepartmentStructureTreeView.SelectedNode);
         }
 
 
@@ -417,12 +419,12 @@ namespace UIClient
             try
             {
                 var employees = await _serviceManager.GetEmployeesByDepartment(department.ID);
-                var selectedRows = _mainForm.EmployeeDataGridView.SelectedRows[0].Index;
-                _mainForm.EmployeeDataGridView.Rows.Clear();
-                _mainForm.EmployeeDataGridView.SelectEmployeeToGrid(employees.ToArray());
+                var selectedRows = MainForm.EmployeeDataGridView.SelectedRows[0].Index;
+                MainForm.EmployeeDataGridView.Rows.Clear();
+                MainForm.EmployeeDataGridView.SelectEmployeeToGrid(employees.ToArray());
 
-                _mainForm.EmployeeDataGridView.ClearSelection();
-                _mainForm.EmployeeDataGridView.Rows[selectedRows].Selected = true;
+                MainForm.EmployeeDataGridView.ClearSelection();
+                MainForm.EmployeeDataGridView.Rows[selectedRows].Selected = true;
             }
             catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
             {
