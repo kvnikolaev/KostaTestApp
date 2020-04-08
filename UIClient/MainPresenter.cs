@@ -75,7 +75,7 @@ namespace UIClient
             catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
             {
                 MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //!! TODO лог ошибки
+                _logger.Error(ex, "Ошибка во время зарузки");
             }
 
 
@@ -153,7 +153,7 @@ namespace UIClient
             catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
             {
                 MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //!! TODO лог ошибки
+                _logger.Error(ex, "Ошибка в загрузке сотрудников");
             }
         }
 
@@ -190,7 +190,7 @@ namespace UIClient
             catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
             {
                 MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //!! TODO лог ошибки
+                _logger.Error(ex, "Ошибка в добавлении подразделения");
             }
         }
 
@@ -228,7 +228,7 @@ namespace UIClient
             catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
             {
                 MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //!! TODO лог ошибки
+                _logger.Error(ex, "Ошибка в добавлении сотрудников");
             }
         }
         private void LocallyAddDepartment(DepartmentCS department)
@@ -282,7 +282,7 @@ namespace UIClient
             catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
             {
                 MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //!! TODO лог ошибки
+                _logger.Error(ex, "Ошибка в редактировании подразделения");
             }
         }
 
@@ -321,7 +321,7 @@ namespace UIClient
             catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
             {
                 MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //!! TODO лог ошибки
+                _logger.Error(ex, "Ошибка в редактировании сотрудника");
             }
         }
 
@@ -360,7 +360,7 @@ namespace UIClient
             catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
             {
                 MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //!! TODO лог ошибки
+                _logger.Error(ex, "Ошибка в удалении подразделения");
             }
         }
 
@@ -390,7 +390,7 @@ namespace UIClient
             catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
             {
                 MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //!! TODO лог ошибки
+                _logger.Error(ex, "Ошибка в удалении сотрудника");
             }
         }
 
@@ -439,7 +439,7 @@ namespace UIClient
             catch (Exception ex) // что-то совсем пошло не так (включая CommunicationException и TimeOutException)
             {
                 MessageBox.Show("Возникла ошибка: " + ex.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //!! TODO лог ошибки
+                _logger.Error(ex, "Ошибка обновления данных");
             }
         }
 
