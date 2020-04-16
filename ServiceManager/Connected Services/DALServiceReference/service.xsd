@@ -4,7 +4,9 @@
   <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:element name="GetDepartmentStructureWithEmployees">
     <xs:complexType>
-      <xs:sequence />
+      <xs:sequence>
+        <xs:element minOccurs="0" name="connectionString" nillable="true" type="xs:string" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetDepartmentStructureWithEmployeesResponse">
@@ -18,6 +20,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="departmentID" type="q2:guid" />
+        <xs:element minOccurs="0" name="connectionString" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -32,6 +35,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/DALService.DTO" minOccurs="0" name="employee" nillable="true" type="q4:Employee_dto" />
+        <xs:element minOccurs="0" name="connectionString" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -46,6 +50,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/DALService.DTO" minOccurs="0" name="department" nillable="true" type="q5:Department_dto" />
+        <xs:element minOccurs="0" name="connectionString" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -60,6 +65,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/DALService.DTO" minOccurs="0" name="employee" nillable="true" type="q7:Employee_dto" />
+        <xs:element minOccurs="0" name="connectionString" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -72,6 +78,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/DALService.DTO" minOccurs="0" name="department" nillable="true" type="q8:Department_dto" />
+        <xs:element minOccurs="0" name="connectionString" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -84,6 +91,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/DALService.DTO" minOccurs="0" name="employee" nillable="true" type="q9:Employee_dto" />
+        <xs:element minOccurs="0" name="connectionString" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -96,6 +104,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/DALService.DTO" minOccurs="0" name="department" nillable="true" type="q10:Department_dto" />
+        <xs:element minOccurs="0" name="connectionString" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

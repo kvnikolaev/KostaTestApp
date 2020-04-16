@@ -13,10 +13,27 @@ namespace ServiceManager
     public class ServiceConnector
     {
         private DALServiceClient _client;
+        private string _defaultConnectionString = "data source=BEST-ПК;initial catalog=TestDB;integrated security=True;MultipleActiveResultSets=True";
         IMapper _mapper;
 
-        public ServiceConnector()
+        private Dictionary<string, string> _connectionStrings; // чтобы потом можно было выбирать строки
+
+        public string CurrentConnectionString { get; set; }
+
+        public bool IsNullConnectionString
         {
+            get
+            {
+                return CurrentConnectionString == null;
+                //return _connectionStrings.Count < 1;
+            }
+        }
+
+        public ServiceConnector(IConnectionStringLoader loader)
+        {
+            _connectionStrings = loader.GetConnectionStrings();
+            CurrentConnectionString = _connectionStrings.FirstOrDefault().Value;
+
             MapperConfiguration config = new MapperConfiguration(cfg => cfg.AddProfile<MapperProfile>());
             _mapper = config.CreateMapper();
         }
@@ -25,7 +42,7 @@ namespace ServiceManager
         public async Task<IEnumerable<DepartmentCS>> GetDepartmentStructureWithEmployees()
         {
             _client = new DALServiceClient();
-            var t = await _client.GetDepartmentStructureWithEmployeesAsync();//.AsEnumerable();
+            var t = await _client.GetDepartmentStructureWithEmployeesAsync(CurrentConnectionString);
             _client.Close();
             return _mapper.Map<IEnumerable<DepartmentCS>>(t);
         }
@@ -33,7 +50,7 @@ namespace ServiceManager
         public async Task<IEnumerable<EmployeeCS>> GetEmployeesByDepartment(Guid departmentID)
         {
             _client = new DALServiceClient();
-            var t = await _client.GetEmployeeByDepartmentAsync(departmentID);
+            var t = await _client.GetEmployeeByDepartmentAsync(departmentID, CurrentConnectionString);
             _client.Close();
             return _mapper.Map<IEnumerable<EmployeeCS>>(t);
         }
@@ -42,7 +59,7 @@ namespace ServiceManager
         {
             _client = new DALServiceClient();
             var t = _mapper.Map<Employee_dto>(employee);
-            var result = await _client.AddEmployeeAsync(t);
+            var result = await _client.AddEmployeeAsync(t, CurrentConnectionString);
             _client.Close();
             return result;
         }
@@ -51,7 +68,7 @@ namespace ServiceManager
         {
             _client = new DALServiceClient();
             var t = _mapper.Map<Department_dto>(department);
-            var result = await _client.AddDepartmentAsync(t);
+            var result = await _client.AddDepartmentAsync(t, CurrentConnectionString);
             _client.Close();
             return result;
         }
@@ -60,7 +77,7 @@ namespace ServiceManager
         {
             _client = new DALServiceClient();
             var t = _mapper.Map<Employee_dto>(employee);
-            await _client.EditEmployeeAsync(t);
+            await _client.EditEmployeeAsync(t, CurrentConnectionString);
             _client.Close();
         }
 
@@ -68,7 +85,7 @@ namespace ServiceManager
         {
             _client = new DALServiceClient();
             var t = _mapper.Map<Department_dto>(department);
-            await _client.EditDepartmentAsync(t);
+            await _client.EditDepartmentAsync(t, CurrentConnectionString);
             _client.Close();
         }
 
@@ -76,7 +93,7 @@ namespace ServiceManager
         {
             _client = new DALServiceClient();
             var t = _mapper.Map<Employee_dto>(employee);
-            await _client.DeleteEmployeeAsync(t);
+            await _client.DeleteEmployeeAsync(t, CurrentConnectionString);
             _client.Close();
         }
 
@@ -84,7 +101,7 @@ namespace ServiceManager
         {
             _client = new DALServiceClient();
             var t = _mapper.Map<Department_dto>(department);
-            await _client.DeleteDepartmentAsync(t);
+            await _client.DeleteDepartmentAsync(t, CurrentConnectionString);
             _client.Close();
         }
     }

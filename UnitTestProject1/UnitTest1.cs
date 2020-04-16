@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ServiceManager.ClientSideClasses;
 using System.ServiceModel;
 using System.Data;
+using UIClient;
+using System.Windows.Forms;
 
 namespace UnitTestProject1
 {
@@ -83,7 +85,7 @@ namespace UnitTestProject1
         public void FaultCheck()
         {
             var service = new ServiceLogic();
-            service.AddEmployee(allBadEmployee);
+            service.AddEmployee(allBadEmployee, "строка подключения");
         }
     }
 
@@ -140,6 +142,17 @@ namespace UnitTestProject1
             bool result = employee.Validate();
             // Assert
             Assert.IsTrue(result);
+        }
+    }
+
+    [TestClass]
+    public class UI
+    {
+        [TestMethod]
+        public void SettingWindow()
+        {
+            var t = new UIClient.ConnectionSettingsDialog.ConnectionDialog();
+            t.ShowDialog();
         }
     }
 }

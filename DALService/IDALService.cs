@@ -14,35 +14,35 @@ namespace DALService
     {
         [OperationContract]
         [FaultContract(typeof(DefaultFault))]
-        IEnumerable<Department_dto> GetDepartmentStructureWithEmployees();
+        IEnumerable<Department_dto> GetDepartmentStructureWithEmployees(string connectionString);
 
         [OperationContract]
         [FaultContract(typeof(DefaultFault))]
-        IEnumerable<Employee_dto> GetEmployeeByDepartment(Guid departmentID);
+        IEnumerable<Employee_dto> GetEmployeeByDepartment(Guid departmentID, string connectionString);
 
         [OperationContract]
         [FaultContract(typeof(DefaultFault))]
-        int AddEmployee(Employee_dto employee);
+        int AddEmployee(Employee_dto employee, string connectionString);
 
         [OperationContract]
         [FaultContract(typeof(DefaultFault))]
-        Guid AddDepartment(Department_dto department);
+        Guid AddDepartment(Department_dto department, string connectionString);
 
         [OperationContract]
         [FaultContract(typeof(DefaultFault))]
-        void EditEmployee(Employee_dto employee);
+        void EditEmployee(Employee_dto employee, string connectionString);
 
         [OperationContract]
         [FaultContract(typeof(DefaultFault))]
-        void EditDepartment(Department_dto department);
+        void EditDepartment(Department_dto department, string connectionString);
 
         [OperationContract]
         [FaultContract(typeof(DefaultFault))]
-        void DeleteEmployee(Employee_dto employee);
+        void DeleteEmployee(Employee_dto employee, string connectionString);
 
         [OperationContract]
         [FaultContract(typeof(DefaultFault))]
-        void DeleteDepartment(Department_dto department);
+        void DeleteDepartment(Department_dto department, string connectionString);
     }
 
     

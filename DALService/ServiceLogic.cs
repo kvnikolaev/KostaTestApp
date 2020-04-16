@@ -28,11 +28,11 @@ namespace DALService
             _loger = LogManager.GetCurrentClassLogger();
         }
 
-        public IEnumerable<Department_dto> GetDepartmentStructureWithEmployees()
+        public IEnumerable<Department_dto> GetDepartmentStructureWithEmployees(string connectionString)
         {
             try
             {
-                using (var db = new TestDBEntities())
+                using (var db = TestDBEntities.FactoryMethod(connectionString))
                 {
                     var t = db.Department.Include(el => el.Employee).Where(d => !(d.ParentDepartmentID.HasValue)).AsNoTracking().ToList();
                     var result = mapper.Map<IEnumerable<Department_dto>>(t);
@@ -54,11 +54,11 @@ namespace DALService
             }
         }
 
-        public IEnumerable<Employee_dto> GetEmployeesByDepartment(Guid departmentID)
+        public IEnumerable<Employee_dto> GetEmployeesByDepartment(Guid departmentID, string connectionString)
         {
             try
             {
-                using (var db = new TestDBEntities())
+                using (var db = TestDBEntities.FactoryMethod(connectionString))
                 {
                     var t = db.Set<Employee>().Where(e => e.DepartmentID == departmentID).AsNoTracking()
                         .ProjectTo<Employee_dto>(new MapperConfiguration(cfg => cfg.AddProfile<MapperProfile>()))
@@ -81,11 +81,11 @@ namespace DALService
             }
         }
 
-        public int AddEmployee(Employee_dto employee)
+        public int AddEmployee(Employee_dto employee, string connectionString)
         {
             try
             {
-                using (var db = new TestDBEntities())
+                using (var db = TestDBEntities.FactoryMethod(connectionString))
                 {
                     var entity = mapper.Map<Employee>(employee);
                     db.Set<Employee>().Add(entity);
@@ -108,11 +108,11 @@ namespace DALService
             }
         }
 
-        public Guid AddDepartment(Department_dto department)
+        public Guid AddDepartment(Department_dto department, string connectionString)
         {
             try
             {
-                using (var db = new TestDBEntities())
+                using (var db = TestDBEntities.FactoryMethod(connectionString))
                 {
                     var entity = mapper.Map<Department>(department);
                     entity.ID = Guid.NewGuid();
@@ -136,11 +136,11 @@ namespace DALService
             }
         }
 
-        public void EditEmployee(Employee_dto employee)
+        public void EditEmployee(Employee_dto employee, string connectionString)
         {
             try
             {
-                using (var db = new TestDBEntities())
+                using (var db = TestDBEntities.FactoryMethod(connectionString))
                 {
                     var entity = mapper.Map<Employee>(employee);
 
@@ -166,11 +166,11 @@ namespace DALService
             }
         }
 
-        public void EditDepartment(Department_dto department)
+        public void EditDepartment(Department_dto department, string connectionString)
         {
             try
             {
-                using (var db = new TestDBEntities())
+                using (var db = TestDBEntities.FactoryMethod(connectionString))
                 {
                     var entity = mapper.Map<Department>(department);
 
@@ -196,11 +196,11 @@ namespace DALService
             }
         }
 
-        public void DeleteEmployee(Employee_dto employee)
+        public void DeleteEmployee(Employee_dto employee, string connectionString)
         {
             try
             {
-                using (var db = new TestDBEntities())
+                using (var db = TestDBEntities.FactoryMethod(connectionString))
                 {
                     var entity = mapper.Map<Employee>(employee);
 
@@ -224,11 +224,11 @@ namespace DALService
             }
         }
 
-        public void DeleteDepartment(Department_dto department)
+        public void DeleteDepartment(Department_dto department, string connectionString)
         {
             try
             {
-                using (var db = new TestDBEntities())
+                using (var db = TestDBEntities.FactoryMethod(connectionString))
                 {
                     var entity = db.Set<Department>().Where(el => el.ID == department.ID).SingleOrDefault();
 

@@ -63,11 +63,14 @@ namespace UIClient.Controlls
 
         public void UpdateDepartments(TreeNode[] nodes)
         {
-            var selectedDepartment = (DepartmentCS)this.SelectedNode.Tag;
+            var selectedDepartment = (DepartmentCS)this.SelectedNode?.Tag; // without ?. may NullreferenceException
 
             this.Nodes.Clear();
             this.Nodes.AddRange(nodes);
-            this.SelectedNode = this.Nodes.FindByTag(selectedDepartment);
+            if (selectedDepartment != null)
+            {
+                this.SelectedNode = this.Nodes.FindByTag(selectedDepartment);
+            }
         }
     }
 }

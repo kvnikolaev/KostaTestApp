@@ -11,44 +11,44 @@ namespace DALService
     public class DALService : IDALService
     {
         private readonly ServiceLogic _logic = new ServiceLogic();
-        public IEnumerable<Department_dto> GetDepartmentStructureWithEmployees()
+        public IEnumerable<Department_dto> GetDepartmentStructureWithEmployees(string connectionString)
         {
-            return _logic.GetDepartmentStructureWithEmployees();
+            return _logic.GetDepartmentStructureWithEmployees(connectionString);
         }
 
-        public IEnumerable<Employee_dto> GetEmployeeByDepartment(Guid departmentID)
+        public IEnumerable<Employee_dto> GetEmployeeByDepartment(Guid departmentID, string connectionString)
         {
-            return _logic.GetEmployeesByDepartment(departmentID);
+            return _logic.GetEmployeesByDepartment(departmentID, connectionString);
         }
 
-        public int AddEmployee(Employee_dto employee)
+        public int AddEmployee(Employee_dto employee, string connectionString)
         {
-            return _logic.AddEmployee(employee);
+            return _logic.AddEmployee(employee, connectionString);
         }
 
-        public Guid AddDepartment(Department_dto department)
+        public Guid AddDepartment(Department_dto department, string connectionString)
         {
-            return _logic.AddDepartment(department);
+            return _logic.AddDepartment(department, connectionString);
         }
 
-        public void EditEmployee(Employee_dto employee)
+        public void EditEmployee(Employee_dto employee, string connectionString)
         {
-            _logic.EditEmployee(employee);
+            _logic.EditEmployee(employee, connectionString);
         }
 
-        public void EditDepartment(Department_dto department)
+        public void EditDepartment(Department_dto department, string connectionString)
         {
-            _logic.EditDepartment(department);
+            _logic.EditDepartment(department, connectionString);
         }
 
-        public void DeleteEmployee(Employee_dto employee)
+        public void DeleteEmployee(Employee_dto employee, string connectionString)
         {
-            _logic.DeleteEmployee(employee);
+            _logic.DeleteEmployee(employee, connectionString);
         }
 
-        public void DeleteDepartment(Department_dto department)
+        public void DeleteDepartment(Department_dto department, string connectionString)
         {
-            _logic.DeleteDepartment(department);
+            _logic.DeleteDepartment(department, connectionString);
         }
     }
 }

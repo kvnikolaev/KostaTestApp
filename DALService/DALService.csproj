@@ -52,6 +52,7 @@
     <Compile Include="EDM\Employee.cs">
       <DependentUpon>TestDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EDM\TestDBEntities.cs" />
     <Compile Include="EDM\TestDBModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

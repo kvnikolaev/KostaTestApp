@@ -18,8 +18,8 @@ namespace UIClient
         [STAThread]
         static void Main()
         {
-            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(UnhandledExceptionHandler);
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler1;
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -47,11 +47,11 @@ namespace UIClient
             Application.Run(presenter.MainForm);
         }
 
-        private static void UnhandledExceptionHandler(object sender, System.Threading.ThreadExceptionEventArgs e)
+        private static void UnhandledExceptionHandler1(object sender, UnhandledExceptionEventArgs e)
         {
             MessageBox.Show("Критическая ошибка, смотри лог", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
             var logger = Container.Resolve<ILogger>(new NamedParameter("TypeOf", typeof(Program)));
-            logger.Fatal(e.Exception);
+            logger.Fatal(e.ExceptionObject);
             Application.Exit();
         }
     }

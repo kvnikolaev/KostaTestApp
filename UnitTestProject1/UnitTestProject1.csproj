@@ -40,6 +40,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UnitTest1.cs" />
@@ -61,6 +62,10 @@
     <ProjectReference Include="..\ServiceManager\ServiceManager.csproj">
       <Project>{35AD72A8-AE10-4D84-9059-A9FCEDC637EF}</Project>
       <Name>ServiceManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIClient\UIClient.csproj">
+      <Project>{437bf158-d897-40f7-8dac-9571b9750ae9}</Project>
+      <Name>UIClient</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

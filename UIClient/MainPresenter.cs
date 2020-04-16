@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UIClient.Controlls;
 using UIClient.AddDialogs;
+using UIClient.ConnectionSettingsDialog;
 using ServiceManager.ClientSideClasses;
 using System.ServiceModel;
 using NLog;
@@ -22,13 +23,15 @@ namespace UIClient
         #endregion
 
         #region Dependencies Properties
-        private readonly ServiceConnector _serviceManager = new ServiceConnector();
+        private readonly ServiceConnector _serviceManager = new ServiceConnector(new ConfigLoader());
 
         private List<DepartmentCS> _departmentStructure = new List<DepartmentCS>();
 
         public MainForm MainForm { get; private set; }
         public BaseDialogForm AddEmployeeForm { get; set; }
         public BaseDialogForm AddDepartmentForm { get; set; }
+
+        private ConnectionDialog _ConnectionDialog = new ConnectionDialog(new ConfigLoader()); //!! сделать с этим что-то
         #endregion
 
         public MainPresenter(MainForm mainForm, ILogger logger)
@@ -44,6 +47,17 @@ namespace UIClient
 
         private async void MainForm_Load(object sender, EventArgs e)
         {
+            // Если в конфиге не задана строка подключения
+            if (_serviceManager.IsNullConnectionString)
+            {
+                DialogResult res = _ConnectionDialog.ShowDialog();
+                if (res == DialogResult.OK)
+                {
+                    _serviceManager.CurrentConnectionString = _ConnectionDialog.CurrentConnectionString;
+                }
+                else return;
+            }
+            
             // Добавление древо подразделений на форму, список сотрудников отображается через событие AfterSelect
             MainForm.DepartmentStructureTreeView.Nodes.AddRange(await this.LoadDepartmentStructure());
         }
@@ -60,14 +74,12 @@ namespace UIClient
             {
                 _departmentStructure = (await _serviceManager.GetDepartmentStructureWithEmployees()).ToList();
             }
-
-            // форматировать для метода 
             catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
             {
                 // сообщение об ошибке для пользователя
                 MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            catch (FaultException) // непредвиденная проблема на сервисе, см лог на сервисе
             {
                 // неизвестная ошибка на сервисе
                 MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -145,7 +157,7 @@ namespace UIClient
                 // сообщение об ошибке для пользователя
                 MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            catch (FaultException) // непредвиденная проблема на сервисе, см лог на сервисе
             {
                 // неизвестная ошибка на сервисе
                 MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -182,7 +194,7 @@ namespace UIClient
                 // сообщение об ошибке для пользователя
                 MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            catch (FaultException) // непредвиденная проблема на сервисе, см лог на сервисе
             {
                 // неизвестная ошибка на сервисе
                 MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -220,7 +232,7 @@ namespace UIClient
                 // сообщение об ошибке для пользователя
                 MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            catch (FaultException) // непредвиденная проблема на сервисе, см лог на сервисе
             {
                 // неизвестная ошибка на сервисе
                 MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -274,7 +286,7 @@ namespace UIClient
                 // сообщение об ошибке для пользователя
                 MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            catch (FaultException) // непредвиденная проблема на сервисе, см лог на сервисе
             {
                 // неизвестная ошибка на сервисе
                 MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -313,7 +325,7 @@ namespace UIClient
                 // сообщение об ошибке для пользователя
                 MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            catch (FaultException) // непредвиденная проблема на сервисе, см лог на сервисе
             {
                 // неизвестная ошибка на сервисе
                 MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -352,7 +364,7 @@ namespace UIClient
                 // сообщение об ошибке для пользователя
                 MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            catch (FaultException) // непредвиденная проблема на сервисе, см лог на сервисе
             {
                 // неизвестная ошибка на сервисе
                 MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -382,7 +394,7 @@ namespace UIClient
                 // сообщение об ошибке для пользователя
                 MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            catch (FaultException) // непредвиденная проблема на сервисе, см лог на сервисе
             {
                 // неизвестная ошибка на сервисе
                 MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -409,9 +421,20 @@ namespace UIClient
         #endregion
 
         #region Update UI methods
-        public void Update()
+        public async void Update()
         {
-            //_mainForm.DepartmentStructureTreeView.UpdateDepartments(this.LoadDepartmentStructure());
+            // Если в конфиге не задана строка подключения
+            if (_serviceManager.IsNullConnectionString)
+            {
+                DialogResult res = _ConnectionDialog.ShowDialog();
+                if (res == DialogResult.OK)
+                {
+                    _serviceManager.CurrentConnectionString = _ConnectionDialog.CurrentConnectionString;
+                }
+                else return;
+            }
+
+            MainForm.DepartmentStructureTreeView.UpdateDepartments(await this.LoadDepartmentStructure());
         }
 
         public async void UpdateVisibleEmployees(DepartmentCS department)
@@ -431,7 +454,7 @@ namespace UIClient
                 // сообщение об ошибке для пользователя
                 MessageBox.Show(ex.Detail.Message, ex.Action, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (FaultException ex) // непредвиденная проблема на сервисе, см лог на сервисе
+            catch (FaultException) // непредвиденная проблема на сервисе, см лог на сервисе
             {
                 // неизвестная ошибка на сервисе
                 MessageBox.Show("Неизвестная ошибка сервиса. Операция не выполнена.", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
