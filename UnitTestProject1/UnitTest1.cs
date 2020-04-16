@@ -151,8 +151,14 @@ namespace UnitTestProject1
         [TestMethod]
         public void SettingWindow()
         {
-            var t = new UIClient.ConnectionSettingsDialog.ConnectionDialog();
-            t.ShowDialog();
+            // Arrange
+            string testString = "data source=data source1;initial catalog=initial catalog2;integrated security=True;User ID=user id3;Password=password4;MultipleActiveResultSets=True";
+            // Act
+            var t = new UIClient.ConnectionSettingsDialog.ConnectionDialog(null);
+            t.CurrentConnectionString = testString;
+            //t.ShowDialog();
+            // Assert
+            Assert.IsTrue(testString == t.CurrentConnectionString);
         }
     }
 }

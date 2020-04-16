@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using NLog;
 using Autofac;
+using ServiceManager;
 
 namespace UIClient
 {
@@ -33,9 +34,17 @@ namespace UIClient
             }).
             As<ILogger>();
 
+            builder.RegisterInstance(new ConfigLoader()).As<IConnectionStringLoader>().SingleInstance();
+
+            builder.RegisterType<ServiceConnector>();
+
+            builder.RegisterType<ConnectionSettingsDialog.ConnectionDialog>();
+
             builder.Register((c, p) =>
             {
                 return new MainPresenter(Container.Resolve<MainForm>(),
+                    Container.Resolve<ServiceConnector>(),
+                    Container.Resolve<ConnectionSettingsDialog.ConnectionDialog>(),
                     Container.Resolve<ILogger>(new NamedParameter("TypeOf", typeof(MainPresenter))));
             }).
             As<MainPresenter>();

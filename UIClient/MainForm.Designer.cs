@@ -36,6 +36,9 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.departmentView_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.редактироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.add_toolStripMenuItem1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.departmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.employeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,9 +49,7 @@
             this.deleteDepartmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteEmployeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
-            this.departmentView_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.редактироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -134,13 +135,36 @@
             this.add_toolStripMenuItem1,
             this.editToolStripMenuItem,
             this.deleteToolStripMenuItem,
-            this.reloadStripMenuItem5});
+            this.reloadStripMenuItem5,
+            this.settingsStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.menuStrip1.Size = new System.Drawing.Size(728, 27);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // departmentView_contextMenuStrip
+            // 
+            this.departmentView_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.редактироватьToolStripMenuItem,
+            this.toolStripMenuItem4});
+            this.departmentView_contextMenuStrip.Name = "departmentView_contextMenuStrip";
+            this.departmentView_contextMenuStrip.Size = new System.Drawing.Size(155, 48);
+            // 
+            // редактироватьToolStripMenuItem
+            // 
+            this.редактироватьToolStripMenuItem.Name = "редактироватьToolStripMenuItem";
+            this.редактироватьToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.редактироватьToolStripMenuItem.Text = "Редактировать";
+            this.редактироватьToolStripMenuItem.Click += new System.EventHandler(this.ContextMenu_DepartmentEditItem_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(154, 22);
+            this.toolStripMenuItem4.Text = "Удалить";
+            this.toolStripMenuItem4.Click += new System.EventHandler(this.ContextMenu_DepartmentDeleteItem_Click);
             // 
             // add_toolStripMenuItem1
             // 
@@ -228,27 +252,14 @@
             this.reloadStripMenuItem5.Text = "Обновить";
             this.reloadStripMenuItem5.Click += new System.EventHandler(this.MenuTray_Reload_Click);
             // 
-            // departmentView_contextMenuStrip
+            // settingsStripMenuItem
             // 
-            this.departmentView_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.редактироватьToolStripMenuItem,
-            this.toolStripMenuItem4});
-            this.departmentView_contextMenuStrip.Name = "departmentView_contextMenuStrip";
-            this.departmentView_contextMenuStrip.Size = new System.Drawing.Size(155, 48);
-            // 
-            // редактироватьToolStripMenuItem
-            // 
-            this.редактироватьToolStripMenuItem.Name = "редактироватьToolStripMenuItem";
-            this.редактироватьToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.редактироватьToolStripMenuItem.Text = "Редактировать";
-            this.редактироватьToolStripMenuItem.Click += new System.EventHandler(this.ContextMenu_DepartmentEditItem_Click);
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(154, 22);
-            this.toolStripMenuItem4.Text = "Удалить";
-            this.toolStripMenuItem4.Click += new System.EventHandler(this.ContextMenu_DepartmentDeleteItem_Click);
+            this.settingsStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.settingsStripMenuItem.Image = global::UIClient.Properties.Resources.Settings_icon;
+            this.settingsStripMenuItem.Name = "settingsStripMenuItem";
+            this.settingsStripMenuItem.Size = new System.Drawing.Size(28, 23);
+            this.settingsStripMenuItem.Text = "Настройки";
+            this.settingsStripMenuItem.Click += new System.EventHandler(this.MenuTray_Setting_Click);
             // 
             // MainForm
             // 
@@ -298,6 +309,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem reloadStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem settingsStripMenuItem;
     }
 }
 

@@ -19,25 +19,26 @@ namespace UIClient
     {
         #region Privates
         private ILogger _logger;
+        private readonly ServiceConnector _serviceManager;
+        private ConnectionDialog _ConnectionDialog;
 
+        private List<DepartmentCS> _departmentStructure = new List<DepartmentCS>();
         #endregion
 
         #region Dependencies Properties
-        private readonly ServiceConnector _serviceManager = new ServiceConnector(new ConfigLoader());
-
-        private List<DepartmentCS> _departmentStructure = new List<DepartmentCS>();
 
         public MainForm MainForm { get; private set; }
         public BaseDialogForm AddEmployeeForm { get; set; }
         public BaseDialogForm AddDepartmentForm { get; set; }
 
-        private ConnectionDialog _ConnectionDialog = new ConnectionDialog(new ConfigLoader()); //!! сделать с этим что-то
         #endregion
 
-        public MainPresenter(MainForm mainForm, ILogger logger)
+        public MainPresenter(MainForm mainForm, ServiceConnector serviceConnector, ConnectionDialog connectionDialog, ILogger logger)
         {
             _logger = logger;
             MainForm = mainForm;
+            _serviceManager = serviceConnector;
+            _ConnectionDialog = connectionDialog;
             // Подготовка столбцов DataGrid для списка сотрудников
             mainForm.EmployeeDataGridView.SetUpGrid();
 
@@ -466,7 +467,21 @@ namespace UIClient
             }
         }
 
-        
+
+        #endregion
+
+        #region Settings dialog
+        public void ShowSettings()
+        {
+            _ConnectionDialog.CurrentConnectionString = _serviceManager.CurrentConnectionString;
+            DialogResult res = _ConnectionDialog.ShowDialog();
+            if (res == DialogResult.OK)
+            {
+                _serviceManager.CurrentConnectionString = _ConnectionDialog.CurrentConnectionString;
+                this.Update();
+            }
+        }
+
         #endregion
 
         #endregion

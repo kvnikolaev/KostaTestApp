@@ -171,8 +171,16 @@ namespace UIClient
 
         private void MenuTray_Reload_Click(object sender, EventArgs e)
         {
+            reloadStripMenuItem5.Enabled = false;
             Presenter.Update();
+            reloadStripMenuItem5.Enabled = true;
         }
+
+        private void MenuTray_Setting_Click(object sender, EventArgs e)
+        {
+            Presenter.ShowSettings();
+        }
+
 
         private void ContextMenu_DepartmentEditItem_Click(object sender, EventArgs e)
         {
@@ -203,6 +211,5 @@ namespace UIClient
                 Presenter.DeleteEmployee((EmployeeCS)EmployeeDataGridView.SelectedRows[0].Tag);
             }
         }
-
     }
 }

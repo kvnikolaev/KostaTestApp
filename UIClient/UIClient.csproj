@@ -152,5 +152,8 @@
       <Version>4.6.8</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Settings-icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

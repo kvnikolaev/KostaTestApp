@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,25 @@ namespace UIClient.ConnectionSettingsDialog
     {
         private IConnectionStringLoader _configLoader;
 
-        public string CurrentConnectionString { get; set; } //!! каким должно быть свойство
+        public string CurrentConnectionString
+        {
+            get
+            {
+                return $"data source={datasource_textBox.Text};initial catalog={initialcatalog_textBox.Text};" +
+                       $"integrated security={checkBox1.Checked};" +
+                       $"User ID={userid_textBox.Text};Password={password_textBox.Text};MultipleActiveResultSets=True";
+            }
+            set
+            {
+                SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder(value);
+
+                this.datasource_textBox.Text = stringBuilder.DataSource;
+                this.initialcatalog_textBox.Text = stringBuilder.InitialCatalog;
+                this.checkBox1.Checked = stringBuilder.IntegratedSecurity;
+                this.userid_textBox.Text = stringBuilder.UserID;
+                this.password_textBox.Text = stringBuilder.Password;
+            }
+        } 
 
         public ConnectionDialog(IConnectionStringLoader loader)
         {
@@ -32,13 +51,10 @@ namespace UIClient.ConnectionSettingsDialog
 
         private void Save_button_Click(object sender, EventArgs e)
         {
-            string connString = $"data source={datasource_textBox.Text};initial catalog={initialcatalog_textBox.Text};" +
-                       $"integrated security={checkBox1.Checked};" +
-                       $"User ID={userid_textBox.Text};Password={password_textBox.Text};MultipleActiveResultSets=True";
-
+            
             try
             {
-                 _configLoader.SaveConnectionString(connString);
+                 _configLoader.SaveConnectionString(CurrentConnectionString);  //!! сохранять лучше в другом месте
 
                 this.DialogResult = DialogResult.OK;
             }
@@ -48,7 +64,6 @@ namespace UIClient.ConnectionSettingsDialog
             }
             finally
             {
-                CurrentConnectionString = connString;
                 this.Close();
             }
         }
