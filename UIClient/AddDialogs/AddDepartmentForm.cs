@@ -73,7 +73,6 @@ namespace UIClient.AddDialogs
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.CleanDialog();
             this.Close();
         }
 
@@ -94,7 +93,6 @@ namespace UIClient.AddDialogs
                 if (RepresentedValue.Validate())
                 {
                     this.DialogResult = DialogResult.OK;
-                    CleanDialog();
                     this.Close();
                 }
             }
@@ -124,5 +122,9 @@ namespace UIClient.AddDialogs
             this.code_textBox.Text = null;
         }
 
+        private void AddDepartmentForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            CleanDialog();
+        }
     }
 }

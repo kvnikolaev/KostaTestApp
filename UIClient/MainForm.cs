@@ -22,6 +22,23 @@ namespace UIClient
             InitializeComponent();
             
         }
+        private bool _enableActions = true;
+        public bool EnableActions
+        {
+            get
+            {
+                return _enableActions;
+            }
+            set
+            {
+                this.add_toolStripMenuItem1.Enabled = value;
+                this.editToolStripMenuItem.Enabled = value;
+                this.deleteToolStripMenuItem.Enabled = value;
+                this.reloadStripMenuItem5.Enabled = value;
+                this.settingsStripMenuItem.Enabled = value;
+                _enableActions = value;
+            }
+        }
 
         private void StructureTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -56,6 +73,7 @@ namespace UIClient
 
         private void EmployeeDataGridView_DoubleClick(object sender, EventArgs e)
         {
+            if (EnableActions == false || DepartmentStructureTreeView.SelectedNode == null) return;
             var grid = (DataGridView)sender;
             if (grid.SelectedRows.Count > 0)
             {
@@ -171,9 +189,7 @@ namespace UIClient
 
         private void MenuTray_Reload_Click(object sender, EventArgs e)
         {
-            reloadStripMenuItem5.Enabled = false;
             Presenter.Update();
-            reloadStripMenuItem5.Enabled = true;
         }
 
         private void MenuTray_Setting_Click(object sender, EventArgs e)

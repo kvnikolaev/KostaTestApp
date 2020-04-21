@@ -44,7 +44,7 @@ namespace DALService
             catch (DataException ex)
             {
                 _loger.Warn(ex, "Проблема запроса структуры подразделений.");
-                var fault = new DefaultFault(ex.Message);
+                var fault = GetExceptionMessage(ex);
                 throw new FaultException<DefaultFault>(fault);
             }
             catch (Exception ex)
@@ -71,7 +71,7 @@ namespace DALService
             catch (DataException ex)
             {
                 _loger.Warn(ex, "Проблема при получении списка сотрудников по GUID подразделения: " + departmentID);
-                var fault = new DefaultFault(ex.Message);
+                var fault = GetExceptionMessage(ex);
                 throw new FaultException<DefaultFault>(fault);
             }
             catch (Exception ex)
@@ -98,7 +98,7 @@ namespace DALService
             catch (DataException ex)
             {
                 _loger.Warn(ex, "Проблема добавления сотрудника " + employee.ToJson());
-                var fault = new DefaultFault(ex.Message);
+                var fault = GetExceptionMessage(ex);
                 throw new FaultException<DefaultFault>(fault);
             }
             catch (Exception ex)
@@ -126,7 +126,7 @@ namespace DALService
             catch (DataException ex)
             {
                 _loger.Warn(ex, "Проблема добавления подразделения " + department.ToJson());
-                var fault = new DefaultFault(ex.Message);
+                var fault = GetExceptionMessage(ex);
                 throw new FaultException<DefaultFault>(fault);
             }
             catch (Exception ex)
@@ -156,7 +156,7 @@ namespace DALService
             catch (DataException ex)
             {
                 _loger.Warn(ex, "Проблема редактирования сотрудника " + employee.ToJson());
-                var fault = new DefaultFault(ex.Message);
+                var fault = GetExceptionMessage(ex);
                 throw new FaultException<DefaultFault>(fault);
             }
             catch (Exception ex)
@@ -186,7 +186,7 @@ namespace DALService
             catch (DataException ex)
             {
                 _loger.Warn(ex, "Проблема редактирования подразделения " + department.ToJson());
-                var fault = new DefaultFault(ex.Message);
+                var fault = GetExceptionMessage(ex);
                 throw new FaultException<DefaultFault>(fault);
             }
             catch (Exception ex)
@@ -214,7 +214,7 @@ namespace DALService
             catch (DataException ex)
             {
                 _loger.Warn(ex, "Проблема удаления сотрудника " + employee.ToJson());
-                var fault = new DefaultFault(ex.Message);
+                var fault = GetExceptionMessage(ex);
                 throw new FaultException<DefaultFault>(fault);
             }
             catch (Exception ex)
@@ -241,7 +241,7 @@ namespace DALService
             catch (DataException ex)
             {
                 _loger.Warn(ex, "Проблема удаления подразделения " + department.ToJson());
-                var fault = new DefaultFault(ex.Message);
+                var fault = GetExceptionMessage(ex);
                 throw new FaultException<DefaultFault>(fault);
             }
             catch (Exception ex)
@@ -249,6 +249,21 @@ namespace DALService
                 _loger.Error(ex, "Во время удаления подразделения что-то пошло совсем не так.");
                 throw;
             }
+        }
+
+        private DefaultFault GetExceptionMessage(Exception ex)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(ex.Message);
+            var innerException = ex.InnerException;
+            while (innerException != null)
+            {
+                builder.Append(Environment.NewLine);
+                builder.Append("-->");
+                builder.Append(innerException.Message);
+                innerException = innerException.InnerException;
+            }
+            return new DefaultFault(builder.ToString());
         }
 
         [Obsolete]

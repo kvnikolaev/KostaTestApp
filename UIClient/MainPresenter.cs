@@ -48,6 +48,7 @@ namespace UIClient
 
         private async void MainForm_Load(object sender, EventArgs e)
         {
+            MainForm.EnableActions = false;
             // Если в конфиге не задана строка подключения
             if (_serviceManager.IsNullConnectionString)
             {
@@ -61,6 +62,7 @@ namespace UIClient
             
             // Добавление древо подразделений на форму, список сотрудников отображается через событие AfterSelect
             MainForm.DepartmentStructureTreeView.Nodes.AddRange(await this.LoadDepartmentStructure());
+            MainForm.EnableActions = true;
         }
 
         #region Department Structure Methods
@@ -74,6 +76,12 @@ namespace UIClient
             try 
             {
                 _departmentStructure = (await _serviceManager.GetDepartmentStructureWithEmployees()).ToList();
+
+                foreach (var dep in _departmentStructure)
+                {
+                    result.Add(GetSubNodes(dep));
+                }
+                
             }
             catch (FaultException<DefaultFault> ex) // контролируемая ситуация на сервисе
             {
@@ -91,11 +99,6 @@ namespace UIClient
                 _logger.Error(ex, "Ошибка во время зарузки");
             }
 
-
-            foreach (var dep in _departmentStructure)
-            {
-                result.Add(GetSubNodes(dep));
-            }
             return result.ToArray();
         }
         private System.Windows.Forms.TreeNode GetSubNodes(DepartmentCS department)
@@ -410,8 +413,15 @@ namespace UIClient
         private void LocallyDeleteDepartment(DepartmentCS department)
         {
             // обновление внутренней структуры данных
-            GetDepartmentList().Single(dep => dep.ID == department.ParentDepartmentID)
-                .ChildDepartments.Remove(department);
+            if (department.ParentDepartmentID != null)
+            {
+                GetDepartmentList().Single(dep => dep.ID == department.ParentDepartmentID)
+                    .ChildDepartments.Remove(department);
+            }
+            else
+            {
+                GetDepartmentList().Remove(department);
+            }
 
             // обновление отображения данных
             MainForm.DepartmentStructureTreeView.Nodes.Remove(MainForm.DepartmentStructureTreeView.SelectedNode);
@@ -435,7 +445,9 @@ namespace UIClient
                 else return;
             }
 
+            MainForm.EnableActions = false;
             MainForm.DepartmentStructureTreeView.UpdateDepartments(await this.LoadDepartmentStructure());
+            MainForm.EnableActions = true;
         }
 
         public async void UpdateVisibleEmployees(DepartmentCS department)
@@ -443,7 +455,7 @@ namespace UIClient
             try
             {
                 var employees = await _serviceManager.GetEmployeesByDepartment(department.ID);
-                var selectedRows = MainForm.EmployeeDataGridView.SelectedRows[0].Index;
+                var selectedRows = MainForm.EmployeeDataGridView.SelectedRows[0].Index; //!! index вне пределов массива, если таблица пустая
                 MainForm.EmployeeDataGridView.Rows.Clear();
                 MainForm.EmployeeDataGridView.SelectEmployeeToGrid(employees.ToArray());
 
@@ -478,6 +490,8 @@ namespace UIClient
             if (res == DialogResult.OK)
             {
                 _serviceManager.CurrentConnectionString = _ConnectionDialog.CurrentConnectionString;
+                MainForm.DepartmentStructureTreeView.Nodes.Clear();
+                MainForm.EmployeeDataGridView.Rows.Clear();
                 this.Update();
             }
         }

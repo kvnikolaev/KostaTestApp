@@ -76,7 +76,6 @@ namespace UIClient.AddDialogs
         #region Events
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.CleanDialog();
             this.Close();
         }
 
@@ -99,7 +98,6 @@ namespace UIClient.AddDialogs
                 if (RepresentedValue.Validate())
                 {
                     this.DialogResult = DialogResult.OK;
-                    CleanDialog();
                     this.Close();
                 }
             }
@@ -135,6 +133,11 @@ namespace UIClient.AddDialogs
             this.dateTimePicker1.Value = DateTime.Now;
             this.departmentComboBox.Items.Clear();
             this.departmentComboBox.Enabled = true;
+        }
+
+        private void AddEmployeeForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            CleanDialog();
         }
     }
 }
