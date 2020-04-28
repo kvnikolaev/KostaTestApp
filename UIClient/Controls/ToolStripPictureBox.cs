@@ -6,9 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 
 namespace UIClient.Controls
 {
+    [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.MenuStrip)]
     public class ToolStripPictureBox : ToolStripControlHost
     {
         private System.Windows.Forms.Timer _timer = new Timer();
@@ -84,9 +86,11 @@ namespace UIClient.Controls
         {
             if (_enableAnimation)
             {
+                PictureBox pictureBox = (PictureBox)sender;
                 Graphics g = e.Graphics;
                 g.Transform = _matrix;
-                g.DrawImage(_image, 0, 0);
+                g.DrawImage(_image, pictureBox.Width / 2 - _image.Width / 2,
+                    pictureBox.Height / 2 - _image.Height / 2);
             }
         }
 
