@@ -36,6 +36,7 @@ namespace UIClient
                 this.deleteToolStripMenuItem.Enabled = value;
                 this.reloadStripMenuItem5.Enabled = value;
                 this.settingsStripMenuItem.Enabled = value;
+                this.loading_toolStripMenuItem.EnableAnimation = !value;
                 _enableActions = value;
             }
         }

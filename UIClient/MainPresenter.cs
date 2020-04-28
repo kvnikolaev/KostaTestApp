@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIClient.Controlls;
+using UIClient.Controls;
 using UIClient.AddDialogs;
 using UIClient.ConnectionSettingsDialog;
 using ServiceManager.ClientSideClasses;
@@ -57,7 +57,11 @@ namespace UIClient
                 {
                     _serviceManager.CurrentConnectionString = _ConnectionDialog.CurrentConnectionString;
                 }
-                else return;
+                else
+                {
+                    MainForm.EnableActions = true;
+                    return;
+                }
             }
             
             // Добавление древо подразделений на форму, список сотрудников отображается через событие AfterSelect

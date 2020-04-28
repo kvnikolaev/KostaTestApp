@@ -69,10 +69,13 @@
     <Compile Include="ConnectionSettingsDialog\ConnectionDialog.Designer.cs">
       <DependentUpon>ConnectionDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controlls\DepartmentTreeView.cs">
+    <Compile Include="Controls\DepartmentTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controlls\EmployeeDataGridView.cs">
+    <Compile Include="Controls\EmployeeDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ToolStripPictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.cs">
@@ -84,7 +87,7 @@
     <Compile Include="MainPresenter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controlls\TreeNodeCollectionExtension.cs" />
+    <Compile Include="Controls\TreeNodeCollectionExtension.cs" />
     <EmbeddedResource Include="AddDialogs\AddDepartmentForm.resx">
       <DependentUpon>AddDepartmentForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -154,6 +157,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Settings-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sand-timer.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
