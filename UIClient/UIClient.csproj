@@ -124,6 +124,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DALService\DALService.csproj">
+      <Project>{bcab48cd-1e37-4454-b910-83e0923b2f97}</Project>
+      <Name>DALService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceManager\ServiceManager.csproj">
       <Project>{35ad72a8-ae10-4d84-9059-a9fcedc637ef}</Project>
       <Name>ServiceManager</Name>
